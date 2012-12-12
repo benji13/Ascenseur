@@ -10,15 +10,15 @@ public class Statistiques {
  Integer nbAppelTotal;
  
  
- int calculTotalDuree(ArrayList <APPEL> tabAppel){
+ int calculTotalDuree(ArrayList <Appel> tabAppel){
 	
  }
  
- DATE calculDureeSimu(){
+ Date calculDureeSimu(){
 	 
  }
  
- void calculTotalConso(ArrayList <ASCENSEUR> tabAscenseur){
+ void calculTotalConso(ArrayList <Ascenseur> tabAscenseur){
 	 
  }
 }
