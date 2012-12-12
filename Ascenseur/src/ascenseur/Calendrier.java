@@ -1,19 +1,37 @@
 package ascenseur;
 
-import java.util.Date;
+import java.util.Calendar;
+
 
 
 public class Calendrier {
 
-	boolean isWeek;
-	Date date;
-
-	public void determinerPlageHoraire(){
-		
+	private boolean isWeek;
+	private Calendar date;
+	
+	public Calendar getDate() {
+		return date;
 	}
-	public static void main(String[] args) {
-		
+
+	public void setDate(Calendar date) {
+		this.date = date;
+	}
+	
+	public boolean isWeek() {
+		return isWeek;
+	}
+	
+	public void setWeek(boolean isWeek) {
+		this.isWeek = isWeek;
+	}
+	
+	public void determinerPlageHoraire(){
+
+		if(date.)
+		{
 			
+		}
+		
 	}
 
 }
