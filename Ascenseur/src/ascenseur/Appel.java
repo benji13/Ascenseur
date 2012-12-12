@@ -5,8 +5,13 @@ public class Appel {
 	private Integer idAppel;
 	private Integer sourceAppel;
 	private Integer etatAppel;
+	private Integer destAppel;
 	private Calendrier dateDebut;
 	private Calendrier dateFin;
+	
+	public Integer getDestAppel() {
+		return destAppel;
+	}
 	
 	public Calendrier getDateDebut() {
 		return dateDebut;
@@ -46,6 +51,10 @@ public class Appel {
 	
 	public void setSourceAppel(Integer sourceAppel) {
 		this.sourceAppel = sourceAppel;
+	}
+	
+	public void setDestAppel(Integer destAppel) {
+		this.destAppel = destAppel;
 	}
 	
 	
