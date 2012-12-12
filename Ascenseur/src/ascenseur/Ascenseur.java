@@ -83,17 +83,15 @@ public class Ascenseur {
 		//remplissage d'un tableau avec les destinations des appels
 		ArrayList<Integer> TabDest = new ArrayList<Integer>();
 		for (Appel appel : this.tabAppelAtraiter) {
-			TabDest.add(appel.getDestAppel());
+			tabDestination.add(appel.getDestAppel());
 		}
 		
 		//Algorithme de tri du precedent tableau
-		if(this.directionEnCours==0) //Si on monte
-		{
-			Collections.sort(TabDest);
+		if(this.directionEnCours==0){ //Si on monte
+			Collections.sort(tabDestination);
 		}
-		else //Si on descend
-		{
-			Collections.sort(TabDest, Collections.reverseOrder());
+		else{ //Si on descend
+			Collections.sort(tabDestination, Collections.reverseOrder());
 		}
 	}
 	
@@ -104,7 +102,17 @@ public class Ascenseur {
 	
 	private void traitementAppel() {
 		// TODO Auto-generated method stub
-		
+		ArrayList<Appel> tabAppelAsupprimer = new ArrayList<Appel>();
+		for (Integer i : this.tabDestination) {
+			if(positionActuelle == i){
+				// A FAIRE : RECHERCHER LES APPELS CORRESPONDANT A CET ETAGE 
+				// LES PLACER DANS tabAppelAsupprimer
+				
+			}
+		}
+		//Déplace les appels de Atraiter vers Traiter
+		tabAppelsTraites.addAll(tabAppelAsupprimer);
+		tabAppelAtraiter.removeAll(tabAppelAsupprimer);
 	}
 
 }
