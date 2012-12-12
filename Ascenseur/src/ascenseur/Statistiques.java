@@ -1,7 +1,7 @@
 package ascenseur;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 
 public class Statistiques {
  Integer tabnbAppel [];
@@ -10,15 +10,15 @@ public class Statistiques {
  Integer nbAppelTotal;
  
  
- int calculTotalDuree(ArrayList <APPEL> tabAppel){
+ int calculTotalDuree(ArrayList <Appel> tabAppel){
 	
  }
  
- DATE calculDureeSimu(){
+ Date calculDureeSimu(){
 	 
  }
  
- void calculTotalConso(ArrayList <ASCENSEUR> tabAscenseur){
+ void calculTotalConso(ArrayList <Ascenseur> tabAscenseur){
 	 
  }
 }
