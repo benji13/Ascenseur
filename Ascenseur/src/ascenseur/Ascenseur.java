@@ -78,15 +78,22 @@ public class Ascenseur {
 	
 	// FONCTIONS
 	private void triAppel() {
-		// TODO Auto-generated method stub
+		//Fonction triant les appels en attente
 		
-		if(this.directionEnCours==0)
-		{
-			
+		//remplissage d'un tableau avec les destinations des appels
+		ArrayList<Integer> TabDest = new ArrayList<Integer>();
+		for (Appel appel : this.tabAppelAtraiter) {
+			TabDest.add(appel.getDestAppel());
 		}
-		else
+		
+		//Algorithme de tri du precedent tableau
+		if(this.directionEnCours==0) //Si on monte
 		{
-			
+			Collections.sort(TabDest);
+		}
+		else //Si on descend
+		{
+			Collections.sort(TabDest, Collections.reverseOrder());
 		}
 	}
 	
