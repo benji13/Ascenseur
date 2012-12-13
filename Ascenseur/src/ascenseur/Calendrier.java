@@ -27,7 +27,7 @@ public class Calendrier {
 	
 	public void determinerPlageHoraire(){
 
-		if(date.)
+		if(date.get(Calendar.DAY_OF_WEEK==)
 		{
 			
 		}

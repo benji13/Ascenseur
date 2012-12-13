@@ -57,5 +57,13 @@ public class Appel {
 		this.destAppel = destAppel;
 	}
 	
+	public Appel(Integer idAppel,Integer sourceAppel,Integer etatAppel, Integer destAppel,Calendrier dateDebut, Calendrier dateFin) {
+		this.sourceAppel = sourceAppel;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.destAppel = destAppel;
+		this.idAppel = idAppel;
+		this.etatAppel = etatAppel;
+	}
 	
 }
