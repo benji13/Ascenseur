@@ -2,16 +2,18 @@ package ascenseur;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Statistiques {
 	
 	 ArrayList <Integer> tabnbAppel;
 	 ArrayList <Integer> tabConsoMoyenne;
-	 ArrayList <Integer> consoTotal;
-	 ArrayList <Integer> nbAppelTotal;
+	 Integer consoTotal;
+	 Integer nbAppelTotal;
 	 
 	 
-	 int calculTotalDuree(ArrayList <Appel> tabAppel){
+	 Date calculTotalDuree(ArrayList <Appel> tabAppel){
+		
 		int total = 0;
 		int i,duree;
 		
@@ -20,14 +22,20 @@ public class Statistiques {
 			duree = (int) (tabAppel.get(i).getDateFin().getDate().getTimeInMillis() - tabAppel.get(i).getDateDebut().getDate().getTimeInMillis());
 			total+=duree;
 		}
-		 return total;
-	 }
-	 
-	 Calendrier calculDureeSimu(){
-		 
+		
+		Date resultDate = new Date(total);
+		return resultDate;
 	 }
 	 
 	 void calculTotalConso(ArrayList <Ascenseur> tabAscenseur){
-		 
-	 }
+		int i;
+		
+		for(i=0;i<tabAscenseur.size();i++)
+		{
+			this.consoTotal += tabAscenseur.get(i).getConsommation();
+		}
+	}
+
+	 
+	 
 }
