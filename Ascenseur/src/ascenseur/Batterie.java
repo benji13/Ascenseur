@@ -142,9 +142,24 @@ public class Batterie {
     
     
     //Definition du constructeur de la classe
-    public Batterie(ArrayList<Ascenseur> tabAscenseur, ArrayList<Appel> tabTousLesAppels, ArrayList tabPositionJournee, ArrayList tabPositionWeekEnd) {
+    public Batterie(ArrayList<Ascenseur> tabAscenseur, ArrayList<Appel> tabTousLesAppels) {
         this.tabAscenseur = tabAscenseur;
         this.tabTousLesAppels = tabTousLesAppels;
+        
+        ArrayList<Integer> tabPositionJournee = new ArrayList<Integer>();
+        tabPositionJournee.add(0);
+        tabPositionJournee.add(0);
+        tabPositionJournee.add(0);
+        tabPositionJournee.add(10);
+        tabPositionJournee.add(25);
+        tabPositionJournee.add(35);
+        ArrayList<Integer> tabPositionWeekEnd = new ArrayList<Integer>();
+        tabPositionWeekEnd.add(38);
+        tabPositionWeekEnd.add(38);
+        tabPositionWeekEnd.add(38);
+        tabPositionJournee.add(0);
+        tabPositionJournee.add(0);
+        tabPositionJournee.add(-2);
         this.tabPositionJournee = tabPositionJournee;
         this.tabPositionWeekEnd = tabPositionWeekEnd;
     }

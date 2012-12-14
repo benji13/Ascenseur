@@ -88,8 +88,8 @@ public class Init {
 		tabAscenseur.add(ascenseur5);
 		tabAscenseur.add(ascenseur6);
 		
-		//Batterie laBatterie = new Batterie(tabAscenseur, ListeAppelsAtraiter, tabPositionJournee, tabPositionWeekEnd)
-		Statistiques uneStat = new Statistiques();
+		Batterie laBatterie = new Batterie(tabAscenseur, ListeAppelsAtraiter);
+		
 		
 
 	}
