@@ -4,7 +4,7 @@
 package ascenseur;
 
 import java.util.ArrayList;
-
+import java.lang.Math;
 /**
  *
  * @author XiXiMe
@@ -14,8 +14,8 @@ public class Batterie {
     //Attributs
     private ArrayList<Ascenseur> tabAscenseur;
     private ArrayList<Appel> tabTousLesAppels;
-    private ArrayList tabPositionJournee;
-    private ArrayList tabPositionWeekEnd;
+    private ArrayList<Integer> tabPositionJournee;
+    private ArrayList<Integer> tabPositionWeekEnd;
 
         
     //Definition des Getters/Setters --> permet l'acces aux attributs
@@ -35,19 +35,19 @@ public class Batterie {
         this.tabTousLesAppels = tabTousLesAppels;
     }
 
-    public ArrayList getTabPositionJournee() {
+    public ArrayList<Integer> getTabPositionJournee() {
         return tabPositionJournee;
     }
 
-    public void setTabPositionJournee(ArrayList tabPositionJournee) {
+    public void setTabPositionJournee(ArrayList <Integer> tabPositionJournee) {
         this.tabPositionJournee = tabPositionJournee;
     }
 
-    public ArrayList getTabPositionWeekEnd() {
+    public ArrayList<Integer> getTabPositionWeekEnd() {
         return tabPositionWeekEnd;
     }
 
-    public void setTabPositionWeekEnd(ArrayList tabPositionWeekEnd) {
+    public void setTabPositionWeekEnd(ArrayList <Integer> tabPositionWeekEnd) {
         this.tabPositionWeekEnd = tabPositionWeekEnd;
     }
     
@@ -124,20 +124,36 @@ public class Batterie {
      * @return 
      */
     int calculPlusRapide(Appel unAppel){
-        
-        return 0;
+    	 int i, temps, id = -1;
+         temps = 0;
+         for(i=0;i<this.tabAscenseur.size();i++){
+         	
+         	}
+
+         return id;
     }//Fin calculPlusRapide
     
     
     
     /**
      * Methode permettant de trouver l'ascenseur le plus proche de la source de l'appel.
+     * Elle retourne l'id de l'ascenseur le plus proche
      * @param unAppel
      * @return 
      */
     int calculPlusProche(Appel unAppel){
-        
-        return 0;
+        int i, distance, id = -1;
+        distance = 40;
+        for(i=0;i<this.tabAscenseur.size();i++){
+        	int temp ;
+        	temp = Math.abs (this.tabAscenseur.get(i).getPositionActuelle() - unAppel.getSourceAppel().intValue());
+        	
+        	if(temp<distance){
+        		distance = temp;
+        		id = i;
+        	}
+        }
+        return id;
     }//Fin calculPlusProche
     
     
@@ -153,6 +169,7 @@ public class Batterie {
         tabPositionJournee.add(10);
         tabPositionJournee.add(25);
         tabPositionJournee.add(35);
+        
         ArrayList<Integer> tabPositionWeekEnd = new ArrayList<Integer>();
         tabPositionWeekEnd.add(38);
         tabPositionWeekEnd.add(38);
