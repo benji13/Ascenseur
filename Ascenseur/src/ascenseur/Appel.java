@@ -4,7 +4,7 @@ public class Appel {
 
 	private Integer idAppel;
 	private Integer sourceAppel;
-	private Integer etatAppel;
+	private boolean traite;//parametre à true si l'appel
 	private Integer destAppel;
 	private Calendrier dateDebut;
 	private Calendrier dateFin;
@@ -21,8 +21,8 @@ public class Appel {
 		return dateFin;
 	}
 	
-	public Integer getEtatAppel() {
-		return etatAppel;
+	public boolean getEtatAppel() {
+		return traite;
 	}
 	
 	public Integer getIdAppel() {
@@ -41,8 +41,8 @@ public class Appel {
 		this.dateFin = dateFin;
 	}
 	
-	public void setEtatAppel(Integer etatAppel) {
-		this.etatAppel = etatAppel;
+	public void setEtatAppel(boolean etatAppel) {
+		this.traite = etatAppel;
 	}
 	
 	public void setIdAppel(Integer idAppel) {
@@ -57,13 +57,13 @@ public class Appel {
 		this.destAppel = destAppel;
 	}
 	
-	public Appel(Integer idAppel,Integer sourceAppel,Integer etatAppel, Integer destAppel,Calendrier dateDebut, Calendrier dateFin) {
+	public Appel(Integer idAppel,Integer sourceAppel,boolean traite, Integer destAppel,Calendrier dateDebut, Calendrier dateFin) {
 		this.sourceAppel = sourceAppel;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.destAppel = destAppel;
 		this.idAppel = idAppel;
-		this.etatAppel = etatAppel;
+		this.traite = traite;
 	}
 	
 }

@@ -2,8 +2,6 @@ package ascenseur;
 
 import java.util.Calendar;
 
-
-
 public class Calendrier {
 
 	private boolean isWeek;
@@ -27,10 +25,6 @@ public class Calendrier {
 	
 	public void determinerPlageHoraire(){
 
-		if(date.get(Calendar.DAY_OF_WEEK==)
-		{
-			
-		}
 		
 	}
 
