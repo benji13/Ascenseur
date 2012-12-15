@@ -96,7 +96,14 @@ public class Ascenseur {
 	public void setTabAppelsTraites(ArrayList<Appel> tabAppelsTraites) {
 		this.tabAppelsTraites = tabAppelsTraites;
 	}
+	//Ajoutée par Mo'
 	
+	//Cette fonction ajoute un Appel dans le tableau d'appels à traiter
+	
+	public void addAppel(Appel unAppel)
+	{
+		this.tabAppelAtraiter.add(unAppel);
+	}
 	// FONCTIONS
 
 	/**

@@ -116,7 +116,19 @@ public class Batterie {
      * @param unAppel 
      */
     void assignerAppel(Appel unAppel){
-        
+        int i;
+        //Affecter un id à l'appel
+        unAppel.setIdAppel(this.tabTousLesAppels.size()+1);
+    	for(i=0;i<this.tabAscenseur.size();i++)
+    	{
+    		if(this.tabAscenseur.get(i).getPositionActuelle() == unAppel.getSourceAppel()){
+    			this.tabAscenseur.get(i).addAppel(unAppel);
+    		}
+    		else
+    		{
+    			
+    		}
+    	}
         
     }//Fin assignerAppel
     
