@@ -4,7 +4,7 @@ public class Appel {
 
 	private Integer idAppel;
 	private Integer sourceAppel;
-	private boolean traite;//parametre à true si l'appel
+	private boolean traite;//parametre à true si l'appel est traité
 	private Integer destAppel;
 	private Calendrier dateDebut;
 	private Calendrier dateFin;
@@ -65,5 +65,12 @@ public class Appel {
 		this.idAppel = idAppel;
 		this.traite = traite;
 	}
-	
+	//Création d'un second constructeur, car lorsque l'on crée un appel on ne connait pas nécéssairement 
+	//la date de fin, ni l'id
+	public Appel(Integer sourceAppel,boolean traite, Integer destAppel,Calendrier dateDebut) {
+		this.sourceAppel = sourceAppel;
+		this.traite = traite;
+		this.destAppel = destAppel;
+		this.dateDebut = dateDebut;
+	}
 }

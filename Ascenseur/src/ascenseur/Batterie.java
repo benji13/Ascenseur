@@ -67,14 +67,31 @@ public class Batterie {
     
     /**
      * Methode de repositionnement des acsenseurs.
-     * Permets le repositionnment de chaque ascenseur independemment.
+     * Permet le repositionnment de chaque ascenseur independemment.
      * Est appelee lorsqu'un ascenseur est Ã  l'arret.
      * @param uneDate
      * @param unAppel
      * @return void
      */
-    void repositionnement(Calendrier uneDate, Appel unAppel){
-        
+    //Cette methode va,pour un ascenseur donné, lui affecter une position de repositionnement la plus appropiée
+    void repositionnement(Ascenseur unAscenseur, Calendrier uneDate){
+        int ecart = 40, i, id=-1;
+        ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
+        if(uneDate.isWeek()){
+        	tabRepositionement = this.tabPositionJournee;
+        }
+        else
+        	tabRepositionement = this.tabPositionWeekEnd;
+        for(i=0;i<tabRepositionement.size();i++){
+        	int temp = Math.abs(unAscenseur.getPositionActuelle() - tabRepositionement.get(i));
+        	
+        	if(temp<ecart)
+        	{
+        		ecart = temp;
+        		id = i;
+        	}
+        }
+        unAscenseur.setPositionRepo(tabRepositionement.get(id));
         
     }//Fin repositionnement
     
@@ -87,7 +104,7 @@ public class Batterie {
      * @param unAppel 
      */
     void majDateFinAppel(Calendrier uneDate, Appel unAppel){
-        
+        unAppel.setDateFin(uneDate);
         
     }//Fin majDateFinAppel
     
@@ -104,16 +121,18 @@ public class Batterie {
     }//Fin assignerAppel
     
     
-    
+  //Revoir la partie commentaire, je ne sais pas faire.....  
     /**
      * Methode permettant la creation d'un appel.
-     * @return void
+     * @return Appe
      * @param sourceAppel
      * @param destAppel
      * @param uneDate 
      */
-    void creationAppel(int sourceAppel, int destAppel, Calendrier uneDate){
+    Appel creationAppel(int sourceAppel, int destAppel, Calendrier dateAppel){
+        Appel unAppel = new Appel(sourceAppel, false, destAppel, dateAppel);
         
+        return unAppel;
     }//Fin creationAppel
     
     
@@ -125,12 +144,16 @@ public class Batterie {
      */
     int calculPlusRapide(Appel unAppel){
     	 int i, temps, id = -1;
-         temps = 0;
+         temps = -1;
          for(i=0;i<this.tabAscenseur.size();i++){
+         	int temp = this.tabAscenseur.get(i).getTempsParcoursAscenseur();
          	
-         	}
-
-         return id;
+         	if(temp<temps && temps!=-1){
+        		temps = temp;
+        		id = i;
+        	}
+        }
+        return id;
     }//Fin calculPlusRapide
     
     
