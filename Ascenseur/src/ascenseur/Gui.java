@@ -6,6 +6,12 @@ import java.awt.*;
 /**
  * @author r395381
  *
+ *
+ *Perso :
+ *
+ *Gui fen = new Gui();
+ *fen.fenetreManu();
+ *
  */
 public class Gui {
 	
@@ -17,15 +23,34 @@ public class Gui {
 	
 	
 	JFrame fenetreManu;
-	JPanel panelMenu, panelGauche, panelDroit, paneAppel, panelUtilisateur, panelAscenseur, panelTableau, panelStats;
+	JPanel panelMenu, panelGauche, panelDroit, panelAppel, panelUtilisateur, panelAscenseur, panelTableau, panelStats;
 	JMenuBar menuBar;
 	JMenu menu, sousMenu;
 	JMenuItem menuItem;
 	JButton buttonValider, buttonStats, buttonMonter, bouttonDescendre;
 	JTextField ascA, ascB, ascC, ascD, ascE, ascF, choix;
 	JComboBox jeSuis, jeVais;
+	String[] listEtages = { "1", "2", "3", "4", "5" };
 	JTable tableauFile;
-	//JLabel a, b, c, d, e, f; 
+	JLabel a, b, c, d, e, f, labelAppel, labelUtilisateur, labelAscenseurs, labelStats; 
+	String[] colonnesAppel = {"Origine",
+            "Destination",
+            "Ascenseur",
+            "Etat"};
+	Object[][] fileAppel = {
+		    {"4", "6",
+		     "E", "En cours"},
+		    {"12", "21",
+		     "A", "En cours"},
+		    {"34", "33",
+		     "C", "En attente"},
+		    {"3", "23",
+		     "F", "En attente"},
+		    {"31", "17",
+		     "F", "En attente"}
+		};
+	
+	
 
 	/**
 	 * 
@@ -77,29 +102,28 @@ public class Gui {
 	 * Fenetre manuelle
 	 * 
 	 */
-	/**
-	 * 
-	 */
-	/**
-	 * 
-	 */
 	public void fenetreManu(){
-		/*
-		JFrame fenetreManu;
-		JPanel panelMenu, panelGauche, panelDroit, paneAppel, panelUtilisateur, panelAscenseur, panelTableau, panelStats;
-		JMenuBar menuBar;
-		JMenu menu, sousMenu;
-		JMenuItem menuItem;
-		JButton buttonValider, buttonStats, buttonMonter, bouttonDescendre;
-		JTextField ascA, ascB, ascC, ascD, ascE, ascF, choix;
-		JComboBox jeSuis, jeVais;
-		JTable tableauFile;
-		*/
 		
 		fenetreManu = new JFrame("M²B²T - Gestion d'ascenseurs");
 		fenetreManu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		fenetreChoix.setLayout(new BorderLayout());
 		
+
+		/**
+		 * 
+		 * Labels de l'interface
+		 * 
+		 */
+		a = new JLabel("A");
+		b = new JLabel("B");
+		c = new JLabel("C");
+		d = new JLabel("D");
+		e = new JLabel("E");
+		f = new JLabel("F");
+		labelAppel = new JLabel("Appel");
+		labelUtilisateur = new JLabel("Utilisateur");
+		labelAscenseurs= new JLabel("Ascenseurs");
+		labelStats = new JLabel("Statistiques");
 		
 		/**
 		 * Declaration des panels
@@ -107,13 +131,14 @@ public class Gui {
 		panelMenu = new JPanel();
 		panelGauche = new JPanel();
 		panelDroit = new JPanel();
-		paneAppel = new JPanel();
+		panelAppel = new JPanel();
 		panelUtilisateur = new JPanel();
 		panelAscenseur = new JPanel();
 		panelTableau = new JPanel();
 		panelStats = new JPanel();
 		panelGauche.setLayout(new BoxLayout(panelGauche, BoxLayout.PAGE_AXIS));
-		paneAppel.setLayout(new BoxLayout(paneAppel, BoxLayout.PAGE_AXIS));
+		panelDroit.setLayout(new BoxLayout(panelDroit, BoxLayout.PAGE_AXIS));
+		panelAppel.setLayout(new BoxLayout(panelAppel, BoxLayout.PAGE_AXIS));
 		panelUtilisateur.setLayout(new BoxLayout(panelUtilisateur, BoxLayout.PAGE_AXIS));
 		
 		
@@ -136,27 +161,81 @@ public class Gui {
 		/**
 		 * Panel de gauche pour choisir monter ou descendre
 		 */
-		jeSuis = new JComboBox();
+		
+		jeSuis = new JComboBox(listEtages);
 		buttonMonter = new JButton("^^ Monter");
 		bouttonDescendre = new JButton("vv Descendre");
 		choix = new JTextField("D");
 		
-		paneAppel.add(jeSuis);
-		paneAppel.add(buttonMonter);
-		paneAppel.add(choix);
-		paneAppel.add(bouttonDescendre);
-		panelGauche.add(paneAppel);
+		panelAppel.add(labelAppel);
+		panelAppel.add(jeSuis);
+		panelAppel.add(buttonMonter);
+		panelAppel.add(choix);
+		panelAppel.add(bouttonDescendre);
+		panelGauche.add(panelAppel);
 		
 		
 		
-		jeVais = new JComboBox();
+		jeVais = new JComboBox(listEtages);
 		buttonValider = new JButton("Valider");
+		panelAppel.add(labelUtilisateur);
 		panelUtilisateur.add(jeVais);
 		panelUtilisateur.add(buttonValider);
 		panelGauche.add(panelUtilisateur);
 		
 		
+		/**
+		 * Panel du haut avec l'etat des ascenseurs
+		 */
+		
+		panelAscenseur = new JPanel();	
+		ascA = new JTextField();
+		ascB = new JTextField();
+		ascC = new JTextField();
+		ascD = new JTextField();
+		ascE = new JTextField();
+		ascF = new JTextField();
+		
+		panelAscenseur.add(labelAscenseurs);
+		panelAscenseur.add(a);
+		panelAscenseur.add(ascA);
+		panelAscenseur.add(b);
+		panelAscenseur.add(ascB);
+		panelAscenseur.add(c);
+		panelAscenseur.add(ascC);
+		panelAscenseur.add(d);
+		panelAscenseur.add(ascD);
+		panelAscenseur.add(e);
+		panelAscenseur.add(ascE);
+		panelAscenseur.add(f);
+		panelAscenseur.add(ascF);
+		
+		panelDroit.add(panelAscenseur);
+		
+		/**
+		 * Panel milieu-droit contenant le tableau 
+		 */
+		panelTableau = new JPanel();
+		
+		panelDroit.add(panelTableau);
+		tableauFile = new JTable(fileAppel, colonnesAppel);
+		panelDroit.add(tableauFile);
+		
+		/**
+		 * Panel du bas contenant le bouton d'acces aux stats
+		 */
+		
+		panelStats = new JPanel();
+		buttonStats = new JButton("Acceder aux statistiques");
+		panelStats.add(labelStats);
+		panelStats.add(buttonStats);
+		panelDroit.add(panelStats);
+		
+		/**
+		 * Ajout des differents panels à la fenetre principale 
+		 */
 		fenetreManu.add(panelGauche, BorderLayout.LINE_START);
+		fenetreManu.add(panelDroit, BorderLayout.LINE_END);
 		
 		fenetreManu.pack();
 		fenetreManu.setVisible(true);
