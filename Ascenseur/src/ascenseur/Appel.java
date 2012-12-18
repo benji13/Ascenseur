@@ -1,6 +1,6 @@
 package ascenseur;
 
-import java.util.Calendar;
+import java.util.Date;
 
 public class Appel {
 
@@ -8,8 +8,8 @@ public class Appel {
 	private Integer sourceAppel;
 	private boolean traite;//parametre à true si l'appel est traité
 	private Integer destAppel;
-	private Calendar dateDebut;
-	private Calendar dateFin;
+	private Date dateDebut;
+	private Date dateFin;
 	
 
 /**
@@ -20,7 +20,7 @@ public class Appel {
  */
 
 //IL FAUT CHANGER LE TYPE CALENDAR PAR LE TYPE CHRONO DE MO'
-	public Appel(Integer sourceAppel, Integer destAppel,Calendar dateDebut) {
+	public Appel(Integer sourceAppel, Integer destAppel,Date dateDebut) {
 		this.sourceAppel = sourceAppel;
 		this.traite = false;
 		this.destAppel = destAppel;
@@ -32,11 +32,11 @@ public class Appel {
 		return destAppel;
 	}
 	
-	public Calendar getDateDebut() {
+	public Date getDateDebut() {
 		return dateDebut;
 	}
 	
-	public Calendar getDateFin() {
+	public Date getDateFin() {
 		return dateFin;
 	}
 	
@@ -52,11 +52,11 @@ public class Appel {
 		return sourceAppel;
 	}
 	
-	public void setDateDebut(Calendar dateDebut) {
+	public void setDateDebut(Date dateDebut) {
 		this.dateDebut = dateDebut;
 	}
 	
-	public void setDateFin(Calendar dateFin) {
+	public void setDateFin(Date dateFin) {
 		this.dateFin = dateFin;
 	}
 	
