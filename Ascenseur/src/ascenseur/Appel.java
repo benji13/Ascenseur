@@ -1,23 +1,42 @@
 package ascenseur;
 
+import java.util.Calendar;
+
 public class Appel {
 
 	private Integer idAppel;
 	private Integer sourceAppel;
 	private boolean traite;//parametre à true si l'appel est traité
 	private Integer destAppel;
-	private Calendrier dateDebut;
-	private Calendrier dateFin;
+	private Calendar dateDebut;
+	private Calendar dateFin;
 	
+
+/**
+ * Constructeur MODE MANUEL
+ * @param sourceAppel
+ * @param destAppel
+ * @param dateDebut
+ */
+
+//IL FAUT CHANGER LE TYPE CALENDAR PAR LE TYPE CHRONO DE MO'
+	public Appel(Integer sourceAppel, Integer destAppel,Calendar dateDebut) {
+		this.sourceAppel = sourceAppel;
+		this.traite = false;
+		this.destAppel = destAppel;
+		this.dateDebut = dateDebut;
+	}
+
+
 	public Integer getDestAppel() {
 		return destAppel;
 	}
 	
-	public Calendrier getDateDebut() {
+	public Calendar getDateDebut() {
 		return dateDebut;
 	}
 	
-	public Calendrier getDateFin() {
+	public Calendar getDateFin() {
 		return dateFin;
 	}
 	
@@ -33,11 +52,11 @@ public class Appel {
 		return sourceAppel;
 	}
 	
-	public void setDateDebut(Calendrier dateDebut) {
+	public void setDateDebut(Calendar dateDebut) {
 		this.dateDebut = dateDebut;
 	}
 	
-	public void setDateFin(Calendrier dateFin) {
+	public void setDateFin(Calendar dateFin) {
 		this.dateFin = dateFin;
 	}
 	
@@ -56,21 +75,5 @@ public class Appel {
 	public void setDestAppel(Integer destAppel) {
 		this.destAppel = destAppel;
 	}
-	
-	public Appel(Integer idAppel,Integer sourceAppel,boolean traite, Integer destAppel,Calendrier dateDebut, Calendrier dateFin) {
-		this.sourceAppel = sourceAppel;
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
-		this.destAppel = destAppel;
-		this.idAppel = idAppel;
-		this.traite = traite;
-	}
-	//Création d'un second constructeur, car lorsque l'on crée un appel on ne connait pas nécéssairement 
-	//la date de fin, ni l'id
-	public Appel(Integer sourceAppel,boolean traite, Integer destAppel,Calendrier dateDebut) {
-		this.sourceAppel = sourceAppel;
-		this.traite = traite;
-		this.destAppel = destAppel;
-		this.dateDebut = dateDebut;
-	}
 }
+

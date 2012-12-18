@@ -8,8 +8,23 @@ public class Ascenseur {
 	/**
 	 * @return
 	 */
-	public Ascenseur() {
+	public Ascenseur(int idAscenseur, int positionActuelle) {
 		// TODO Auto-generated constructor stub
+		this.idAscenseur = idAscenseur;
+		this.positionActuelle = positionActuelle;
+		this.positionRepo = positionActuelle;
+		
+		this.nbPersonne = 0;
+		this.etatAscenseur = false; //Arret
+		this.consommation = 0;
+		this.directionEnCours = 1; // Descend
+		this.tempsParcoursAscenseur = 0;
+		this.XTEMPS = 1;
+		
+		this.tabAppelAtraiter = null;
+		this.tabAppelsTraites = null;
+		this.tabDestination = null;
+		
 	}
 	
 	/**
@@ -27,7 +42,7 @@ public class Ascenseur {
 	private int directionEnCours; //0 monte ; 1 descend
 	private int positionRepo;
 	private int tempsParcoursAscenseur;
-	
+	private int XTEMPS;
 	
 	// GETTER ET SETTER
 	public int getTempsParcoursAscenseur() {
@@ -96,14 +111,7 @@ public class Ascenseur {
 	public void setTabAppelsTraites(ArrayList<Appel> tabAppelsTraites) {
 		this.tabAppelsTraites = tabAppelsTraites;
 	}
-	//Ajoutée par Mo'
 	
-	//Cette fonction ajoute un Appel dans le tableau d'appels à traiter
-	
-	public void addAppel(Appel unAppel)
-	{
-		this.tabAppelAtraiter.add(unAppel);
-	}
 	// FONCTIONS
 
 	/**
@@ -223,7 +231,7 @@ public class Ascenseur {
 	}
 	
 	/**
-	 * Fonction permettant de combien de temps va mettre l'ascenseur pour traiter tout les appels en cours
+	 * Fonction permettant de savoir combien de temps va mettre l'ascenseur pour traiter tout les appels en cours
 	 * @return
 	 */
 	public void calculDureeTraitementAppel(){
@@ -258,6 +266,7 @@ public class Ascenseur {
 	 * Fonctione permettant de gerer le temps de parcours entre les etages via des sleep
 	 * @param nbEtageAparcourir
 	 * @throws InterruptedException
+	 * @return
 	 */
 	public void sleepParcours(int nbEtageAparcourir) throws InterruptedException{
 		int nbEtage = nbEtageAparcourir;
@@ -273,5 +282,14 @@ public class Ascenseur {
 		else if(nbEtage == 1){
 			Thread.sleep(3*1000*XTEMPS);
 		}
+	}
+	
+	/**
+	 * fonction permettant d'ajouter un appel dans le tableau d'appels à traiter	
+	 * @param unAppel
+	 */
+	public void addAppel(Appel unAppel)
+	{
+		this.tabAppelAtraiter.add(unAppel);
 	}
 }
