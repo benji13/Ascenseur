@@ -73,7 +73,8 @@ public class Batterie {
      * @param unAppel
      * @return void
      */
-    //Cette methode va,pour un ascenseur donné, lui affecter une position de repositionnement la plus appropiée
+//Faire gaff quand la postion de l'ascenseur est egale à la reposition e l'ascenseur+à l'arret
+//Cette methode va,pour un ascenseur donné, lui affecter une position de repositionnement la plus appropiée
     void repositionnement(Ascenseur unAscenseur, Calendrier uneDate){
         int ecart = 40, i, id=-1;
         ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
