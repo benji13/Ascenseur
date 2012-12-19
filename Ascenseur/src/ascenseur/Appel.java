@@ -10,6 +10,7 @@ public class Appel {
 	private Integer destAppel;
 	private Date dateDebut;
 	private Date dateFin;
+	private boolean sensAppel; //parametre à true s'il monte
 	
 
 /**
@@ -27,7 +28,18 @@ public class Appel {
 		this.dateDebut = dateDebut;
 	}
 
-
+	public void setSensAppel(boolean sensAppel) {
+		this.sensAppel = sensAppel;
+	}
+	public boolean isTraite() {
+		return traite;
+	}
+	public boolean isSensAppel() {
+		return sensAppel;
+	}
+	public void setTraite(boolean traite) {
+		this.traite = traite;
+	}
 	public Integer getDestAppel() {
 		return destAppel;
 	}

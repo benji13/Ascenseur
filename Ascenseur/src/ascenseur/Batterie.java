@@ -130,7 +130,10 @@ public class Batterie {
      * @param unAppel 
      */
     void assignerAppel(Appel unAppel){
-        int i = 0;
+        int id,i = 0;
+
+		int ecart = 40;
+		int temp;
         boolean affected = false;//boolean permettant de savoir si l'appel a été affecté
         //Affecter un id à l'appel
         unAppel.setIdAppel(this.tabTousLesAppels.size()+1);
@@ -144,12 +147,36 @@ public class Batterie {
     		}
     		i++;
     	}
+    	//Recherche l'ascenseur le plus proche à l'arret à un autre étage 
     	if(!affected)
     	{
     		for(i=0;i<this.tabAscenseur.size();i++){
-    			if(this.tabAscenseur.get(i).getEtatAscenseur())
+    			if(this.tabAscenseur.get(i).isArret()){
+    				temp = Math.abs(this.tabAscenseur.get(i).getPositionActuelle() - unAppel.getSourceAppel());
+    				if(temp < ecart){
+    					ecart = temp;
+    					id = i;
+    					affected = true;
+    				}
+    			}
     		}
     	}
+    	//Recherche l'ascenseur le plus proche en mouvement dans le meme sens
+    	if(!affected){
+    		boolean sensAppel; //variable a true si l'appel monte et a false s'il descend
+    		sensAppel = unAppel.
+    		for(i=0;i<this.tabAscenseur.size();i++){
+    			if(this.tabAscenseur.get(i).isMonte() == sensAppel){
+    				temp = Math.abs(this.tabAscenseur.get(i).getPositionActuelle() - unAppel.getSourceAppel());
+    				if(temp < ecart){
+    					ecart = temp;
+    					id = i;
+    					affected = true;
+    				}
+    			}
+    		}
+    	}
+    	
         
     }//Fin assignerAppel
     
