@@ -149,7 +149,7 @@ public class Ascenseur {
 			arret=false;
 			
 			//calcul nombre etage à parcourir
-			nbEtageAparcourir = tabAppelAtraiter.get(0).getDestAppel() - positionActuelle;
+			nbEtageAparcourir = tabDestination.get(0) - positionActuelle;
 			nbEtageAparcourir = Math.abs(nbEtageAparcourir);
 			System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
 			//calcul temps du parcours
@@ -167,7 +167,7 @@ public class Ascenseur {
 			}
 			
 			//changement de l'etage
-			positionActuelle=tabAppelAtraiter.get(0).getDestAppel();
+			positionActuelle=tabDestination.get(0);
 			System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
 			
 			//ascenseur passe à l'arret
@@ -207,13 +207,30 @@ public class Ascenseur {
 	public ArrayList<Appel> rechercheAppel(Integer etage){
 		ArrayList<Appel> tabAppelTrouve = new ArrayList<Appel>();
 		int i=0;
-		while(i<tabAppelAtraiter.size()){
-			 if(tabAppelAtraiter.get(i).getDestAppel()==etage)
-				 tabAppelTrouve.add(tabAppelAtraiter.get(i));
+		while(i<this.tabAppelAtraiter.size()){
+			 if(this.tabAppelAtraiter.get(i).getDestAppel() == etage)
+				 tabAppelTrouve.add(this.tabAppelAtraiter.get(i));
 			 i++;
 		}
 		return tabAppelTrouve;
 	}
+	
+	/**
+	 * Fonction permettant de rechercher les Sources correspondant à l'étage passé en paramètre dans tabDestination
+	 * @param etage
+	 * @return
+	 */
+	public ArrayList<Integer> rechercheSource(Integer etage){
+		ArrayList<Integer> tabSourceTrouve = new ArrayList<Integer>();
+		int i=0;
+		while(i<this.tabDestination.size()){
+			 if(this.tabDestination.get(i) == etage)
+				 tabSourceTrouve.add(etage);
+			 i++;
+		}
+		return tabSourceTrouve;
+	}
+	
 	
 	/**
 	 * Fonction permettant de dire que nous avons traité un appel
@@ -222,17 +239,23 @@ public class Ascenseur {
 	public void traitementAppel() {
 		// TODO Auto-generated method stub
 		ArrayList<Appel> tabAppelAsupprimer = new ArrayList<Appel>();
-		
+		ArrayList<Integer> tabSourceAsupprimer = new ArrayList<Integer>();
 		// Recherche les appels correspondant à l'etage actuel.
-		tabAppelAsupprimer = rechercheAppel(positionActuelle);
+		tabAppelAsupprimer = rechercheAppel(this.positionActuelle);
+		tabSourceAsupprimer = rechercheSource(this.positionActuelle);
 		
 		//Déplace les appels de Atraiter vers Traiter
 		tabAppelsTraites.addAll(tabAppelAsupprimer);
 		tabAppelAtraiter.removeAll(tabAppelAsupprimer);
+		tabDestination.removeAll(tabSourceAsupprimer);
+		System.out.println("tabAppelAsupprimer" + tabAppelAsupprimer);
+		System.out.println("tabAppelsATraiter" + tabAppelAtraiter);
+		System.out.println("tabAppelsTraites" + tabAppelsTraites);
+		System.out.println("tabDestination" + tabDestination);
 	}
 	
 	/**
-	 * Fonction permettant de trier les appels se trouvant dans AppelsAtraiter afin de les organiser dans l'ordre où l'ascenseur va s'arrêter.
+	 * Fonction permettant de trier les appels se trouvant dans AppelsAtraiter afin de les organiser dans l'ordre où l'ascenseur va s'arrêter. (tabDestination)
 	 * @return
 	 */
 	public void triAppel() {
@@ -240,15 +263,16 @@ public class Ascenseur {
 		
 		//remplissage d'un tableau avec les destinations des appels
 		for (Appel appel : this.tabAppelAtraiter) {
-			tabDestination.add(appel.getDestAppel());
+			this.tabDestination.add(appel.getDestAppel());
+			this.tabDestination.add(appel.getSourceAppel());
 		}
 		
 		//Algorithme de tri du precedent tableau
 		if(this.monte == true){ //Si on monte
-			Collections.sort(tabDestination);
+			Collections.sort(this.tabDestination);
 		}
 		else{ //Si on descend
-			Collections.sort(tabDestination, Collections.reverseOrder());
+			Collections.sort(this.tabDestination, Collections.reverseOrder());
 		}
 	}
 	

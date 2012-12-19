@@ -36,11 +36,12 @@ public class Init {
 		Date date4 = cal1.getTime();
 		System.out.println("Date 4: " +date4);
 		
+		
 		//Création d'appel à partir des dates précedentes
 		Appel Appel1 = new Appel(1, 5, date1);
-		Appel Appel2 = new Appel(2, 13, date2);
-		Appel Appel3 = new Appel(3, 20, date3 );
-		Appel Appel4 = new Appel(4, 5, date4);
+		Appel Appel2 = new Appel(4, 13, date2);
+		Appel Appel3 = new Appel(17, 2, date3 );
+		Appel Appel4 = new Appel(8, 5, date4);
 		
 		//Ajoute les appel à la liste
 		ArrayList<Appel> ListeAppelsAtraiter = new ArrayList<Appel> ();
@@ -51,8 +52,8 @@ public class Init {
 		
 		//Création des ascenseur
 		Ascenseur ascenseur1 = new Ascenseur(1,0,10);
-		Ascenseur ascenseur2 = new Ascenseur(2,0,10);
-		Ascenseur ascenseur3 = new Ascenseur(3,0,10);
+		Ascenseur ascenseur2 = new Ascenseur(2,17,10);
+		Ascenseur ascenseur3 = new Ascenseur(3,10,10);
 		Ascenseur ascenseur4 = new Ascenseur(4,0,10);
 		Ascenseur ascenseur5 = new Ascenseur(5,0,10);
 		Ascenseur ascenseur6 = new Ascenseur(6,0,10);
@@ -67,11 +68,12 @@ public class Init {
 		tabAscenseur.add(ascenseur6);
 		
 		//Création de la batterie
-		Batterie laBatterie = new Batterie(tabAscenseur, ListeAppelsAtraiter);
+		Batterie laBatterie = new Batterie(10);
 		
 		System.out.println("Assignement appel en cours...");
 		//Assigne 2 appels à ascenseur 1
 		ascenseur1.addAppel(Appel1);
+		ascenseur1.setMonte(true);
 		ascenseur1.addAppel(Appel2);
 
 		//Assigne 1 appel à ascenseur 2
@@ -84,11 +86,11 @@ public class Init {
 		System.out.println("Tri des listes d'appels en cours...");
 		//Tri des appels
 		ascenseur1.triAppel();
-		System.out.println("Ascenseur 1: Ma liste d'appel " + ascenseur1.getTabAppelAtraiter());
+		System.out.println("Ascenseur 1: Ma liste d'appel " + ascenseur1.getTabDestination());
 		ascenseur2.triAppel();
-		System.out.println("Ascenseur 1: Ma liste d'appel " + ascenseur2.getTabAppelAtraiter());
+		System.out.println("Ascenseur 2: Ma liste d'appel " + ascenseur2.getTabDestination());
 		ascenseur3.triAppel();
-		System.out.println("Ascenseur 1: Ma liste d'appel " + ascenseur3.getTabAppelAtraiter());
+		System.out.println("Ascenseur 3: Ma liste d'appel " + ascenseur3.getTabDestination());
 		System.out.println("Tri des listes d'appels OK");
 		
 		//Création du calendrier
