@@ -8,7 +8,7 @@ public class Ascenseur {
 	/**
 	 * @return
 	 */
-	public Ascenseur(int idAscenseur, int positionActuelle) {
+	public Ascenseur(int idAscenseur, int positionActuelle,int xtemps) {
 		// TODO Auto-generated constructor stub
 		this.idAscenseur = idAscenseur;
 		this.positionActuelle = positionActuelle;
@@ -19,11 +19,13 @@ public class Ascenseur {
 		this.consommation = 0;
 		this.directionEnCours = 1; // Descend
 		this.tempsParcoursAscenseur = 0;
-		this.XTEMPS = 1;
+		this.xtemps = xtemps;
 		
-		this.tabAppelAtraiter = null;
-		this.tabAppelsTraites = null;
-		this.tabDestination = null;
+		this.tabAppelAtraiter = new ArrayList<Appel>();
+		this.tabAppelsTraites = new ArrayList<Appel>();
+		this.tabDestination = new ArrayList<Integer>();
+		
+		System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
 		
 	}
 	
@@ -42,7 +44,7 @@ public class Ascenseur {
 	private int directionEnCours; //0 monte ; 1 descend
 	private int positionRepo;
 	private int tempsParcoursAscenseur;
-	private int XTEMPS;
+	private int xtemps;
 	
 	// GETTER ET SETTER
 	public int getTempsParcoursAscenseur() {
@@ -125,41 +127,43 @@ public class Ascenseur {
 		
 		int nbEtageAparcourir;
 		
-		if(tabAppelAtraiter.size() != 0){
+		if(tabAppelAtraiter.size() != 0){ // DEPLACEMENT CAR APPEL
 			//ascenseur passe en mouvement
 			etatAscenseur=true;
 			
 			//calcul nombre etage à parcourir
 			nbEtageAparcourir = tabAppelAtraiter.get(0).getDestAppel() - positionActuelle;
 			nbEtageAparcourir = Math.abs(nbEtageAparcourir);
-			
+			System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
 			//calcul temps du parcours
 			if(nbEtageAparcourir >= 4){
-				Thread.sleep((10+nbEtageAparcourir)*1000);
+				Thread.sleep(((10+nbEtageAparcourir)*1000)/xtemps);
 			}
 			else if(nbEtageAparcourir == 3){
-				Thread.sleep(8*1000);
+				Thread.sleep((8*1000)/xtemps);
 			}
 			else if(nbEtageAparcourir == 2){
-				Thread.sleep(6*1000);
+				Thread.sleep((6*1000)/xtemps);
 			}
 			else if(nbEtageAparcourir == 1){
-				Thread.sleep(3*1000);
+				Thread.sleep((3*1000)/xtemps);
 			}
 			
 			//changement de l'etage
 			positionActuelle=tabAppelAtraiter.get(0).getDestAppel();
+			System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
 			
 			//ascenseur passe à l'arret
 			etatAscenseur=false;
 			
 			//les appels correspondant à cet etages passe en traité
 			traitementAppel();	
+			System.out.println("Ascenseur "+ idAscenseur +" :Appel traité!");
 		}
-		else{
+		else{ // REPOSITIONNEMENT
 			//ascenseur passe en mouvement
 			etatAscenseur=true;
-			
+			System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner");
 			//calcul nombre etage à parcourir
 			nbEtageAparcourir = positionRepo - positionActuelle;
 			nbEtageAparcourir = Math.abs(nbEtageAparcourir);
@@ -170,6 +174,7 @@ public class Ascenseur {
 						
 			//changement de l'etage
 			positionActuelle=positionRepo;
+			System.out.println("Ascenseur" + idAscenseur + " :Etage Repo " + positionActuelle);
 			
 			//ascenseur passe à l'arret
 			etatAscenseur=false;
@@ -248,16 +253,16 @@ public class Ascenseur {
 			
 			// Calcul du temps à attendre entre le parcours de ces deux etages cumulé avec l'ancien
 			if(nbEtageAparcourir >= 4){
-				tempsParcoursAscenseur = tempsParcoursAscenseur + (10+nbEtageAparcourir)*1000*XTEMPS;
+				tempsParcoursAscenseur = tempsParcoursAscenseur + ((10+nbEtageAparcourir)*1000)/xtemps;
 			}
 			else if(nbEtageAparcourir == 3){
-				tempsParcoursAscenseur = tempsParcoursAscenseur + (8*1000*XTEMPS);
+				tempsParcoursAscenseur = tempsParcoursAscenseur + ((8*1000)/xtemps);
 			}
 			else if(nbEtageAparcourir == 2){
-				tempsParcoursAscenseur = tempsParcoursAscenseur + (6*1000*XTEMPS);
+				tempsParcoursAscenseur = tempsParcoursAscenseur + ((6*1000)/xtemps);
 			}
 			else if(nbEtageAparcourir == 1){
-				tempsParcoursAscenseur = tempsParcoursAscenseur + (3*1000*XTEMPS);
+				tempsParcoursAscenseur = tempsParcoursAscenseur + ((3*1000)/xtemps);
 			}
 		}
 	}
@@ -271,16 +276,16 @@ public class Ascenseur {
 	public void sleepParcours(int nbEtageAparcourir) throws InterruptedException{
 		int nbEtage = nbEtageAparcourir;
 		if(nbEtage >= 4){
-			Thread.sleep((10+nbEtage)*1000*XTEMPS);
+			Thread.sleep(((10+nbEtage)*1000)/xtemps);
 		}
 		else if(nbEtage == 3){
-			Thread.sleep(8*1000*XTEMPS);
+			Thread.sleep((8*1000)/xtemps);
 		}
 		else if(nbEtage == 2){
-			Thread.sleep(6*1000*XTEMPS);
+			Thread.sleep((6*1000)/xtemps);
 		}
 		else if(nbEtage == 1){
-			Thread.sleep(3*1000*XTEMPS);
+			Thread.sleep((3*1000)/xtemps);
 		}
 	}
 	

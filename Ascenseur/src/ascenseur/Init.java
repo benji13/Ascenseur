@@ -15,71 +15,49 @@ public class Init {
 
 	/**
 	 * @param args
+	 * @throws InterruptedException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		System.out.println("Simulation en mode manuel -- en mode Semaine ");
 	
-		Calendar cal1 = Calendar.getInstance(); cal1.set(2012, 01, 15, 15, 00, 22);
-		Calendar cal2 = Calendar.getInstance(); cal2.set(2012, 01, 15, 15, 30, 22);
-		Calendar cal3 = Calendar.getInstance(); cal3.set(2012, 01, 15, 16, 00, 22);
-		Calendar cal4 = Calendar.getInstance(); cal4.set(2012, 01, 15, 16, 30, 22);
-		Calendar cal5 = Calendar.getInstance(); cal5.set(2012, 01, 15, 17, 00, 22);
-		Calendar cal6 = Calendar.getInstance(); cal6.set(2012, 01, 15, 17, 30, 22);
+		//Creéation du calendrier permettant de générer la date de base.
+		Calendar cal1 = Calendar.getInstance(); cal1.set(2012, 01, 15, 15, 00, 00);
 		
-		Calendrier dateAppel1 = new Calendrier();dateAppel1.setDate(cal1);
-		Calendrier dateAppel2 = new Calendrier();dateAppel2.setDate(cal2);
-		Calendrier dateAppel3 = new Calendrier();dateAppel3.setDate(cal3);
-		Calendrier dateAppel4 = new Calendrier();dateAppel4.setDate(cal4);
-		Calendrier dateAppel5 = new Calendrier();dateAppel5.setDate(cal5);
-		Calendrier dateAppel6 = new Calendrier();dateAppel6.setDate(cal6);
+		//Création de plusieurs dates
+		Date date1 = cal1.getTime();
+		System.out.println("Date 1: " + date1);
+		cal1.add(Calendar.SECOND, 1);
+		Date date2 = cal1.getTime();
+		System.out.println("Date 2: " + date2);
+		cal1.add(Calendar.SECOND, 5);
+		Date date3 = cal1.getTime();
+		System.out.println("Date 3: " + date3);
+		cal1.add(Calendar.SECOND, 2);
+		Date date4 = cal1.getTime();
+		System.out.println("Date 4: " +date4);
 		
+		//Création d'appel à partir des dates précedentes
+		Appel Appel1 = new Appel(1, 5, date1);
+		Appel Appel2 = new Appel(2, 13, date2);
+		Appel Appel3 = new Appel(3, 20, date3 );
+		Appel Appel4 = new Appel(4, 5, date4);
 		
-		Appel Appel1 = new Appel(1, 5, false, 11,dateAppel1, dateAppel2);
-		Appel Appel2 = new Appel(2, 13, false, 2,dateAppel3, dateAppel4);
-		Appel Appel3 = new Appel(3, 20, false, 21,dateAppel5, dateAppel6);
-		Appel Appel4 = new Appel(4, 5, false, 11,dateAppel1, dateAppel2);
-		Appel Appel5 = new Appel(5, 13, false, 2,dateAppel3, dateAppel4);
-		Appel Appel6 = new Appel(6, 20, false, 21,dateAppel5, dateAppel6);
-		Appel Appel7 = new Appel(7, 5, false, 11,dateAppel1, dateAppel2);
-		Appel Appel8 = new Appel(8, 13, false, 2,dateAppel3, dateAppel4);
-		Appel Appel9 = new Appel(9, 20, false, 21,dateAppel5, dateAppel6);
-		Appel Appel10 = new Appel(10, 5, false, 11,dateAppel1, dateAppel2);
-		Appel Appel11 = new Appel(11, 13, false, 2,dateAppel3, dateAppel4);
-		Appel Appel12 = new Appel(12, 20, false, 21,dateAppel5, dateAppel6);
-		Appel Appel13 = new Appel(13, 5, false, 11,dateAppel1, dateAppel2);
-		Appel Appel14 = new Appel(14, 13, false, 2,dateAppel3, dateAppel4);
-		Appel Appel15 = new Appel(15, 20, false, 21,dateAppel5, dateAppel6);
-		Appel Appel16 = new Appel(16, 5, false, 11,dateAppel1, dateAppel2);
-		Appel Appel17 = new Appel(17, 13, false, 2,dateAppel3, dateAppel4);
-		Appel Appel18 = new Appel(18, 20, false, 21,dateAppel5, dateAppel6);
-		
+		//Ajoute les appel à la liste
 		ArrayList<Appel> ListeAppelsAtraiter = new ArrayList<Appel> ();
 		ListeAppelsAtraiter.add(Appel1);
 		ListeAppelsAtraiter.add(Appel2);
 		ListeAppelsAtraiter.add(Appel3);
 		ListeAppelsAtraiter.add(Appel4);
-		ListeAppelsAtraiter.add(Appel5);
-		ListeAppelsAtraiter.add(Appel6);
-		ListeAppelsAtraiter.add(Appel7);
-		ListeAppelsAtraiter.add(Appel8);
-		ListeAppelsAtraiter.add(Appel9);
-		ListeAppelsAtraiter.add(Appel10);
-		ListeAppelsAtraiter.add(Appel11);
-		ListeAppelsAtraiter.add(Appel12);
-		ListeAppelsAtraiter.add(Appel13);
-		ListeAppelsAtraiter.add(Appel14);
-		ListeAppelsAtraiter.add(Appel15);
-		ListeAppelsAtraiter.add(Appel16);
-		ListeAppelsAtraiter.add(Appel17);
-		ListeAppelsAtraiter.add(Appel18);
 		
-		Ascenseur ascenseur1 = new Ascenseur();
-		Ascenseur ascenseur2 = new Ascenseur();
-		Ascenseur ascenseur3 = new Ascenseur();
-		Ascenseur ascenseur4 = new Ascenseur();
-		Ascenseur ascenseur5 = new Ascenseur();
-		Ascenseur ascenseur6 = new Ascenseur();
+		//Création des ascenseur
+		Ascenseur ascenseur1 = new Ascenseur(1,0,10);
+		Ascenseur ascenseur2 = new Ascenseur(2,0,10);
+		Ascenseur ascenseur3 = new Ascenseur(3,0,10);
+		Ascenseur ascenseur4 = new Ascenseur(4,0,10);
+		Ascenseur ascenseur5 = new Ascenseur(5,0,10);
+		Ascenseur ascenseur6 = new Ascenseur(6,0,10);
 		
+		//Création du tableau d'ascenseur
 		ArrayList<Ascenseur> tabAscenseur = new ArrayList<Ascenseur>();
 		tabAscenseur.add(ascenseur1);
 		tabAscenseur.add(ascenseur2);
@@ -88,10 +66,59 @@ public class Init {
 		tabAscenseur.add(ascenseur5);
 		tabAscenseur.add(ascenseur6);
 		
+		//Création de la batterie
 		Batterie laBatterie = new Batterie(tabAscenseur, ListeAppelsAtraiter);
 		
-		
+		System.out.println("Assignement appel en cours...");
+		//Assigne 2 appels à ascenseur 1
+		ascenseur1.addAppel(Appel1);
+		ascenseur1.addAppel(Appel2);
 
+		//Assigne 1 appel à ascenseur 2
+		ascenseur2.addAppel(Appel3);
+		
+		//Assigne 1 appel à ascenseur 3
+		ascenseur3.addAppel(Appel4);
+		System.out.println("Assignement appel OK");
+		
+		System.out.println("Tri des listes d'appels en cours...");
+		//Tri des appels
+		ascenseur1.triAppel();
+		System.out.println("Ascenseur 1: Ma liste d'appel " + ascenseur1.getTabAppelAtraiter());
+		ascenseur2.triAppel();
+		System.out.println("Ascenseur 1: Ma liste d'appel " + ascenseur2.getTabAppelAtraiter());
+		ascenseur3.triAppel();
+		System.out.println("Ascenseur 1: Ma liste d'appel " + ascenseur3.getTabAppelAtraiter());
+		System.out.println("Tri des listes d'appels OK");
+		
+		
+		System.out.println("Traitement des appels en cours...");
+		//Traitement des appels
+		System.out.println("Heure: " + cal1.getTime());
+		ascenseur1.deplacement();
+		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + cal1.getTime());
+		ascenseur1.deplacement();
+		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + cal1.getTime());
+		ascenseur2.deplacement();
+		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + cal1.getTime());
+		ascenseur3.deplacement();
+		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Traitement des appels FINI");
+		System.out.println("Repositionnement en cours...");
+		System.out.println("Heure: " + cal1.getTime());
+		ascenseur1.deplacement();
+		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + cal1.getTime());
+		ascenseur2.deplacement();
+		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + cal1.getTime());
+		ascenseur3.deplacement();
+		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Repositionnement FINI");
+		
 	}
 
 }

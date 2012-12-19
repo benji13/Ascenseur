@@ -4,6 +4,7 @@
 package ascenseur;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.lang.Math;
 /**
  *
@@ -105,7 +106,7 @@ public class Batterie {
      * @param unAppel 
      */
     void majDateFinAppel(Calendrier uneDate, Appel unAppel){
-        unAppel.setDateFin(uneDate);
+        unAppel.setDateFin(uneDate.calculDateActuelle());
         
     }//Fin majDateFinAppel
     
@@ -142,9 +143,8 @@ public class Batterie {
      * @param destAppel
      * @param uneDate 
      */
-    Appel creationAppel(int sourceAppel, int destAppel, Calendrier dateAppel){
-        Appel unAppel = new Appel(sourceAppel, false, destAppel, dateAppel);
-        
+    Appel creationAppel(int sourceAppel, int destAppel, Date dateAppel){
+        Appel unAppel = new Appel(sourceAppel, destAppel, dateAppel);
         return unAppel;
     }//Fin creationAppel
     

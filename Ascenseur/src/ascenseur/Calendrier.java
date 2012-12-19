@@ -16,43 +16,53 @@ public class Calendrier {
 	public Chronometre getChrono() {
 		return chrono;
 	}
-	public Date getDateActuelle() {
-		return dateActuelle;
-	}
-	public Calendar getDateDebutSimu() {
-		return dateDebutSimu;
-	}
-	public int getXtemps() {
-		return xtemps;
-	}
 	public void setChrono(Chronometre chrono) {
 		this.chrono = chrono;
 	}
-	public void setDateActuelle(Date dateActuelle) {
-		this.dateActuelle = dateActuelle;
+	
+	public boolean isWeek() {
+		return isWeek;
 	}
-	public void setDateDebutSimu(Calendar dateDebutSimu) {
-		this.dateDebutSimu = dateDebutSimu;
-	}
+	
 	public void setWeek(boolean isWeek) {
 		this.isWeek = isWeek;
 	}
+	
+	public Date getDateActuelle() {
+		return dateActuelle;
+	}
+	
+	public Calendar getDateDebutSimu() {
+		return dateDebutSimu;
+	}
+	
+	public int getXtemps() {
+		return xtemps;
+	}
+	
+	public void setDateActuelle(Date dateActuelle) {
+		this.dateActuelle = dateActuelle;
+	}
+	
+	public void setDateDebutSimu(Calendar dateDebutSimu) {
+		this.dateDebutSimu = dateDebutSimu;
+	}
+	
 	public void setXtemps(int xtemps) {
 		this.xtemps = xtemps;
 	}
-	
 	//FONCTIONS
 	public void determinerPlageHoraire(){
 		
 	}
 	/**
-	 * Fonction permettant d'ajouter le temps écoulé à la date de départ de la simulation.
+	 * Fonction permettant d'ajouter le temps écoulé à la date de départ de la simulation pour savoir la date actuelle
 	 * @return
 	 */
-	public void calculDateActuelle(){
-		// A FINIR. Ajouter des sec à la date de début de simu
+	public Date calculDateActuelle(){
 		this.dateDebutSimu.add(Calendar.SECOND, (int) (chrono.getTempsEcouleSecs()*xtemps));
 		this.dateActuelle = this.dateDebutSimu.getTime();
+		return this.dateActuelle;
 	}
 
 }
