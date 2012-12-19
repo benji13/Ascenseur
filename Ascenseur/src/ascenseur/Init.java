@@ -23,6 +23,8 @@ public class Init {
 		//Creéation du calendrier permettant de générer la date de base.
 		Calendar cal1 = Calendar.getInstance(); cal1.set(2012, 01, 15, 15, 00, 00);
 		
+		int xtemps = 1;
+		
 		//Création de plusieurs dates
 		Date date1 = cal1.getTime();
 		System.out.println("Date 1: " + date1);
@@ -51,12 +53,12 @@ public class Init {
 		ListeAppelsAtraiter.add(Appel4);
 		
 		//Création des ascenseur
-		Ascenseur ascenseur1 = new Ascenseur(1,0,1);
-		Ascenseur ascenseur2 = new Ascenseur(2,17,1);
-		Ascenseur ascenseur3 = new Ascenseur(3,10,1);
-		Ascenseur ascenseur4 = new Ascenseur(4,0,1);
-		Ascenseur ascenseur5 = new Ascenseur(5,0,1);
-		Ascenseur ascenseur6 = new Ascenseur(6,0,1);
+		Ascenseur ascenseur1 = new Ascenseur(1,0,xtemps);
+		Ascenseur ascenseur2 = new Ascenseur(2,17,xtemps);
+		Ascenseur ascenseur3 = new Ascenseur(3,10,xtemps);
+		Ascenseur ascenseur4 = new Ascenseur(4,0,xtemps);
+		Ascenseur ascenseur5 = new Ascenseur(5,0,xtemps);
+		Ascenseur ascenseur6 = new Ascenseur(6,0,xtemps);
 		
 		//Création du tableau d'ascenseur
 		ArrayList<Ascenseur> tabAscenseur = new ArrayList<Ascenseur>();
@@ -68,7 +70,7 @@ public class Init {
 		tabAscenseur.add(ascenseur6);
 		
 		//Création de la batterie
-		Batterie laBatterie = new Batterie(1);
+		Batterie laBatterie = new Batterie(xtemps);
 		
 		System.out.println("Assignement appel en cours...");
 		//Assigne 2 appels à ascenseur 1
@@ -94,7 +96,7 @@ public class Init {
 		System.out.println("Tri des listes d'appels OK");
 		
 		//Création du calendrier
-		Calendrier monCalendrier = new Calendrier(1);
+		Calendrier monCalendrier = new Calendrier(xtemps);
 		
 		
 		System.out.println("Traitement des appels en cours...");
