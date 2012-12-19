@@ -54,11 +54,11 @@ public class Batterie {
     }
     
     public void setCal(Calendrier cal) {
-		Cal = cal;
+		this.cal = cal;
 	}
     
     public Calendrier getCal() {
-		return Cal;
+		return cal;
 	}
     
     
@@ -138,46 +138,61 @@ public class Batterie {
         //Affecter un id à l'appel
         unAppel.setIdAppel(this.tabTousLesAppels.size()+1);
         
-        //Vérifie si un ascenseur se trouve au meme etage que l'appel
-    	while(i<this.tabAscenseur.size() && !affected )
-    	{
-    		if(this.tabAscenseur.get(i).getPositionActuelle() == unAppel.getSourceAppel()){
-    			this.tabAscenseur.get(i).addAppel(unAppel);
-    			affected = true;
-    		}
-    		i++;
-    	}
-    	//Recherche l'ascenseur le plus proche à l'arret à un autre étage 
-    	if(!affected)
-    	{
-    		for(i=0;i<this.tabAscenseur.size();i++){
-    			if(this.tabAscenseur.get(i).isArret()){
-    				temp = Math.abs(this.tabAscenseur.get(i).getPositionActuelle() - unAppel.getSourceAppel());
-    				if(temp < ecart){
-    					ecart = temp;
-    					id = i;
-    					affected = true;
-    				}
-    			}
-    		}
-    	}
-    	//Recherche l'ascenseur le plus proche en mouvement dans le meme sens
-    	if(!affected){
-    		boolean sensAppel; //variable a true si l'appel monte et a false s'il descend
-    		sensAppel = unAppel.
-    		for(i=0;i<this.tabAscenseur.size();i++){
-    			if(this.tabAscenseur.get(i).isMonte() == sensAppel){
-    				temp = Math.abs(this.tabAscenseur.get(i).getPositionActuelle() - unAppel.getSourceAppel());
-    				if(temp < ecart){
-    					ecart = temp;
-    					id = i;
-    					affected = true;
-    				}
-    			}
-    		}
-    	}
-    	
+        while(!affected){
+        	
+        //ne pas oublier de changer le sens de direction quand affecte un appel        
         
+        //Vérifie si un ascenseur se trouve au meme etage que l'appel
+	    	while(i<this.tabAscenseur.size() && !affected )
+	    	{
+	    		if(this.tabAscenseur.get(i).getPositionActuelle() == unAppel.getSourceAppel()){
+	    			this.tabAscenseur.get(i).addAppel(unAppel);
+	    			affected = true;
+	    			this.tabAscenseur.get(i).setMonte(unAppel.isSensAppel());
+	    		}
+	    		i++;
+	    	}
+	    	//Recherche l'ascenseur le plus proche à l'arret à un autre étage 
+	    	if(!affected)
+	    	{
+	    		for(i=0;i<this.tabAscenseur.size();i++){
+	    			if(this.tabAscenseur.get(i).isArret()){
+	    				temp = Math.abs(this.tabAscenseur.get(i).getPositionActuelle() - unAppel.getSourceAppel());
+	    				if(temp < ecart){
+	    					ecart = temp;
+	    					id = i;
+	    					affected = true;
+	    					this.tabAscenseur.get(i).setMonte(unAppel.isSensAppel());
+	    				}
+	    			}
+	    		}
+	    		if(affected)
+	    			this.tabAscenseur.get(i).addAppel(unAppel);
+	    	}
+	    	//Recherche l'ascenseur le plus rapide en mouvement dans le meme sens
+	    	if(!affected){
+	    		int duree = -1;
+	    		boolean sensAppel; //variable a true si l'appel monte et a false s'il descend
+	    		sensAppel = unAppel.isSensAppel();
+	    		for(i=0;i<this.tabAscenseur.size();i++){
+	    			if(this.tabAscenseur.get(i).isMonte() == sensAppel){
+	    				if(!this.tabAscenseur.get(i).isEnRepositionnement()){
+	    					for(i=0;i<this.tabAscenseur.size();i++){
+	    			         	temp = this.tabAscenseur.get(i).getTempsParcoursAscenseur();
+	    			         	
+	    			         	if(temp<duree && duree!=-1){
+	    			        		duree = temp;
+	    			        		id = i;
+	    			        		affected = true;
+	    			        	}
+	    					}
+	    				}
+	    			}
+	    		}
+	    		if(affected)
+	    			this.tabAscenseur.get(i).addAppel(unAppel);
+	    	}
+        }
     }//Fin assignerAppel
     
     
@@ -240,9 +255,18 @@ public class Batterie {
     
     
     //Definition du constructeur de la classe
-    public Batterie(ArrayList<Ascenseur> tabAscenseur, ArrayList<Appel> tabTousLesAppels) {
-        this.tabAscenseur = tabAscenseur;
-        this.tabTousLesAppels = tabTousLesAppels;
+    public Batterie(int xtemps) {
+        this.tabAscenseur = new ArrayList<Ascenseur>();
+        this.tabTousLesAppels = new ArrayList<Appel>();
+        
+        try
+        {
+        	this.cal = new Calendrier(xtemps);
+        }
+        catch (InterruptedException e)
+        {
+        	System.out.println("Erreur construction");
+        }
         
         ArrayList<Integer> tabPositionJournee = new ArrayList<Integer>();
         tabPositionJournee.add(0);
