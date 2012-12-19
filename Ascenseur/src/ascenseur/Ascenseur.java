@@ -15,11 +15,12 @@ public class Ascenseur {
 		this.positionRepo = positionActuelle;
 		
 		this.nbPersonne = 0;
-		this.arret = false; //Arret
+		this.arret = true; //Arret
 		this.consommation = 0;
 		this.monte = false; // Descend
 		this.tempsParcoursAscenseur = 0;
 		this.xtemps = xtemps;
+		this.enRepositionnement = false;
 		
 		this.tabAppelAtraiter = new ArrayList<Appel>();
 		this.tabAppelsTraites = new ArrayList<Appel>();
@@ -43,10 +44,17 @@ public class Ascenseur {
 	private int consommation;
 	private boolean monte; //0 monte ; 1 descend
 	private int positionRepo;
+	private boolean enRepositionnement;
 	private int tempsParcoursAscenseur;
 	private int xtemps;
 	
 	// GETTER ET SETTER
+	public boolean isEnRepositionnement() {
+		return enRepositionnement;
+	}
+	public void setEnRepositionnement(boolean enRepositionnement) {
+		this.enRepositionnement = enRepositionnement;
+	}
 	public int getTempsParcoursAscenseur() {
 		return tempsParcoursAscenseur;
 	}
@@ -138,7 +146,7 @@ public class Ascenseur {
 		
 		if(tabAppelAtraiter.size() != 0){ // DEPLACEMENT CAR APPEL
 			//ascenseur passe en mouvement
-			etatAscenseur=true;
+			arret=false;
 			
 			//calcul nombre etage à parcourir
 			nbEtageAparcourir = tabAppelAtraiter.get(0).getDestAppel() - positionActuelle;
@@ -146,7 +154,7 @@ public class Ascenseur {
 			System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
 			//calcul temps du parcours
 			if(nbEtageAparcourir >= 4){
-				Thread.sleep(((10+nbEtageAparcourir)*1000)/xtemps);
+				Thread.sleep(((10+(nbEtageAparcourir-4))*1000)/xtemps);
 			}
 			else if(nbEtageAparcourir == 3){
 				Thread.sleep((8*1000)/xtemps);
@@ -163,7 +171,7 @@ public class Ascenseur {
 			System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
 			
 			//ascenseur passe à l'arret
-			etatAscenseur=false;
+			arret=true;
 			
 			//les appels correspondant à cet etages passe en traité
 			traitementAppel();	
@@ -171,7 +179,7 @@ public class Ascenseur {
 		}
 		else{ // REPOSITIONNEMENT
 			//ascenseur passe en mouvement
-			etatAscenseur=true;
+			arret=false;
 			System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner");
 			//calcul nombre etage à parcourir
 			nbEtageAparcourir = positionRepo - positionActuelle;
@@ -186,7 +194,7 @@ public class Ascenseur {
 			System.out.println("Ascenseur" + idAscenseur + " :Etage Repo " + positionActuelle);
 			
 			//ascenseur passe à l'arret
-			etatAscenseur=false;
+			arret=true;
 
 		}
 	}
@@ -236,7 +244,7 @@ public class Ascenseur {
 		}
 		
 		//Algorithme de tri du precedent tableau
-		if(this.directionEnCours==0){ //Si on monte
+		if(this.monte == true){ //Si on monte
 			Collections.sort(tabDestination);
 		}
 		else{ //Si on descend
@@ -262,7 +270,7 @@ public class Ascenseur {
 			
 			// Calcul du temps à attendre entre le parcours de ces deux etages cumulé avec l'ancien
 			if(nbEtageAparcourir >= 4){
-				tempsParcoursAscenseur = tempsParcoursAscenseur + ((10+nbEtageAparcourir)*1000)/xtemps;
+				tempsParcoursAscenseur = tempsParcoursAscenseur + ((10+(nbEtageAparcourir-4))*1000)/xtemps;
 			}
 			else if(nbEtageAparcourir == 3){
 				tempsParcoursAscenseur = tempsParcoursAscenseur + ((8*1000)/xtemps);
@@ -285,7 +293,7 @@ public class Ascenseur {
 	public void sleepParcours(int nbEtageAparcourir) throws InterruptedException{
 		int nbEtage = nbEtageAparcourir;
 		if(nbEtage >= 4){
-			Thread.sleep(((10+nbEtage)*1000)/xtemps);
+			Thread.sleep(((10+(nbEtage-4))*1000)/xtemps);
 		}
 		else if(nbEtage == 3){
 			Thread.sleep((8*1000)/xtemps);
