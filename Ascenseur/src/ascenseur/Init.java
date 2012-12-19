@@ -51,12 +51,12 @@ public class Init {
 		ListeAppelsAtraiter.add(Appel4);
 		
 		//Création des ascenseur
-		Ascenseur ascenseur1 = new Ascenseur(1,0,10);
-		Ascenseur ascenseur2 = new Ascenseur(2,17,10);
-		Ascenseur ascenseur3 = new Ascenseur(3,10,10);
-		Ascenseur ascenseur4 = new Ascenseur(4,0,10);
-		Ascenseur ascenseur5 = new Ascenseur(5,0,10);
-		Ascenseur ascenseur6 = new Ascenseur(6,0,10);
+		Ascenseur ascenseur1 = new Ascenseur(1,0,1);
+		Ascenseur ascenseur2 = new Ascenseur(2,17,1);
+		Ascenseur ascenseur3 = new Ascenseur(3,10,1);
+		Ascenseur ascenseur4 = new Ascenseur(4,0,1);
+		Ascenseur ascenseur5 = new Ascenseur(5,0,1);
+		Ascenseur ascenseur6 = new Ascenseur(6,0,1);
 		
 		//Création du tableau d'ascenseur
 		ArrayList<Ascenseur> tabAscenseur = new ArrayList<Ascenseur>();
@@ -68,7 +68,7 @@ public class Init {
 		tabAscenseur.add(ascenseur6);
 		
 		//Création de la batterie
-		Batterie laBatterie = new Batterie(10);
+		Batterie laBatterie = new Batterie(1);
 		
 		System.out.println("Assignement appel en cours...");
 		//Assigne 2 appels à ascenseur 1
@@ -94,7 +94,7 @@ public class Init {
 		System.out.println("Tri des listes d'appels OK");
 		
 		//Création du calendrier
-		Calendrier monCalendrier = new Calendrier(10);
+		Calendrier monCalendrier = new Calendrier(1);
 		
 		
 		System.out.println("Traitement des appels en cours...");

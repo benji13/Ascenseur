@@ -153,18 +153,7 @@ public class Ascenseur {
 			nbEtageAparcourir = Math.abs(nbEtageAparcourir);
 			System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
 			//calcul temps du parcours
-			if(nbEtageAparcourir >= 4){
-				Thread.sleep(((10+(nbEtageAparcourir-4))*1000)/xtemps);
-			}
-			else if(nbEtageAparcourir == 3){
-				Thread.sleep((8*1000)/xtemps);
-			}
-			else if(nbEtageAparcourir == 2){
-				Thread.sleep((6*1000)/xtemps);
-			}
-			else if(nbEtageAparcourir == 1){
-				Thread.sleep((3*1000)/xtemps);
-			}
+			sleepParcours(nbEtageAparcourir);
 			
 			//changement de l'etage
 			positionActuelle=tabDestination.get(0);
@@ -316,17 +305,62 @@ public class Ascenseur {
 	 */
 	public void sleepParcours(int nbEtageAparcourir) throws InterruptedException{
 		int nbEtage = nbEtageAparcourir;
+		int i=0;
 		if(nbEtage >= 4){
-			Thread.sleep(((10+(nbEtage-4))*1000)/xtemps);
+			for(i=0;i<nbEtage;i++){
+				if(i==0)
+					Thread.sleep((3*1000)/xtemps);
+				if(i==1)
+					Thread.sleep((2*1000)/xtemps);
+				if(i>1 && i<nbEtage-2)
+					Thread.sleep((1*1000)/xtemps);
+				if(i==nbEtage-2)
+					Thread.sleep((2*1000)/xtemps);
+				if(i==nbEtage-1)
+					Thread.sleep((3*1000)/xtemps);
+				if(monte==true)
+					positionActuelle++;
+				if(monte==false)
+					positionActuelle--;
+				System.out.println("Etage: " + positionActuelle);
+			}
 		}
 		else if(nbEtage == 3){
-			Thread.sleep((8*1000)/xtemps);
+			for(i=0;i<nbEtage;i++){
+				if(i==0)
+					Thread.sleep((3*1000)/xtemps);
+				if(i==1)
+					Thread.sleep((2*1000)/xtemps);
+				if(i==2)
+					Thread.sleep((3*1000)/xtemps);
+				if(monte==true)
+					positionActuelle++;
+				if(monte==false)
+					positionActuelle--;
+				System.out.println("Etage: " + positionActuelle);
+			}
 		}
 		else if(nbEtage == 2){
-			Thread.sleep((6*1000)/xtemps);
+			for(i=0;i<nbEtage;i++){
+				if(i==0)
+					Thread.sleep((3*1000)/xtemps);
+				if(i==1)
+					Thread.sleep((3*1000)/xtemps);
+				if(monte==true)
+					positionActuelle++;
+				if(monte==false)
+					positionActuelle--;
+				System.out.println("Etage: " + positionActuelle);
+			}
 		}
 		else if(nbEtage == 1){
 			Thread.sleep((3*1000)/xtemps);
+			if(monte==true)
+				positionActuelle++;
+			if(monte==false)
+				positionActuelle--;
+			System.out.println("Etage: " + positionActuelle);
+			
 		}
 	}
 	
