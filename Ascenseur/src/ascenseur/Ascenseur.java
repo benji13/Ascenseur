@@ -15,9 +15,9 @@ public class Ascenseur {
 		this.positionRepo = positionActuelle;
 		
 		this.nbPersonne = 0;
-		this.etatAscenseur = false; //Arret
+		this.arret = false; //Arret
 		this.consommation = 0;
-		this.directionEnCours = 1; // Descend
+		this.monte = false; // Descend
 		this.tempsParcoursAscenseur = 0;
 		this.xtemps = xtemps;
 		
@@ -34,14 +34,14 @@ public class Ascenseur {
 	 */
 	// VARIABLES
 	private int idAscenseur;
-	private boolean etatAscenseur; //0 arret; 1 en deplacement
+	private boolean arret; //0 arret; 1 en deplacement
 	private ArrayList<Appel> tabAppelAtraiter;
 	private ArrayList<Appel> tabAppelsTraites;
 	private ArrayList<Integer> tabDestination;
 	private int positionActuelle;
 	private int nbPersonne;
 	private int consommation;
-	private int directionEnCours; //0 monte ; 1 descend
+	private boolean monte; //0 monte ; 1 descend
 	private int positionRepo;
 	private int tempsParcoursAscenseur;
 	private int xtemps;
@@ -59,9 +59,7 @@ public class Ascenseur {
 	public int getPositionRepo() {
 		return positionRepo;
 	}
-	public int getDirectionEnCours() {
-		return directionEnCours;
-	}
+
 	public int getIdAscenseur() {
 		return idAscenseur;
 	}
@@ -74,9 +72,7 @@ public class Ascenseur {
 	public int getConsommation() {
 		return consommation;
 	}
-	public boolean getEtatAscenseur() {
-		return etatAscenseur;
-	}
+
 	public int getNbPersonne() {
 		return nbPersonne;
 	}
@@ -89,9 +85,7 @@ public class Ascenseur {
 	public void setConsommation(int consommation) {
 		this.consommation = consommation;
 	}
-	public void setEtatAscenseur(boolean etatAscenseur) {
-		this.etatAscenseur = etatAscenseur;
-	}
+
 	public void setNbPersonne(int nbPersonne) {
 		this.nbPersonne = nbPersonne;
 	}
@@ -101,9 +95,7 @@ public class Ascenseur {
 	public void setTabAppelAtraiter(ArrayList<Appel> tabAppelAtraiter) {
 		this.tabAppelAtraiter = tabAppelAtraiter;
 	}
-	public void setDirectionEnCours(int directionEnCours) {
-		this.directionEnCours = directionEnCours;
-	}
+
 	public void setIdAscenseur(int idAscenseur) {
 		this.idAscenseur = idAscenseur;
 	}
@@ -113,7 +105,24 @@ public class Ascenseur {
 	public void setTabAppelsTraites(ArrayList<Appel> tabAppelsTraites) {
 		this.tabAppelsTraites = tabAppelsTraites;
 	}
-	
+	public boolean isArret() {
+		return arret;
+	}
+	public boolean isMonte() {
+		return monte;
+	}
+	public void setArret(boolean arret) {
+		this.arret = arret;
+	}
+	public void setMonte(boolean monte) {
+		this.monte = monte;
+	}
+	public int getXtemps() {
+		return xtemps;
+	}
+	public void setXtemps(int xtemps) {
+		this.xtemps = xtemps;
+	}
 	// FONCTIONS
 
 	/**

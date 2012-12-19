@@ -17,8 +17,9 @@ public class Batterie {
     private ArrayList<Appel> tabTousLesAppels;
     private ArrayList<Integer> tabPositionJournee;
     private ArrayList<Integer> tabPositionWeekEnd;
-
-        
+    private Calendrier cal;
+   
+	
     //Definition des Getters/Setters --> permet l'acces aux attributs
     public ArrayList<Ascenseur> getTabAscenseur() {
         return tabAscenseur;
@@ -52,6 +53,13 @@ public class Batterie {
         this.tabPositionWeekEnd = tabPositionWeekEnd;
     }
     
+    public void setCal(Calendrier cal) {
+		Cal = cal;
+	}
+    
+    public Calendrier getCal() {
+		return Cal;
+	}
     
     
     //Definitions des methodes    
@@ -74,16 +82,20 @@ public class Batterie {
      * @param unAppel
      * @return void
      */
-//Faire gaff quand la postion de l'ascenseur est egale à la reposition e l'ascenseur+à l'arret
+    
 //Cette methode va,pour un ascenseur donné, lui affecter une position de repositionnement la plus appropiée
-    void repositionnement(Ascenseur unAscenseur, Calendrier uneDate){
+    void repositionnement(Ascenseur unAscenseur){
         int ecart = 40, i, id=-1;
         ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
-        if(uneDate.isWeek()){
+        
+        this.cal.determinerPlageHoraire();
+        
+        if(this.cal.isWeek()){
         	tabRepositionement = this.tabPositionJournee;
         }
         else
         	tabRepositionement = this.tabPositionWeekEnd;
+        
         for(i=0;i<tabRepositionement.size();i++){
         	int temp = Math.abs(unAscenseur.getPositionActuelle() - tabRepositionement.get(i));
         	
@@ -105,8 +117,8 @@ public class Batterie {
      * @param uneDate
      * @param unAppel 
      */
-    void majDateFinAppel(Calendrier uneDate, Appel unAppel){
-        unAppel.setDateFin(uneDate.calculDateActuelle());
+    void majDateFinAppel(Appel unAppel){
+        unAppel.setDateFin(this.cal.getDateActuelle());
         
     }//Fin majDateFinAppel
     
@@ -118,17 +130,24 @@ public class Batterie {
      * @param unAppel 
      */
     void assignerAppel(Appel unAppel){
-        int i;
+        int i = 0;
+        boolean affected = false;//boolean permettant de savoir si l'appel a été affecté
         //Affecter un id à l'appel
         unAppel.setIdAppel(this.tabTousLesAppels.size()+1);
-    	for(i=0;i<this.tabAscenseur.size();i++)
+        
+        //Vérifie si un ascenseur se trouve au meme etage que l'appel
+    	while(i<this.tabAscenseur.size() && !affected )
     	{
     		if(this.tabAscenseur.get(i).getPositionActuelle() == unAppel.getSourceAppel()){
     			this.tabAscenseur.get(i).addAppel(unAppel);
+    			affected = true;
     		}
-    		else
-    		{
-    			
+    		i++;
+    	}
+    	if(!affected)
+    	{
+    		for(i=0;i<this.tabAscenseur.size();i++){
+    			if(this.tabAscenseur.get(i).getEtatAscenseur())
     		}
     	}
         
