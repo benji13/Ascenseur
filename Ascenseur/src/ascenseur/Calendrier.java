@@ -5,6 +5,22 @@ import java.util.Date;
 
 public class Calendrier {
 
+	public Calendrier(int xtemps) throws InterruptedException {
+		// TODO Auto-generated constructor stub
+		this.chrono = new Chronometre();
+		this.isWeek = true;
+		this.dateActuelle = new Date(2012, 01, 15, 00, 00);
+		this.dateDebutSimu = Calendar.getInstance();
+		dateDebutSimu.set(2012, 01, 15, 00, 00);
+		this.xtemps = xtemps;
+		
+		System.out.println("Date actuelle:" + dateActuelle);
+		System.out.println("Début de simu:" + dateDebutSimu.getTime());
+		chrono.start();
+		Thread.sleep(2000);
+		System.out.println("Temps écoulé: " + chrono.getTempsEcouleSecs() + " sec");
+	}
+	
 	// VARIABLES
 	private Chronometre chrono;
 	private boolean isWeek;
@@ -60,7 +76,7 @@ public class Calendrier {
 	 * @return
 	 */
 	public Date calculDateActuelle(){
-		this.dateDebutSimu.add(Calendar.SECOND, (int) (chrono.getTempsEcouleSecs()*xtemps));
+		this.dateDebutSimu.add(Calendar.SECOND, (int) (this.chrono.getTempsEcouleSecs()*this.xtemps));
 		this.dateActuelle = this.dateDebutSimu.getTime();
 		return this.dateActuelle;
 	}

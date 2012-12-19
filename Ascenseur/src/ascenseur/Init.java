@@ -91,32 +91,35 @@ public class Init {
 		System.out.println("Ascenseur 1: Ma liste d'appel " + ascenseur3.getTabAppelAtraiter());
 		System.out.println("Tri des listes d'appels OK");
 		
+		//Création du calendrier
+		Calendrier monCalendrier = new Calendrier(10);
+		
 		
 		System.out.println("Traitement des appels en cours...");
 		//Traitement des appels
-		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
 		ascenseur1.deplacement();
-		System.out.println("Heure: " + cal1.getTime());
-		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
 		ascenseur1.deplacement();
-		System.out.println("Heure: " + cal1.getTime());
-		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
 		ascenseur2.deplacement();
-		System.out.println("Heure: " + cal1.getTime());
-		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
 		ascenseur3.deplacement();
-		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
 		System.out.println("Traitement des appels FINI");
 		System.out.println("Repositionnement en cours...");
-		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
 		ascenseur1.deplacement();
-		System.out.println("Heure: " + cal1.getTime());
-		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
 		ascenseur2.deplacement();
-		System.out.println("Heure: " + cal1.getTime());
-		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
 		ascenseur3.deplacement();
-		System.out.println("Heure: " + cal1.getTime());
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
 		System.out.println("Repositionnement FINI");
 		
 	}
