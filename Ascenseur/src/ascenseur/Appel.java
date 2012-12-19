@@ -87,5 +87,13 @@ public class Appel {
 	public void setDestAppel(Integer destAppel) {
 		this.destAppel = destAppel;
 	}
+	
+	public void determineSens(){
+		if (this.sourceAppel - this.destAppel < 0)
+			this.sensAppel = true;
+		else
+			this.sensAppel = false;
+			
+	}
 }
 
