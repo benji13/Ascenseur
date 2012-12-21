@@ -165,6 +165,7 @@ public class Ascenseur {
 			//les appels correspondant à cet etages passe en traité
 			traitementAppel();	
 			System.out.println("Ascenseur "+ idAscenseur +" :Appel traité!");
+			Thread.sleep(5*1000);
 		}
 		else{ // REPOSITIONNEMENT
 			//ascenseur passe en mouvement
@@ -237,10 +238,10 @@ public class Ascenseur {
 		tabAppelsTraites.addAll(tabAppelAsupprimer);
 		tabAppelAtraiter.removeAll(tabAppelAsupprimer);
 		tabDestination.removeAll(tabSourceAsupprimer);
-		System.out.println("tabAppelAsupprimer" + tabAppelAsupprimer);
-		System.out.println("tabAppelsATraiter" + tabAppelAtraiter);
-		System.out.println("tabAppelsTraites" + tabAppelsTraites);
-		System.out.println("tabDestination" + tabDestination);
+		//System.out.println("tabAppelAsupprimer" + tabAppelAsupprimer);
+		//System.out.println("tabAppelsATraiter" + tabAppelAtraiter);
+		//System.out.println("tabAppelsTraites" + tabAppelsTraites);
+		//System.out.println("tabDestination" + tabDestination);
 	}
 	
 	/**
@@ -269,16 +270,16 @@ public class Ascenseur {
 	 * Fonction permettant de savoir combien de temps va mettre l'ascenseur pour traiter tout les appels en cours
 	 * @return
 	 */
-	public void calculDureeTraitementAppel(){
+	public int calculDureeTraitementAppel(){
 		int i=0;
 		int nbEtageAparcourir;
 		tempsParcoursAscenseur=0;
 		
-		// pour tout les appels sauf le dernier car pris dans la comparaison
-		for(i=0;i<tabAppelAtraiter.size();i++){
+		// pour toutes les destinations sauf la dernière car pris dans la comparaison
+		for(i=0;i<tabDestination.size();i++){
 			
 			//Calcul le nombre d'etage a parcourir entre deux appels consécutifs
-			nbEtageAparcourir = tabAppelAtraiter.get(i+1).getDestAppel()-tabAppelAtraiter.get(i).getDestAppel();
+			nbEtageAparcourir = tabDestination.get(i+1)-tabDestination.get(i);
 			nbEtageAparcourir = Math.abs(nbEtageAparcourir);
 			
 			// Calcul du temps à attendre entre le parcours de ces deux etages cumulé avec l'ancien
@@ -294,7 +295,10 @@ public class Ascenseur {
 			else if(nbEtageAparcourir == 1){
 				tempsParcoursAscenseur = tempsParcoursAscenseur + ((3*1000)/xtemps);
 			}
+		// ajout 5 secondes d'arrêt
+		tempsParcoursAscenseur = tempsParcoursAscenseur + ((5*1000)/xtemps);
 		}
+		return tempsParcoursAscenseur;
 	}
 	
 	/**
@@ -371,5 +375,16 @@ public class Ascenseur {
 	public void addAppel(Appel unAppel)
 	{
 		this.tabAppelAtraiter.add(unAppel);
+	}
+	
+	public boolean isFull(){
+		boolean isFull;
+		if(tabAppelAtraiter.size()==15){
+			isFull=true;
+		}
+		else{ 
+			isFull=false;
+		}
+		return isFull;
 	}
 }

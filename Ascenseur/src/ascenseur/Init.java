@@ -23,7 +23,7 @@ public class Init {
 		//Creéation du calendrier permettant de générer la date de base.
 		Calendar cal1 = Calendar.getInstance(); cal1.set(2012, 01, 15, 15, 00, 00);
 		
-		int xtemps = 1;
+		int xtemps = 100;
 		
 		//Création de plusieurs dates
 		Date date1 = cal1.getTime();
@@ -53,7 +53,7 @@ public class Init {
 		ListeAppelsAtraiter.add(Appel4);
 		
 		//Création des ascenseur
-		Ascenseur ascenseur1 = new Ascenseur(1,0,xtemps);
+		Ascenseur ascenseur1 = new Ascenseur(0,0,xtemps);
 		Ascenseur ascenseur2 = new Ascenseur(2,17,xtemps);
 		Ascenseur ascenseur3 = new Ascenseur(3,10,xtemps);
 		Ascenseur ascenseur4 = new Ascenseur(4,0,xtemps);
@@ -72,60 +72,32 @@ public class Init {
 		//Création de la batterie
 		Batterie laBatterie = new Batterie(xtemps);
 		
-		System.out.println("Assignement appel en cours...");
+		System.out.println("Assignement des 4 appels...");
 		//Assigne 2 appels à ascenseur 1
 		ascenseur1.addAppel(Appel1);
 		ascenseur1.setMonte(true);
 		ascenseur1.addAppel(Appel2);
-
-		//Assigne 1 appel à ascenseur 2
-		ascenseur2.addAppel(Appel3);
+		ascenseur1.addAppel(Appel3);
+		ascenseur1.addAppel(Appel4);
 		
-		//Assigne 1 appel à ascenseur 3
-		ascenseur3.addAppel(Appel4);
-		System.out.println("Assignement appel OK");
 		
-		System.out.println("Tri des listes d'appels en cours...");
 		//Tri des appels
+		System.out.println("Tri des appels...");
 		ascenseur1.triAppel();
 		System.out.println("Ascenseur 1: Ma liste d'appel " + ascenseur1.getTabDestination());
-		ascenseur2.triAppel();
-		System.out.println("Ascenseur 2: Ma liste d'appel " + ascenseur2.getTabDestination());
-		ascenseur3.triAppel();
-		System.out.println("Ascenseur 3: Ma liste d'appel " + ascenseur3.getTabDestination());
-		System.out.println("Tri des listes d'appels OK");
+		
 		
 		//Création du calendrier
 		Calendrier monCalendrier = new Calendrier(xtemps);
-		
-		
+		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
+				
 		System.out.println("Traitement des appels en cours...");
 		//Traitement des appels
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
 		ascenseur1.deplacement();
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
 		ascenseur1.deplacement();
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
-		ascenseur2.deplacement();
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
-		ascenseur3.deplacement();
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
-		System.out.println("Traitement des appels FINI");
-		System.out.println("Repositionnement en cours...");
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
 		ascenseur1.deplacement();
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
-		ascenseur2.deplacement();
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
-		ascenseur3.deplacement();
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
-		System.out.println("Repositionnement FINI");
-		
+		ascenseur1.deplacement();
+		ascenseur1.deplacement();
 	}
 
 }
