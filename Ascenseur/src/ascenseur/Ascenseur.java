@@ -283,10 +283,73 @@ public class Ascenseur {
 	}
 	
 	/**
-	 * Fonction permettant de savoir combien de temps va mettre l'ascenseur pour traiter tout les appels en cours
+	 * Fonction permettant de savoir combien de temps va mettre l'ascenseur avant de traiter l'appel passé en paramètre
 	 * @return
 	 */
-	public int calculDureeTraitementAppel(){
+	public int calculDureeTraitementAppel(Appel unAppel, boolean monte){
+		int i=0;
+		int nbEtageAparcourir;
+		tempsParcoursAscenseur=0;
+		
+		// pour toutes les destinations sauf la dernière car pris dans la comparaison
+		for(i=0;i<tabDestination.size();i++){
+			//Test si on a passé l'étage
+			if(monte){
+				if(unAppel.getDestAppel()<tabDestination.get(i)){
+					//Calcul le nombre d'etage a parcourir entre deux appels consécutifs
+					nbEtageAparcourir = tabDestination.get(i+1)-tabDestination.get(i);
+					nbEtageAparcourir = Math.abs(nbEtageAparcourir);
+					
+					// Calcul du temps à attendre entre le parcours de ces deux etages cumulé avec l'ancien
+					if(nbEtageAparcourir >= 4){
+						tempsParcoursAscenseur = tempsParcoursAscenseur + ((10+(nbEtageAparcourir-4))*1000)/xtemps;
+					}
+					else if(nbEtageAparcourir == 3){
+						tempsParcoursAscenseur = tempsParcoursAscenseur + ((8*1000)/xtemps);
+					}
+					else if(nbEtageAparcourir == 2){
+						tempsParcoursAscenseur = tempsParcoursAscenseur + ((6*1000)/xtemps);
+					}
+					else if(nbEtageAparcourir == 1){
+						tempsParcoursAscenseur = tempsParcoursAscenseur + ((3*1000)/xtemps);
+					}
+					// ajout 5 secondes d'arrêt
+					tempsParcoursAscenseur = tempsParcoursAscenseur + ((5*1000)/xtemps);
+				}
+			}
+			else if(!monte){
+				if(unAppel.getDestAppel()>tabDestination.get(i)){
+					//Calcul le nombre d'etage a parcourir entre deux appels consécutifs
+					nbEtageAparcourir = tabDestination.get(i+1)-tabDestination.get(i);
+					nbEtageAparcourir = Math.abs(nbEtageAparcourir);
+					
+					// Calcul du temps à attendre entre le parcours de ces deux etages cumulé avec l'ancien
+					if(nbEtageAparcourir >= 4){
+						tempsParcoursAscenseur = tempsParcoursAscenseur + ((10+(nbEtageAparcourir-4))*1000)/xtemps;
+					}
+					else if(nbEtageAparcourir == 3){
+						tempsParcoursAscenseur = tempsParcoursAscenseur + ((8*1000)/xtemps);
+					}
+					else if(nbEtageAparcourir == 2){
+						tempsParcoursAscenseur = tempsParcoursAscenseur + ((6*1000)/xtemps);
+					}
+					else if(nbEtageAparcourir == 1){
+						tempsParcoursAscenseur = tempsParcoursAscenseur + ((3*1000)/xtemps);
+					}
+					// ajout 5 secondes d'arrêt
+					tempsParcoursAscenseur = tempsParcoursAscenseur + ((5*1000)/xtemps);
+				}
+			}
+		
+		}
+		return tempsParcoursAscenseur;
+	}
+	
+	/**
+	 * Fonction permettant de savoir combien de temps va mettre l'ascenseur avant de traiter tout les appels
+	 * @return
+	 */
+	public int calculDureeTraitementToutAppels(){
 		int i=0;
 		int nbEtageAparcourir;
 		tempsParcoursAscenseur=0;
@@ -316,6 +379,7 @@ public class Ascenseur {
 		}
 		return tempsParcoursAscenseur;
 	}
+	
 	
 	/**
 	 * Fonctione permettant de gerer le temps de parcours entre les etages via des sleep
@@ -393,6 +457,11 @@ public class Ascenseur {
 		this.tabAppelAtraiter.add(unAppel);
 	}
 	
+	
+	/**
+	 * Fonction permettant de s'avoir si un ascenseur est plein ou pas.
+	 * @return
+	 */
 	public boolean isFull(){
 		boolean isFull;
 		if(tabAppelAtraiter.size()==15){
