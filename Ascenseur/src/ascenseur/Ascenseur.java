@@ -156,6 +156,9 @@ public class Ascenseur {
 		
 		if(tabAppelAtraiter.size() != 0){ // DEPLACEMENT CAR APPEL
 			//ascenseur passe en mouvement
+			if(positionActuelle==tabDestination.get(0)){
+				tabDestination.remove(0);
+			}
 			arret=false;
 			
 			//calcul nombre etage à parcourir

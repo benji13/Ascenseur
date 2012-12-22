@@ -9,9 +9,9 @@ public class Calendrier {
 		// TODO Auto-generated constructor stub
 		this.chrono = new Chronometre();
 		this.isWeek = true;
-		this.dateActuelle = new Date(2012, 01, 15, 00, 00);
+		this.dateActuelle = new Date(2012, 01, 15, 00, 00,00);
 		this.dateDebutSimu = Calendar.getInstance();
-		dateDebutSimu.set(2012, 01, 15, 00, 00);
+		dateDebutSimu.set(2012, 01, 15, 00, 00,00);
 		this.xtemps = xtemps;
 	}
 	

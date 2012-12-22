@@ -23,7 +23,7 @@ public class Init {
 		//Creéation du calendrier permettant de générer la date de base.
 		Calendar cal1 = Calendar.getInstance(); cal1.set(2012, 01, 15, 15, 00, 00);
 		
-		int xtemps = 100;
+		int xtemps = 1;
 		
 		//Création de plusieurs dates
 		Date date1 = cal1.getTime();
@@ -89,12 +89,11 @@ public class Init {
 		
 		//Création du calendrier
 		Calendrier monCalendrier = new Calendrier(xtemps);
-		System.out.println("Heure debut : " + monCalendrier.calculDateActuelle());
 				
 		System.out.println("Traitement des appels en cours...");
 		//Traitement des appels
 		monCalendrier.getChrono().start();
-		System.out.println("Heure fin : " + monCalendrier.calculDateActuelle());
+		System.out.println("Heure debut : " + monCalendrier.calculDateActuelle());
 		ascenseur1.deplacement();
 		ascenseur1.deplacement();
 	//	ascenseur1.deplacement();
