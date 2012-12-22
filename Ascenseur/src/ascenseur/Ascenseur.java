@@ -2,6 +2,8 @@ package ascenseur;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Ascenseur {
 	
@@ -25,6 +27,7 @@ public class Ascenseur {
 		this.tabAppelAtraiter = new ArrayList<Appel>();
 		this.tabAppelsTraites = new ArrayList<Appel>();
 		this.tabDestination = new ArrayList<Integer>();
+		this.tabDestinationTemp = new HashSet<Integer>();
 		
 		System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
 		
@@ -39,6 +42,7 @@ public class Ascenseur {
 	private ArrayList<Appel> tabAppelAtraiter;
 	private ArrayList<Appel> tabAppelsTraites;
 	private ArrayList<Integer> tabDestination;
+	private HashSet<Integer> tabDestinationTemp;
 	private int positionActuelle;
 	private int nbPersonne;
 	private int consommation;
@@ -49,6 +53,12 @@ public class Ascenseur {
 	private int xtemps;
 	
 	// GETTER ET SETTER
+	public HashSet<Integer> getTabDestinationTemp() {
+		return tabDestinationTemp;
+	}
+	public void setTabDestinationTemp(HashSet<Integer> tabDestinationTemp) {
+		this.tabDestinationTemp = tabDestinationTemp;
+	}
 	public boolean isEnRepositionnement() {
 		return enRepositionnement;
 	}
@@ -165,7 +175,7 @@ public class Ascenseur {
 			//les appels correspondant à cet etages passe en traité
 			traitementAppel();	
 			System.out.println("Ascenseur "+ idAscenseur +" :Appel traité!");
-			Thread.sleep(5*1000);
+			Thread.sleep((5*1000)/xtemps);
 		}
 		else{ // REPOSITIONNEMENT
 			//ascenseur passe en mouvement
@@ -257,6 +267,11 @@ public class Ascenseur {
 			this.tabDestination.add(appel.getSourceAppel());
 		}
 		
+		//Suppression des doublons
+		tabDestinationTemp.addAll(tabDestination);
+		tabDestination.removeAll(tabDestination);
+		tabDestination.addAll(tabDestinationTemp);
+		
 		//Algorithme de tri du precedent tableau
 		if(this.monte == true){ //Si on monte
 			Collections.sort(this.tabDestination);
@@ -264,6 +279,7 @@ public class Ascenseur {
 		else{ //Si on descend
 			Collections.sort(this.tabDestination, Collections.reverseOrder());
 		}
+
 	}
 	
 	/**

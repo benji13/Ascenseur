@@ -13,12 +13,6 @@ public class Calendrier {
 		this.dateDebutSimu = Calendar.getInstance();
 		dateDebutSimu.set(2012, 01, 15, 00, 00);
 		this.xtemps = xtemps;
-		
-		System.out.println("Date actuelle:" + dateActuelle);
-		System.out.println("Début de simu:" + dateDebutSimu.getTime());
-		chrono.start();
-		Thread.sleep(2000);
-		System.out.println("Temps écoulé: " + chrono.getTempsEcouleSecs() + " sec");
 	}
 	
 	// VARIABLES

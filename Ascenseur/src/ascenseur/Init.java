@@ -40,10 +40,10 @@ public class Init {
 		
 		
 		//Création d'appel à partir des dates précedentes
-		Appel Appel1 = new Appel(1, 5, date1);
+		Appel Appel1 = new Appel(0, 3, date1);
 		Appel Appel2 = new Appel(4, 13, date2);
-		Appel Appel3 = new Appel(17, 2, date3 );
-		Appel Appel4 = new Appel(8, 5, date4);
+		Appel Appel3 = new Appel(10, 13, date3 );
+		Appel Appel4 = new Appel(13, 18, date4);
 		
 		//Ajoute les appel à la liste
 		ArrayList<Appel> ListeAppelsAtraiter = new ArrayList<Appel> ();
@@ -76,9 +76,9 @@ public class Init {
 		//Assigne 2 appels à ascenseur 1
 		ascenseur1.addAppel(Appel1);
 		ascenseur1.setMonte(true);
-		ascenseur1.addAppel(Appel2);
-		ascenseur1.addAppel(Appel3);
-		ascenseur1.addAppel(Appel4);
+		//ascenseur1.addAppel(Appel2);
+		//ascenseur1.addAppel(Appel3);
+		//ascenseur1.addAppel(Appel4);
 		
 		
 		//Tri des appels
@@ -89,15 +89,23 @@ public class Init {
 		
 		//Création du calendrier
 		Calendrier monCalendrier = new Calendrier(xtemps);
-		System.out.println("Heure: " + monCalendrier.calculDateActuelle());
+		System.out.println("Heure debut : " + monCalendrier.calculDateActuelle());
 				
 		System.out.println("Traitement des appels en cours...");
 		//Traitement des appels
+		monCalendrier.getChrono().start();
+		System.out.println("Heure fin : " + monCalendrier.calculDateActuelle());
 		ascenseur1.deplacement();
 		ascenseur1.deplacement();
-		ascenseur1.deplacement();
-		ascenseur1.deplacement();
-		ascenseur1.deplacement();
+	//	ascenseur1.deplacement();
+	//	ascenseur1.deplacement();
+	//	ascenseur1.deplacement();
+	//	ascenseur1.deplacement();
+	//	ascenseur1.setMonte(false);
+	//	ascenseur1.deplacement();
+		monCalendrier.getChrono().stop();
+		System.out.println("Heure fin : " + monCalendrier.calculDateActuelle());
+		System.out.println("FIN");
 	}
 
 }
