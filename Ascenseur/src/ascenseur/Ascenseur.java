@@ -142,7 +142,28 @@ public class Ascenseur {
 		this.xtemps = xtemps;
 	}
 	// FONCTIONS
-
+	/**
+	 * Fonction permettant de savoir si un appel est sur la route de l'ascenseur
+	 * @param unAppel
+	 * @return
+	 */
+	public boolean isSurLaRoute(Appel unAppel) {
+		boolean is = false;
+		if(this.isMonte())
+		{
+			if (this.positionActuelle >= unAppel.getSourceAppel())
+				is = true;
+		}
+		else{
+			if (this.positionActuelle <= unAppel.getSourceAppel())
+				is = true;
+		}
+		return is;
+	}
+	
+	
+	
+	
 	/**
 	 * Fonction permettant de déplacer un ascenseur d'un étage à un autre.
 	 * Deux cas possible : Appel ou Repositionnement
@@ -287,11 +308,13 @@ public class Ascenseur {
 	
 	/**
 	 * Fonction permettant de savoir combien de temps va mettre l'ascenseur avant de traiter l'appel passé en paramètre
+	 * C'est l'equivalent d'une simulation, avant de lui affecter l'appel, on calcul le temps eventuel que mettrait l'ascenseur à arriver
 	 * @return
 	 */
-	public int calculDureeTraitementAppel(Appel unAppel, boolean monte){
+	public int calculDureeTraitementAppel(Appel unAppel){
 		int i=0;
 		int nbEtageAparcourir;
+		boolean monte = this.monte;
 		tempsParcoursAscenseur=0;
 		
 		// pour toutes les destinations sauf la dernière car pris dans la comparaison

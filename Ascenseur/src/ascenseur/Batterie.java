@@ -130,10 +130,11 @@ public class Batterie {
      * @param unAppel 
      */
     void assignerAppel(Appel unAppel){
-        int id,i = 0;
+        int id =0;
+        int i = 0;
 
 		int ecart = 40;
-		int temp;
+		int temp,nbPersonne;
         boolean affected = false;//boolean permettant de savoir si l'appel a été affecté
         //Affecter un id à l'appel
         unAppel.setIdAppel(this.tabTousLesAppels.size()+1);
@@ -141,58 +142,40 @@ public class Batterie {
         while(!affected){
         	
         //ne pas oublier de changer le sens de direction quand affecte un appel        
-        
-        //Vérifie si un ascenseur se trouve au meme etage que l'appel
-	    	while(i<this.tabAscenseur.size() && !affected )
-	    	{
-	    		if(this.tabAscenseur.get(i).getPositionActuelle() == unAppel.getSourceAppel()){
-	    			this.tabAscenseur.get(i).addAppel(unAppel);
-	    			affected = true;
-	    			this.tabAscenseur.get(i).setMonte(unAppel.isSensAppel());
-	    		}
-	    		i++;
-	    	}
-	    	//Recherche l'ascenseur le plus proche à l'arret à un autre étage 
-	    	if(!affected)
-	    	{
-	    		for(i=0;i<this.tabAscenseur.size();i++){
-	    			if(this.tabAscenseur.get(i).isArret()){
-	    				temp = Math.abs(this.tabAscenseur.get(i).getPositionActuelle() - unAppel.getSourceAppel());
-	    				if(temp < ecart){
-	    					ecart = temp;
-	    					id = i;
-	    					affected = true;
-	    					this.tabAscenseur.get(i).setMonte(unAppel.isSensAppel());
-	    				}
-	    			}
-	    		}
-	    		if(affected)
-	    			this.tabAscenseur.get(i).addAppel(unAppel);
-	    	}
+        //Recherche l'ascenseur le plus proche à l'arret
+    		for(i=0;i<this.tabAscenseur.size();i++){
+    			if(this.tabAscenseur.get(i).isArret()){
+    				temp = Math.abs(this.tabAscenseur.get(i).getPositionActuelle() - unAppel.getSourceAppel());
+    				if(temp < ecart){
+    					ecart = temp;
+    					id = i;
+    					affected = true;
+    					this.tabAscenseur.get(i).setMonte(unAppel.isSensAppel());
+    				}
+    			}
+    		}
+    	
 	    	//Recherche l'ascenseur le plus rapide en mouvement dans le meme sens
 	    	if(!affected){
 	    		int duree = -1;
-	    		boolean sensAppel; //variable a true si l'appel monte et a false s'il descend
-	    		sensAppel = unAppel.isSensAppel();
 	    		for(i=0;i<this.tabAscenseur.size();i++){
-	    			if(this.tabAscenseur.get(i).isMonte() == sensAppel){
-	    				if(!this.tabAscenseur.get(i).isEnRepositionnement()){
-	    					for(i=0;i<this.tabAscenseur.size();i++){
-	    			         	temp = this.tabAscenseur.get(i).getTempsParcoursAscenseur();
-	    			         	
-	    			         	if(temp<duree && duree!=-1){
-	    			        		duree = temp;
-	    			        		id = i;
-	    			        		affected = true;
-	    			        	}
-	    					}
-	    				}
+	    			if(!this.tabAscenseur.get(i).isFull() && this.tabAscenseur.get(i).isSurLaRoute(unAppel) && !this.tabAscenseur.get(i).isEnRepositionnement()){
+    					temp = this.tabAscenseur.get(i).calculDureeTraitementAppel(unAppel);
+    					if(temp<duree && duree!=-1){
+    		        		duree = temp;
+    		        		id = i;
+    		        	}	
 	    			}
 	    		}
-	    		if(affected)
-	    			this.tabAscenseur.get(i).addAppel(unAppel);
 	    	}
         }
+        if(affected)
+        {
+    		nbPersonne = this.tabAscenseur.get(i).getNbPersonne();
+    		this.tabAscenseur.get(id).addAppel(unAppel);
+			this.tabAscenseur.get(i).setNbPersonne(nbPersonne++);
+        }
+			
     }//Fin assignerAppel
     
     
