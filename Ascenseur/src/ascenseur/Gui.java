@@ -260,5 +260,22 @@ public class Gui {
 	public void refreshGui(){
 	
 	}
-
+	
+	/**
+	 * 
+	 * Methode permettant de récuperer la position actuelle des 6 ascenceurs
+	 *  
+	 */
+	public void getPositionAsc(){
+		
+	}
+	
+	/**
+	 * 
+	 * Methode permettant de recuperer la liste des appels
+	 * 
+	 */
+	public void getListeAppels(){
+		
+	}
 }
