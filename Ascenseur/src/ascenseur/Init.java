@@ -74,13 +74,51 @@ public class Init {
 		//Création de la batterie
 		System.out.println("## Création de la batterie ##");
 		Batterie laBatterie = new Batterie(xtemps, true);
+		
+		//Simu 1er appel
 		System.out.println("## Création appel N°1 ##");
-		laBatterie.creationAppel(0, 3, date1);
+		laBatterie.creationAppel(0, 5, date1);
+		System.out.println(" * Source: " + laBatterie.getTabTousLesAppels().get(0).getSourceAppel());
+		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(0).getDestAppel());
 		System.out.println("## Assigne appel N°1 ##");
 		Ascenseur unAscenseur = laBatterie.assignerAppel();
-		System.out.println("## Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !##");
+		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
 		unAscenseur.deplacement();
 		laBatterie.repositionnement(unAscenseur);
+		
+		//Simu 2ème appel
+		System.out.println("## Création appel N°2 ##");
+		laBatterie.creationAppel(0, 3, date1);
+		System.out.println(" * Source: " + laBatterie.getTabTousLesAppels().get(1).getSourceAppel());
+		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(1).getSourceAppel());
+		System.out.println("## Assigne appel N°2 ##");
+		unAscenseur = laBatterie.assignerAppel();
+		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
+		unAscenseur.deplacement();
+		laBatterie.repositionnement(unAscenseur);
+		
+		//Simu 3ème appel
+		System.out.println("## Création appel N°3 ##");
+		laBatterie.creationAppel(2, 5, date1);
+		System.out.println(" * Source: " + laBatterie.getTabTousLesAppels().get(2).getSourceAppel());
+		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(2).getSourceAppel());
+		System.out.println("## Assigne appel N°3 ##");
+		unAscenseur = laBatterie.assignerAppel();
+		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
+		unAscenseur.deplacement();
+		laBatterie.repositionnement(unAscenseur);
+		
+		//Simu 4ème appel
+		System.out.println("## Création appel N°4 ##");
+		laBatterie.creationAppel(3, 5, date1);
+		System.out.println(" * Source: " + laBatterie.getTabTousLesAppels().get(3).getSourceAppel());
+		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(3).getSourceAppel());
+		System.out.println("## Assigne appel N°4 ##");
+		unAscenseur = laBatterie.assignerAppel();
+		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
+		unAscenseur.deplacement();
+		laBatterie.repositionnement(unAscenseur);
+		
 		/*
 		System.out.println("Assignement des 4 appels...");
 		//Assigne 2 appels à ascenseur 1
