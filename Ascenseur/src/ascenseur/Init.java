@@ -78,7 +78,7 @@ public class Init {
 		laBatterie.creationAppel(0, 10, date1);
 		System.out.println("## Assigne appel N°1 ##");
 		laBatterie.assignerAppel();
-		
+		laBatterie.repositionnement(unAscenseur);
 		/*
 		System.out.println("Assignement des 4 appels...");
 		//Assigne 2 appels à ascenseur 1

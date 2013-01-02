@@ -175,52 +175,78 @@ public class Ascenseur {
 		
 		int nbEtageAparcourir;
 		
-		if(tabAppelAtraiter.size() != 0){ // DEPLACEMENT CAR APPEL
-			//ascenseur passe en mouvement
-			if(positionActuelle==tabDestination.get(0)){
-				tabDestination.remove(0);
-			}
-			arret=false;
-			
-			//calcul nombre etage à parcourir
-			nbEtageAparcourir = tabDestination.get(0) - positionActuelle;
-			nbEtageAparcourir = Math.abs(nbEtageAparcourir);
-			System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
-			//calcul temps du parcours
-			sleepParcours(nbEtageAparcourir);
-			
-			//changement de l'etage
-			positionActuelle=tabDestination.get(0);
-			System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
-			
-			//ascenseur passe à l'arret
-			arret=true;
-			
-			//les appels correspondant à cet etages passe en traité
-			traitementAppel();	
-			System.out.println("Ascenseur "+ idAscenseur +" :Appel traité!");
-			Thread.sleep((5*1000)/xtemps);
-		}
-		else{ // REPOSITIONNEMENT
-			//ascenseur passe en mouvement
-			arret=false;
-			System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner");
-			//calcul nombre etage à parcourir
-			nbEtageAparcourir = positionRepo - positionActuelle;
-			nbEtageAparcourir = Math.abs(nbEtageAparcourir);
-			
-			
-			//Sleep suivant le nombre d'étage à parcourir
-			sleepParcours(nbEtageAparcourir);
-						
-			//changement de l'etage
-			positionActuelle=positionRepo;
-			System.out.println("Ascenseur" + idAscenseur + " :Etage Repo " + positionActuelle);
-			
-			//ascenseur passe à l'arret
-			arret=true;
 
+		//ascenseur passe en mouvement
+		if(positionActuelle==tabDestination.get(0)){
+			tabDestination.remove(0);
 		}
+		// passe en mouvement
+		arret = false;
+		
+		//
+		if(this.positionActuelle < this.tabDestination.get(0)){
+			monte = true;
+		}
+		else{
+			monte = false;
+		}
+			
+		
+		//calcul nombre etage à parcourir
+		nbEtageAparcourir = tabDestination.get(0) - positionActuelle;
+		nbEtageAparcourir = Math.abs(nbEtageAparcourir);
+		System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
+		//calcul temps du parcours
+		sleepParcours(nbEtageAparcourir);
+		
+		//changement de l'etage
+		positionActuelle=tabDestination.get(0);
+		System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
+			
+		//ascenseur passe à l'arret
+		arret=true;
+			
+		//les appels correspondant à cet etages passe en traité
+		traitementAppel();	
+		System.out.println("Ascenseur "+ idAscenseur +" :Appel traité!");
+		Thread.sleep((5*1000)/xtemps);
+	}	
+	
+	void repositionnement() throws InterruptedException{
+		// REPOSITIONNEMENT
+		int nbEtageAparcourir;
+
+		//ascenseur passe en mouvement
+		if(positionActuelle==tabDestination.get(0)){
+			tabDestination.remove(0);
+		}
+		// passe en mouvement
+		arret = false;
+		
+		//
+		if(this.positionActuelle < this.tabDestination.get(0)){
+			monte = true;
+		}
+		else{
+			monte = false;
+		}
+		//ascenseur passe en mouvement
+		arret=false;
+		System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner");
+		//calcul nombre etage à parcourir
+		nbEtageAparcourir = positionRepo - positionActuelle;
+		nbEtageAparcourir = Math.abs(nbEtageAparcourir);
+		
+			
+		//Sleep suivant le nombre d'étage à parcourir
+		sleepParcours(nbEtageAparcourir);
+						
+		//changement de l'etage
+		positionActuelle=positionRepo;
+		System.out.println("Ascenseur" + idAscenseur + " :Etage Repo " + positionActuelle);
+			
+		//ascenseur passe à l'arret
+		arret=true;
 	}
 	
 	/**

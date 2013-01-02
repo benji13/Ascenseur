@@ -81,31 +81,35 @@ public class Batterie {
      * @param uneDate
      * @param unAppel
      * @return void
+     * @throws InterruptedException 
      */
     
 //Cette methode va,pour un ascenseur donné, lui affecter une position de repositionnement la plus appropiée
-    void repositionnement(Ascenseur unAscenseur){
-        int ecart = 40, i, id=-1;
-        ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
-        
-        this.cal.determinerPlageHoraire();
-        
-        if(this.cal.isWeek()){
-        	tabRepositionement = this.tabPositionJournee;
-        }
-        else
-        	tabRepositionement = this.tabPositionWeekEnd;
-        
-        for(i=0;i<tabRepositionement.size();i++){
-        	int temp = Math.abs(unAscenseur.getPositionActuelle() - tabRepositionement.get(i));
-        	
-        	if(temp<ecart)
-        	{
-        		ecart = temp;
-        		id = i;
-        	}
-        }
-        unAscenseur.setPositionRepo(tabRepositionement.get(id));
+    void repositionnement(Ascenseur unAscenseur) throws InterruptedException{
+    	if(unAscenseur.isArret()== true && unAscenseur.getTabDestination().isEmpty() ){	
+	        int ecart = 40, i, id=-1;
+	        ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
+	        
+	        this.cal.determinerPlageHoraire();
+	        
+	        if(this.cal.isWeek()){
+	        	tabRepositionement = this.tabPositionJournee;
+	        }
+	        else
+	        	tabRepositionement = this.tabPositionWeekEnd;
+	        
+	        for(i=0;i<tabRepositionement.size();i++){
+	        	int temp = Math.abs(unAscenseur.getPositionActuelle() - tabRepositionement.get(i));
+	        	
+	        	if(temp<ecart)
+	        	{
+	        		ecart = temp;
+	        		id = i;
+	        	}
+	        }
+	        unAscenseur.setPositionRepo(tabRepositionement.get(id));
+	        unAscenseur.repositionnement();
+    	}
         
     }//Fin repositionnement
     
@@ -128,14 +132,15 @@ public class Batterie {
      * Methode permettant d'assigner un Appel a un Ascenseur
      * @return void
      * @param unAppel 
+     * @throws InterruptedException 
      */
-    void assignerAppel(){
+    void assignerAppel() throws InterruptedException{
     	
         int id =0;
         int i = 0;
 		int ecart = 40;
 		int temp,nbPersonne;
-		Appel unAppel = this.tabTousLesAppels.get(tabTousLesAppels.size());
+		Appel unAppel = this.tabTousLesAppels.get((tabTousLesAppels.size()-1));
         boolean affected = false;//boolean permettant de savoir si l'appel a été affecté
         //Affecter un id à l'appel
         unAppel.setIdAppel(this.tabTousLesAppels.size()+1);
@@ -172,9 +177,12 @@ public class Batterie {
         }
         if(affected)
         {
-    		nbPersonne = this.tabAscenseur.get(i).getNbPersonne();
+        	System.out.println("Affected");
+    		nbPersonne = this.tabAscenseur.get(id).getNbPersonne();
     		this.tabAscenseur.get(id).addAppel(unAppel);
-			this.tabAscenseur.get(i).setNbPersonne(nbPersonne++);
+			this.tabAscenseur.get(id).setNbPersonne(nbPersonne++);
+			tabAscenseur.get(id).triAppel();
+			tabAscenseur.get(id).deplacement();
         }
 			
     }//Fin assignerAppel
