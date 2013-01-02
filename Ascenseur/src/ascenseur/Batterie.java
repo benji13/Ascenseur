@@ -86,10 +86,7 @@ public class Batterie {
     
 //Cette methode va,pour un ascenseur donné, lui affecter une position de repositionnement la plus appropiée
     void repositionnement(Ascenseur unAscenseur) throws InterruptedException{
-    	System.out.println(unAscenseur.isArret());
-    	System.out.println(unAscenseur.getTabDestination().size());
     	if(unAscenseur.isArret()== true && unAscenseur.getTabDestination().isEmpty() ){	
-    		System.out.println("OK");
 	        int ecart = 40, i, id=-1;
 	        ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
 	        

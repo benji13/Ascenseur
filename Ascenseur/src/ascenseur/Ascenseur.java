@@ -215,15 +215,12 @@ public class Ascenseur {
 		// REPOSITIONNEMENT
 		int nbEtageAparcourir;
 
-		//ascenseur passe en mouvement
-		if(positionActuelle==tabDestination.get(0)){
-			tabDestination.remove(0);
-		}
+
 		// passe en mouvement
 		arret = false;
 		
 		//
-		if(this.positionActuelle < this.tabDestination.get(0)){
+		if(this.positionActuelle < this.positionRepo){
 			monte = true;
 		}
 		else{
