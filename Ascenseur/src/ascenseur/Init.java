@@ -53,12 +53,12 @@ public class Init {
 		ListeAppelsAtraiter.add(Appel4);
 		
 		//Création des ascenseur
-		Ascenseur ascenseur1 = new Ascenseur(0,0,xtemps);
+		Ascenseur ascenseur1 = new Ascenseur(1,0,xtemps);
 		Ascenseur ascenseur2 = new Ascenseur(2,17,xtemps);
 		Ascenseur ascenseur3 = new Ascenseur(3,10,xtemps);
-		Ascenseur ascenseur4 = new Ascenseur(4,0,xtemps);
-		Ascenseur ascenseur5 = new Ascenseur(5,0,xtemps);
-		Ascenseur ascenseur6 = new Ascenseur(6,0,xtemps);
+		Ascenseur ascenseur4 = new Ascenseur(4,40,xtemps);
+		Ascenseur ascenseur5 = new Ascenseur(5,40,xtemps);
+		Ascenseur ascenseur6 = new Ascenseur(6,40,xtemps);
 		
 		//Création du tableau d'ascenseur
 		ArrayList<Ascenseur> tabAscenseur = new ArrayList<Ascenseur>();
@@ -71,11 +71,13 @@ public class Init {
 		
 		//Création de la batterie
 		Batterie laBatterie = new Batterie(xtemps);
+		laBatterie.assignerAppel(Appel1);
+		
 		
 		System.out.println("Assignement des 4 appels...");
 		//Assigne 2 appels à ascenseur 1
-		ascenseur1.addAppel(Appel1);
-		ascenseur1.setMonte(true);
+		//ascenseur1.addAppel(Appel1);
+		//ascenseur1.setMonte(true);
 		//ascenseur1.addAppel(Appel2);
 		//ascenseur1.addAppel(Appel3);
 		//ascenseur1.addAppel(Appel4);
@@ -95,6 +97,7 @@ public class Init {
 		monCalendrier.getChrono().start();
 		System.out.println("Heure debut : " + monCalendrier.calculDateActuelle());
 		ascenseur1.deplacement();
+		ascenseur1.setMonte(false);
 		ascenseur1.deplacement();
 	//	ascenseur1.deplacement();
 	//	ascenseur1.deplacement();

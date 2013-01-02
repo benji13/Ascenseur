@@ -5,10 +5,10 @@ import java.util.Date;
 
 public class Calendrier {
 
-	public Calendrier(int xtemps) throws InterruptedException {
+	public Calendrier(int xtemps, boolean isWeek) throws InterruptedException {
 		// TODO Auto-generated constructor stub
 		this.chrono = new Chronometre();
-		this.isWeek = true;
+		this.isWeek = isWeek;
 		this.dateActuelle = new Date(2012, 01, 15, 00, 00,00);
 		this.dateDebutSimu = Calendar.getInstance();
 		dateDebutSimu.set(2012, 01, 15, 00, 00,00);
