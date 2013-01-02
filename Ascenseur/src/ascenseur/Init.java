@@ -38,7 +38,7 @@ public class Init {
 		Date date4 = cal1.getTime();
 		System.out.println("Date 4: " +date4);
 		
-		
+		/*
 		//Création d'appel à partir des dates précedentes
 		Appel Appel1 = new Appel(0, 3, date1);
 		Appel Appel2 = new Appel(4, 13, date2);
@@ -51,7 +51,8 @@ public class Init {
 		ListeAppelsAtraiter.add(Appel2);
 		ListeAppelsAtraiter.add(Appel3);
 		ListeAppelsAtraiter.add(Appel4);
-		
+		*/
+		/*
 		//Création des ascenseur
 		Ascenseur ascenseur1 = new Ascenseur(1,0,xtemps);
 		Ascenseur ascenseur2 = new Ascenseur(2,17,xtemps);
@@ -68,12 +69,17 @@ public class Init {
 		tabAscenseur.add(ascenseur4);
 		tabAscenseur.add(ascenseur5);
 		tabAscenseur.add(ascenseur6);
+		*/
 		
 		//Création de la batterie
-		Batterie laBatterie = new Batterie(xtemps);
-		laBatterie.assignerAppel(Appel1);
+		System.out.println("## Création de la batterie ##");
+		Batterie laBatterie = new Batterie(xtemps, true);
+		System.out.println("## Création appel N°1 ##");
+		laBatterie.creationAppel(0, 10, date1);
+		System.out.println("## Assigne appel N°1 ##");
+		laBatterie.assignerAppel();
 		
-		
+		/*
 		System.out.println("Assignement des 4 appels...");
 		//Assigne 2 appels à ascenseur 1
 		//ascenseur1.addAppel(Appel1);
@@ -90,7 +96,7 @@ public class Init {
 		
 		
 		//Création du calendrier
-		Calendrier monCalendrier = new Calendrier(xtemps);
+		Calendrier monCalendrier = new Calendrier(xtemps, true);
 				
 		System.out.println("Traitement des appels en cours...");
 		//Traitement des appels
@@ -108,6 +114,7 @@ public class Init {
 		monCalendrier.getChrono().stop();
 		System.out.println("Heure fin : " + monCalendrier.calculDateActuelle());
 		System.out.println("FIN");
+		*/
 	}
 
 }

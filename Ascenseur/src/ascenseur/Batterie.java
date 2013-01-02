@@ -129,12 +129,13 @@ public class Batterie {
      * @return void
      * @param unAppel 
      */
-    void assignerAppel(Appel unAppel){
+    void assignerAppel(){
+    	
         int id =0;
         int i = 0;
-
 		int ecart = 40;
 		int temp,nbPersonne;
+		Appel unAppel = this.tabTousLesAppels.get(tabTousLesAppels.size());
         boolean affected = false;//boolean permettant de savoir si l'appel a été affecté
         //Affecter un id à l'appel
         unAppel.setIdAppel(this.tabTousLesAppels.size()+1);
@@ -182,14 +183,13 @@ public class Batterie {
   //Revoir la partie commentaire, je ne sais pas faire.....  
     /**
      * Methode permettant la creation d'un appel.
-     * @return Appe
      * @param sourceAppel
      * @param destAppel
      * @param uneDate 
      */
-    Appel creationAppel(int sourceAppel, int destAppel, Date dateAppel){
+    void creationAppel(int sourceAppel, int destAppel, Date dateAppel){
         Appel unAppel = new Appel(sourceAppel, destAppel, dateAppel);
-        return unAppel;
+        tabTousLesAppels.add(unAppel);
     }//Fin creationAppel
     
     
@@ -238,13 +238,13 @@ public class Batterie {
     
     
     //Definition du constructeur de la classe
-    public Batterie(int xtemps) {
+    public Batterie(int xtemps, boolean isWeek) {
         this.tabAscenseur = new ArrayList<Ascenseur>();
         this.tabTousLesAppels = new ArrayList<Appel>();
         
         try
         {
-        	this.cal = new Calendrier(xtemps);
+        	this.cal = new Calendrier(xtemps, isWeek);
         }
         catch (InterruptedException e)
         {
@@ -268,6 +268,38 @@ public class Batterie {
         tabPositionJournee.add(-2);
         this.tabPositionJournee = tabPositionJournee;
         this.tabPositionWeekEnd = tabPositionWeekEnd;
+        
+        Ascenseur ascenseur0;
+        Ascenseur ascenseur1;
+        Ascenseur ascenseur2;
+        Ascenseur ascenseur3;
+        Ascenseur ascenseur4;
+        Ascenseur ascenseur5;
+        
+        
+        if(isWeek){
+        	ascenseur0 = new Ascenseur(0,tabPositionJournee.get(0),xtemps);
+    		ascenseur1 = new Ascenseur(1,tabPositionJournee.get(1),xtemps);
+    		ascenseur2 = new Ascenseur(2,tabPositionJournee.get(2),xtemps);
+    		ascenseur3 = new Ascenseur(3,tabPositionJournee.get(3),xtemps);
+    		ascenseur4 = new Ascenseur(4,tabPositionJournee.get(4),xtemps);
+    		ascenseur5 = new Ascenseur(5,tabPositionJournee.get(5),xtemps);
+        }
+        else {
+        	ascenseur0 = new Ascenseur(0,tabPositionWeekEnd.get(0),xtemps);
+			ascenseur1 = new Ascenseur(1,tabPositionWeekEnd.get(1),xtemps);
+			ascenseur2 = new Ascenseur(2,tabPositionWeekEnd.get(2),xtemps);
+			ascenseur3 = new Ascenseur(3,tabPositionWeekEnd.get(3),xtemps);
+			ascenseur4 = new Ascenseur(4,tabPositionWeekEnd.get(4),xtemps);
+			ascenseur5 = new Ascenseur(5,tabPositionWeekEnd.get(5),xtemps);
+        }
+        
+		this.tabAscenseur.add(ascenseur0);
+    	this.tabAscenseur.add(ascenseur1);
+    	this.tabAscenseur.add(ascenseur2);
+    	this.tabAscenseur.add(ascenseur3);
+    	this.tabAscenseur.add(ascenseur4);
+    	this.tabAscenseur.add(ascenseur5);
     }
 
     /**
