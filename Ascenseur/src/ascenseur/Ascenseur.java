@@ -30,7 +30,6 @@ public class Ascenseur {
 		this.tabDestinationTemp = new HashSet<Integer>();
 		
 		System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
-		
 	}
 	
 	/**
@@ -295,14 +294,14 @@ public class Ascenseur {
 		tabSourceAsupprimer = rechercheSource(this.positionActuelle);
 		
 		//Déplace les appels de Atraiter vers Traiter
-		System.out.println("tabDestination" + tabDestination);
+		//System.out.println("tabDestination" + tabDestination);
 		tabAppelsTraites.addAll(tabAppelAsupprimer);
 		tabAppelAtraiter.removeAll(tabAppelAsupprimer);
 		tabDestination.removeAll(tabSourceAsupprimer);
-		System.out.println("tabAppelAsupprimer" + tabAppelAsupprimer);
-		System.out.println("tabAppelsATraiter" + tabAppelAtraiter);
-		System.out.println("tabAppelsTraites" + tabAppelsTraites);
-		System.out.println("tabDestination" + tabDestination);
+		//System.out.println("tabAppelAsupprimer" + tabAppelAsupprimer);
+		//System.out.println("tabAppelsATraiter" + tabAppelAtraiter);
+		//System.out.println("tabAppelsTraites" + tabAppelsTraites);
+		//System.out.println("tabDestination" + tabDestination);
 	}
 	
 	/**
@@ -315,7 +314,8 @@ public class Ascenseur {
 		//remplissage d'un tableau avec les destinations des appels
 		for (Appel appel : this.tabAppelAtraiter) {
 			this.tabDestination.add(appel.getDestAppel());
-			this.tabDestination.add(appel.getSourceAppel());
+			if(appel.getSourceAppel() != this.positionActuelle)
+				this.tabDestination.add(appel.getSourceAppel());
 		}
 		
 		//Suppression des doublons
