@@ -75,9 +75,11 @@ public class Init {
 		System.out.println("## Création de la batterie ##");
 		Batterie laBatterie = new Batterie(xtemps, true);
 		System.out.println("## Création appel N°1 ##");
-		laBatterie.creationAppel(0, 10, date1);
+		laBatterie.creationAppel(0, 3, date1);
 		System.out.println("## Assigne appel N°1 ##");
-		laBatterie.assignerAppel();
+		Ascenseur unAscenseur = laBatterie.assignerAppel();
+		System.out.println("## Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !##");
+		unAscenseur.deplacement();
 		laBatterie.repositionnement(unAscenseur);
 		/*
 		System.out.println("Assignement des 4 appels...");

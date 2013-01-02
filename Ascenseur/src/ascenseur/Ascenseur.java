@@ -295,13 +295,14 @@ public class Ascenseur {
 		tabSourceAsupprimer = rechercheSource(this.positionActuelle);
 		
 		//Déplace les appels de Atraiter vers Traiter
+		System.out.println("tabDestination" + tabDestination);
 		tabAppelsTraites.addAll(tabAppelAsupprimer);
 		tabAppelAtraiter.removeAll(tabAppelAsupprimer);
 		tabDestination.removeAll(tabSourceAsupprimer);
-		//System.out.println("tabAppelAsupprimer" + tabAppelAsupprimer);
-		//System.out.println("tabAppelsATraiter" + tabAppelAtraiter);
-		//System.out.println("tabAppelsTraites" + tabAppelsTraites);
-		//System.out.println("tabDestination" + tabDestination);
+		System.out.println("tabAppelAsupprimer" + tabAppelAsupprimer);
+		System.out.println("tabAppelsATraiter" + tabAppelAtraiter);
+		System.out.println("tabAppelsTraites" + tabAppelsTraites);
+		System.out.println("tabDestination" + tabDestination);
 	}
 	
 	/**

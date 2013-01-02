@@ -86,7 +86,10 @@ public class Batterie {
     
 //Cette methode va,pour un ascenseur donné, lui affecter une position de repositionnement la plus appropiée
     void repositionnement(Ascenseur unAscenseur) throws InterruptedException{
+    	System.out.println(unAscenseur.isArret());
+    	System.out.println(unAscenseur.getTabDestination().size());
     	if(unAscenseur.isArret()== true && unAscenseur.getTabDestination().isEmpty() ){	
+    		System.out.println("OK");
 	        int ecart = 40, i, id=-1;
 	        ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
 	        
@@ -134,7 +137,7 @@ public class Batterie {
      * @param unAppel 
      * @throws InterruptedException 
      */
-    void assignerAppel() throws InterruptedException{
+    Ascenseur assignerAppel() throws InterruptedException{
     	
         int id =0;
         int i = 0;
@@ -182,9 +185,8 @@ public class Batterie {
     		this.tabAscenseur.get(id).addAppel(unAppel);
 			this.tabAscenseur.get(id).setNbPersonne(nbPersonne++);
 			tabAscenseur.get(id).triAppel();
-			tabAscenseur.get(id).deplacement();
         }
-			
+    return tabAscenseur.get(id);
     }//Fin assignerAppel
     
     
