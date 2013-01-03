@@ -313,9 +313,10 @@ public class Ascenseur {
 		tabAppelsTraites.addAll(tabAppelAsupprimer);
 		tabAppelAtraiter.removeAll(tabAppelAsupprimer);
 		this.tabDestination.removeAll(tabSourceAsupprimer);
-		//System.out.println("tabAppelAsupprimer" + tabAppelAsupprimer);
-		//System.out.println("tabAppelsATraiter" + tabAppelAtraiter);
-		//System.out.println("tabAppelsTraites" + tabAppelsTraites);
+		System.out.println("tabAppelAsupprimer" + tabAppelAsupprimer);
+		System.out.println("tabAppelsATraiter" + tabAppelAtraiter);
+		System.out.println("tabAppelsTraites" + tabAppelsTraites);
+		System.out.println("tabDestination" + tabDestination);
 		
 	}
 	

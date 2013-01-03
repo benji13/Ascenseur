@@ -82,7 +82,7 @@ public class Init {
 		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(0).getDestAppel());
 		
 		System.out.println("## Création appel N°2 ##");
-		laBatterie.creationAppel(2, 6, date1);
+		laBatterie.creationAppel(2, 6, date2);
 		System.out.println(" * Source: " + laBatterie.getTabTousLesAppels().get(1).getSourceAppel());
 		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(1).getDestAppel());
 		
@@ -93,6 +93,7 @@ public class Init {
 		System.out.println("## Assigne appel N°2 ##");
 		unAscenseur = laBatterie.assignerAppel();
 		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
+		System.out.println("tabDestination" + unAscenseur.getTabDestination());
 		unAscenseur.deplacement();
 		laBatterie.repositionnement(unAscenseur);
 		
