@@ -108,7 +108,7 @@ public class Batterie {
 	        	}
 	        }
 	        unAscenseur.setPositionRepo(tabRepositionement.get(id));
-	        unAscenseur.repositionnement();
+	       // unAscenseur.repositionnement();
     	}
         
     }//Fin repositionnement
@@ -144,7 +144,7 @@ public class Batterie {
         boolean affected = false;//boolean permettant de savoir si l'appel a été affecté
         //Affecter un id à l'appel
         unAppel.setIdAppel(this.tabTousLesAppels.size()+1);
-        
+        unAppel.determineSens();
         while(!affected){
         	
         //ne pas oublier de changer le sens de direction quand affecte un appel        
@@ -156,7 +156,8 @@ public class Batterie {
     					ecart = temp;
     					id = i;
     					affected = true;
-    					this.tabAscenseur.get(i).setMonte(unAppel.isSensAppel());
+    					this.tabAscenseur.get(id).setMonte(unAppel.isSensAppel());
+    					System.out.println("Monte " + this.tabAscenseur.get(id).isMonte());
     				}
     			}
     		}
@@ -177,7 +178,6 @@ public class Batterie {
         }
         if(affected)
         {
-        	System.out.println("Affected");
     		nbPersonne = this.tabAscenseur.get(id).getNbPersonne();
     		this.tabAscenseur.get(id).addAppel(unAppel);
 			this.tabAscenseur.get(id).setNbPersonne(nbPersonne++);

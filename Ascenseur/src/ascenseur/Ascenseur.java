@@ -16,6 +16,7 @@ public class Ascenseur {
 		this.positionActuelle = positionActuelle;
 		this.positionRepo = positionActuelle;
 		
+		this.enAcceleration = 0;
 		this.nbPersonne = 0;
 		this.arret = true; //Arret
 		this.consommation = 0;
@@ -43,6 +44,7 @@ public class Ascenseur {
 	private ArrayList<Integer> tabDestination;
 	private HashSet<Integer> tabDestinationTemp;
 	private int positionActuelle;
+	private int enAcceleration;
 	private int nbPersonne;
 	private int consommation;
 	private boolean monte; //0 monte ; 1 descend
@@ -52,6 +54,12 @@ public class Ascenseur {
 	private int xtemps;
 	
 	// GETTER ET SETTER
+	public int getEnAcceleration() {
+		return enAcceleration;
+	}
+	public void setEnAcceleration(int enAcceleration) {
+		this.enAcceleration = enAcceleration;
+	}
 	public HashSet<Integer> getTabDestinationTemp() {
 		return tabDestinationTemp;
 	}
@@ -172,77 +180,87 @@ public class Ascenseur {
 	public void deplacement() throws InterruptedException {
 		// TODO Auto-generated method stub
 		
-		int nbEtageAparcourir;
-		
 
-		//ascenseur passe en mouvement
-		if(positionActuelle==tabDestination.get(0)){
-			tabDestination.remove(0);
-		}
-		// passe en mouvement
-		arret = false;
-		
-		//
-		if(this.positionActuelle < this.tabDestination.get(0)){
-			monte = true;
-		}
-		else{
-			monte = false;
-		}
+		int nbEtageAparcourir;
+		while(!this.tabDestination.isEmpty()){
+			//supprime la destination si elle correspond à l'étage actuel (Utiledans le cas où la source = l'etage à de l'ascenseur s'il est à l'arret)
+			if(positionActuelle==this.tabDestination.get(0)){
+				this.tabDestination.remove(0);
+			}
+			// passe en mouvement
+			arret = false;
+			//On incremente acceleration (utile qd variable = 1 ou 2)
+			enAcceleration++;
 			
+			// Regarde si on monte ou descend
+			if(this.positionActuelle < this.tabDestination.get(0)){
+				monte = true;
+			}
+			else{
+				monte = false;
+			}
+					
+			//calcul nombre etage à parcourir
+			nbEtageAparcourir = this.tabDestination.get(0) - positionActuelle;
+			nbEtageAparcourir = Math.abs(nbEtageAparcourir);
+			//System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
 		
-		//calcul nombre etage à parcourir
-		nbEtageAparcourir = tabDestination.get(0) - positionActuelle;
-		nbEtageAparcourir = Math.abs(nbEtageAparcourir);
-		System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
-		//calcul temps du parcours
-		sleepParcours(nbEtageAparcourir);
-		
-		//changement de l'etage
-		positionActuelle=tabDestination.get(0);
-		System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
+			//calcul temps du parcours
+			//sleepParcours_old(nbEtageAparcourir);
+			sleepParcours(nbEtageAparcourir);
 			
-		//ascenseur passe à l'arret
-		arret=true;
+			//changement de l'etage
+			//positionActuelle=tabDestination.get(0);
 			
-		//les appels correspondant à cet etages passe en traité
-		traitementAppel();	
-		System.out.println("Ascenseur "+ idAscenseur +" :Appel traité!");
-		Thread.sleep((5*1000)/xtemps);
+			//System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
+				
+			//les appels correspondant à cet etages passe en traité
+			if(positionActuelle == this.tabDestination.get(0)){
+				traitementAppel();	
+				System.out.println("Ascenseur "+ idAscenseur +" :Appel traité!");
+				Thread.sleep((5*1000)/xtemps);
+			}
+		}
+		enAcceleration=0;
+		repositionnement();
 	}	
 	
 	void repositionnement() throws InterruptedException{
 		// REPOSITIONNEMENT
-		int nbEtageAparcourir;
-
-
-		// passe en mouvement
-		arret = false;
-		
-		//
-		if(this.positionActuelle < this.positionRepo){
-			monte = true;
-		}
-		else{
-			monte = false;
-		}
-		//ascenseur passe en mouvement
-		arret=false;
 		System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner");
-		//calcul nombre etage à parcourir
-		nbEtageAparcourir = positionRepo - positionActuelle;
-		nbEtageAparcourir = Math.abs(nbEtageAparcourir);
+		int nbEtageAparcourir;
+		this.tabDestination.add(positionRepo);
 		
+		while(!this.tabDestination.isEmpty()){
+			enAcceleration++;
+			//Regarde s'il doit monter ou descendre pour joindre position de repositionnement
+			if(this.positionActuelle < this.positionRepo){
+				monte = true;
+			}
+			else{
+				monte = false;
+			}
+			//ascenseur passe en mouvement
+			arret=false;
+			//calcul nombre etage à parcourir
+			nbEtageAparcourir = positionRepo - positionActuelle;
+			nbEtageAparcourir = Math.abs(nbEtageAparcourir);
 			
-		//Sleep suivant le nombre d'étage à parcourir
-		sleepParcours(nbEtageAparcourir);
-						
-		//changement de l'etage
-		positionActuelle=positionRepo;
-		System.out.println("Ascenseur" + idAscenseur + " :Etage Repo " + positionActuelle);
+			//Sleep suivant le nombre d'étage à parcourir
+			sleepParcours(nbEtageAparcourir);
 			
+			//les appels correspondant à cet etages passe en traité
+			if(positionActuelle == this.tabDestination.get(0)){
+				traitementAppel();	
+				System.out.println("Ascenseur "+ idAscenseur +" :Appel traité!");
+				Thread.sleep((5*1000)/xtemps);
+			}
+		}
+		//On est repositionné
+		System.out.println("Ascenseur " + idAscenseur + " :Etage Reposisionnement " + positionActuelle);	
 		//ascenseur passe à l'arret
 		arret=true;
+		enAcceleration=0;
 	}
 	
 	/**
@@ -291,14 +309,14 @@ public class Ascenseur {
 		tabSourceAsupprimer = rechercheSource(this.positionActuelle);
 		
 		//Déplace les appels de Atraiter vers Traiter
-		//System.out.println("tabDestination" + tabDestination);
+		
 		tabAppelsTraites.addAll(tabAppelAsupprimer);
 		tabAppelAtraiter.removeAll(tabAppelAsupprimer);
-		tabDestination.removeAll(tabSourceAsupprimer);
+		this.tabDestination.removeAll(tabSourceAsupprimer);
 		//System.out.println("tabAppelAsupprimer" + tabAppelAsupprimer);
 		//System.out.println("tabAppelsATraiter" + tabAppelAtraiter);
 		//System.out.println("tabAppelsTraites" + tabAppelsTraites);
-		//System.out.println("tabDestination" + tabDestination);
+		
 	}
 	
 	/**
@@ -307,7 +325,6 @@ public class Ascenseur {
 	 */
 	public void triAppel() {
 		//Fonction triant les appels en attente
-		
 		//remplissage d'un tableau avec les destinations des appels
 		for (Appel appel : this.tabAppelAtraiter) {
 			this.tabDestination.add(appel.getDestAppel());
@@ -315,11 +332,14 @@ public class Ascenseur {
 				this.tabDestination.add(appel.getSourceAppel());
 		}
 		
-		//Suppression des doublons
-		tabDestinationTemp.addAll(tabDestination);
-		tabDestination.removeAll(tabDestination);
-		tabDestination.addAll(tabDestinationTemp);
 		
+		//Suppression des doublons
+		this.tabDestinationTemp.addAll(this.tabDestination);		
+		this.tabDestination.removeAll(this.tabDestination);		
+		this.tabDestination.addAll(this.tabDestinationTemp);
+		this.tabDestinationTemp.removeAll(this.tabDestinationTemp);
+		
+		System.out.println("monte" + monte);
 		//Algorithme de tri du precedent tableau
 		if(this.monte == true){ //Si on monte
 			Collections.sort(this.tabDestination);
@@ -342,12 +362,12 @@ public class Ascenseur {
 		tempsParcoursAscenseur=0;
 		
 		// pour toutes les destinations sauf la dernière car pris dans la comparaison
-		for(i=0;i<tabDestination.size();i++){
+		for(i=0;i<this.tabDestination.size();i++){
 			//Test si on a passé l'étage
 			if(monte){
-				if(unAppel.getDestAppel()<tabDestination.get(i)){
+				if(unAppel.getDestAppel()<this.tabDestination.get(i)){
 					//Calcul le nombre d'etage a parcourir entre deux appels consécutifs
-					nbEtageAparcourir = tabDestination.get(i+1)-tabDestination.get(i);
+					nbEtageAparcourir = this.tabDestination.get(i+1)-this.tabDestination.get(i);
 					nbEtageAparcourir = Math.abs(nbEtageAparcourir);
 					
 					// Calcul du temps à attendre entre le parcours de ces deux etages cumulé avec l'ancien
@@ -368,9 +388,9 @@ public class Ascenseur {
 				}
 			}
 			else if(!monte){
-				if(unAppel.getDestAppel()>tabDestination.get(i)){
+				if(unAppel.getDestAppel()>this.tabDestination.get(i)){
 					//Calcul le nombre d'etage a parcourir entre deux appels consécutifs
-					nbEtageAparcourir = tabDestination.get(i+1)-tabDestination.get(i);
+					nbEtageAparcourir = this.tabDestination.get(i+1)-this.tabDestination.get(i);
 					nbEtageAparcourir = Math.abs(nbEtageAparcourir);
 					
 					// Calcul du temps à attendre entre le parcours de ces deux etages cumulé avec l'ancien
@@ -405,10 +425,10 @@ public class Ascenseur {
 		tempsParcoursAscenseur=0;
 		
 		// pour toutes les destinations sauf la dernière car pris dans la comparaison
-		for(i=0;i<tabDestination.size();i++){
+		for(i=0;i<this.tabDestination.size();i++){
 			
 			//Calcul le nombre d'etage a parcourir entre deux appels consécutifs
-			nbEtageAparcourir = tabDestination.get(i+1)-tabDestination.get(i);
+			nbEtageAparcourir = this.tabDestination.get(i+1)-this.tabDestination.get(i);
 			nbEtageAparcourir = Math.abs(nbEtageAparcourir);
 			
 			// Calcul du temps à attendre entre le parcours de ces deux etages cumulé avec l'ancien
@@ -437,7 +457,7 @@ public class Ascenseur {
 	 * @throws InterruptedException
 	 * @return
 	 */
-	public void sleepParcours(int nbEtageAparcourir) throws InterruptedException{
+	public void sleepParcours_old(int nbEtageAparcourir) throws InterruptedException{
 		int nbEtage = nbEtageAparcourir;
 		int i=0;
 		if(nbEtage >= 4){
@@ -497,6 +517,33 @@ public class Ascenseur {
 			
 		}
 	}
+	
+	public void sleepParcours(int nbEtageAparcourir) throws InterruptedException{
+		int nbEtage = nbEtageAparcourir;
+		if(enAcceleration == 1){ //premiere acceleration
+			Thread.sleep(3000/xtemps);
+		}
+		else if(enAcceleration == 2){ //deuxieme acceleration
+			Thread.sleep(2000/xtemps);
+		}
+		else{
+			if(nbEtage > 2){
+				Thread.sleep(1000/xtemps);
+			}
+			else if(nbEtage == 2){
+				Thread.sleep(2000/xtemps);
+			}
+			else if(nbEtage == 1){
+				Thread.sleep(3000/xtemps);
+			}	
+		}
+		if(monte==true)
+			positionActuelle++;
+		if(monte==false)
+			positionActuelle--;
+		System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
+	}
+	
 	
 	/**
 	 * fonction permettant d'ajouter un appel dans le tableau d'appels à traiter	

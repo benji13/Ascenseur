@@ -89,7 +89,7 @@ public class Appel {
 	}
 	
 	public void determineSens(){
-		if (this.sourceAppel - this.destAppel < 0)
+		if (this.sourceAppel < this.destAppel)
 			this.sensAppel = true;
 		else
 			this.sensAppel = false;

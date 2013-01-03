@@ -90,7 +90,7 @@ public class Init {
 		System.out.println("## Création appel N°2 ##");
 		laBatterie.creationAppel(0, 3, date1);
 		System.out.println(" * Source: " + laBatterie.getTabTousLesAppels().get(1).getSourceAppel());
-		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(1).getSourceAppel());
+		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(1).getDestAppel());
 		System.out.println("## Assigne appel N°2 ##");
 		unAscenseur = laBatterie.assignerAppel();
 		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
@@ -101,7 +101,7 @@ public class Init {
 		System.out.println("## Création appel N°3 ##");
 		laBatterie.creationAppel(2, 5, date1);
 		System.out.println(" * Source: " + laBatterie.getTabTousLesAppels().get(2).getSourceAppel());
-		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(2).getSourceAppel());
+		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(2).getDestAppel());
 		System.out.println("## Assigne appel N°3 ##");
 		unAscenseur = laBatterie.assignerAppel();
 		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
@@ -112,7 +112,7 @@ public class Init {
 		System.out.println("## Création appel N°4 ##");
 		laBatterie.creationAppel(3, 5, date1);
 		System.out.println(" * Source: " + laBatterie.getTabTousLesAppels().get(3).getSourceAppel());
-		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(3).getSourceAppel());
+		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(3).getDestAppel());
 		System.out.println("## Assigne appel N°4 ##");
 		unAscenseur = laBatterie.assignerAppel();
 		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
