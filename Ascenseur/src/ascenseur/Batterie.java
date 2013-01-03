@@ -157,7 +157,6 @@ public class Batterie {
     					id = i;
     					affected = true;
     					this.tabAscenseur.get(id).setMonte(unAppel.isSensAppel());
-    					System.out.println("Monte " + this.tabAscenseur.get(id).isMonte());
     				}
     			}
     		}

@@ -217,7 +217,7 @@ public class Ascenseur {
 			//les appels correspondant à cet etages passe en traité
 			if(positionActuelle == this.tabDestination.get(0)){
 				traitementAppel();	
-				System.out.println("Ascenseur "+ idAscenseur +" :Appel traité!");
+				System.out.println("Ascenseur "+ idAscenseur +" :Arrêt");
 				Thread.sleep((5*1000)/xtemps);
 			}
 		}
@@ -252,7 +252,7 @@ public class Ascenseur {
 			//les appels correspondant à cet etages passe en traité
 			if(positionActuelle == this.tabDestination.get(0)){
 				traitementAppel();	
-				System.out.println("Ascenseur "+ idAscenseur +" :Appel traité!");
+				System.out.println("Ascenseur "+ idAscenseur +" :Repositionnement OK!");
 				Thread.sleep((5*1000)/xtemps);
 			}
 		}
@@ -339,7 +339,6 @@ public class Ascenseur {
 		this.tabDestination.addAll(this.tabDestinationTemp);
 		this.tabDestinationTemp.removeAll(this.tabDestinationTemp);
 		
-		System.out.println("monte" + monte);
 		//Algorithme de tri du precedent tableau
 		if(this.monte == true){ //Si on monte
 			Collections.sort(this.tabDestination);
