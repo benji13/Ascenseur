@@ -235,11 +235,13 @@ public class Ascenseur {
 	
 	void repositionnement() throws InterruptedException{
 		// REPOSITIONNEMENT
-		System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner");
 		int nbEtageAparcourir;
-		this.tabDestination.add(positionRepo);
+		if(positionActuelle != positionRepo){
+			this.tabDestination.add(positionRepo);
+			System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner");
+		}
 		
-		while(!this.tabDestination.isEmpty()){
+		while(!this.tabDestination.isEmpty() ){
 			enAcceleration++;
 			//Regarde s'il doit monter ou descendre pour joindre position de repositionnement
 			if(this.positionActuelle < this.positionRepo){
