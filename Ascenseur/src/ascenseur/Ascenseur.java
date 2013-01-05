@@ -31,6 +31,12 @@ public class Ascenseur {
 		this.tabDestinationTemp = new HashSet<Integer>();
 		
 		System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
+		try {
+			this.deplacement();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+}
 	}
 	
 	/**
@@ -180,49 +186,51 @@ public class Ascenseur {
 	public void deplacement() throws InterruptedException {
 		// TODO Auto-generated method stub
 		
-
-		int nbEtageAparcourir;
-		while(!this.tabDestination.isEmpty()){
-			//supprime la destination si elle correspond à l'étage actuel (Utiledans le cas où la source = l'etage à de l'ascenseur s'il est à l'arret)
-			if(positionActuelle==this.tabDestination.get(0)){
-				this.tabDestination.remove(0);
-			}
-			// passe en mouvement
-			arret = false;
-			//On incremente acceleration (utile qd variable = 1 ou 2)
-			enAcceleration++;
+		for(;;){
 			
-			// Regarde si on monte ou descend
-			if(this.positionActuelle < this.tabDestination.get(0)){
-				monte = true;
-			}
-			else{
-				monte = false;
-			}
-					
-			//calcul nombre etage à parcourir
-			nbEtageAparcourir = this.tabDestination.get(0) - positionActuelle;
-			nbEtageAparcourir = Math.abs(nbEtageAparcourir);
-			//System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
-		
-			//calcul temps du parcours
-			//sleepParcours_old(nbEtageAparcourir);
-			sleepParcours(nbEtageAparcourir);
-			
-			//changement de l'etage
-			//positionActuelle=tabDestination.get(0);
-			
-			//System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
+			int nbEtageAparcourir;
+			while(!this.tabDestination.isEmpty()){
+				//supprime la destination si elle correspond à l'étage actuel (Utiledans le cas où la source = l'etage à de l'ascenseur s'il est à l'arret)
+				if(positionActuelle==this.tabDestination.get(0)){
+					this.tabDestination.remove(0);
+				}
+				// passe en mouvement
+				arret = false;
+				//On incremente acceleration (utile qd variable = 1 ou 2)
+				enAcceleration++;
 				
-			//les appels correspondant à cet etages passe en traité
-			if(positionActuelle == this.tabDestination.get(0)){
-				traitementAppel();	
-				System.out.println("Ascenseur "+ idAscenseur +" :Arrêt");
-				Thread.sleep((5*1000)/xtemps);
+				// Regarde si on monte ou descend
+				if(this.positionActuelle < this.tabDestination.get(0)){
+					monte = true;
+				}
+				else{
+					monte = false;
+				}
+						
+				//calcul nombre etage à parcourir
+				nbEtageAparcourir = this.tabDestination.get(0) - positionActuelle;
+				nbEtageAparcourir = Math.abs(nbEtageAparcourir);
+				//System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
+			
+				//calcul temps du parcours
+				//sleepParcours_old(nbEtageAparcourir);
+				sleepParcours(nbEtageAparcourir);
+				
+				//changement de l'etage
+				//positionActuelle=tabDestination.get(0);
+				
+				//System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
+					
+				//les appels correspondant à cet etages passe en traité
+				if(positionActuelle == this.tabDestination.get(0)){
+					traitementAppel();	
+					System.out.println("Ascenseur "+ idAscenseur +" :Arrêt");
+					Thread.sleep((5*1000)/xtemps);
+				}
 			}
-		}
 		enAcceleration=0;
 		repositionnement();
+		}
 	}	
 	
 	void repositionnement() throws InterruptedException{

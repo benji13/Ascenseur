@@ -94,7 +94,6 @@ public class Init {
 		unAscenseur = laBatterie.assignerAppel();
 		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
 		System.out.println("tabDestination" + unAscenseur.getTabDestination());
-		unAscenseur.deplacement();
 		laBatterie.repositionnement(unAscenseur);
 		
 		
@@ -106,7 +105,6 @@ public class Init {
 		System.out.println("## Assigne appel N°3 ##");
 		unAscenseur = laBatterie.assignerAppel();
 		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
-		unAscenseur.deplacement();
 		laBatterie.repositionnement(unAscenseur);
 		
 		//Simu 4ème appel
@@ -117,7 +115,6 @@ public class Init {
 		System.out.println("## Assigne appel N°4 ##");
 		unAscenseur = laBatterie.assignerAppel();
 		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
-		unAscenseur.deplacement();
 		laBatterie.repositionnement(unAscenseur);
 		
 		/*
