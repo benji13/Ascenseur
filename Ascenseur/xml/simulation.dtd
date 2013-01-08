@@ -1,0 +1,8 @@
+<!ELEMENT simulation ( appels ) >
+
+	<!ELEMENT appels ( appel+ ) >
+		<!ATTLIST appel id NMTOKEN #REQUIRED >
+		<!ELEMENT appel ( heure_appel, origine, destination ) >
+		<!ELEMENT heure_appel ( #PCDATA ) >
+		<!ELEMENT origine ( #PCDATA ) >
+		<!ELEMENT destination ( #PCDATA ) >

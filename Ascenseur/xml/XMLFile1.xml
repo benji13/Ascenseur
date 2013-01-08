@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- La ligne suivante permet de valider le document avec un DTD. -->
+<!DOCTYPE simulation SYSTEM "simulation.dtd">
+
+<simulation>
+	<!--                               -->
+	<!--  Appel prédéfinis  -->
+	<!--                               -->
+	<appels>
+		<appel id="123">
+			<heure_appel>22:23:55</heure_appel>
+			<origine>16</origine>
+			<destination>34</destination>
+		</appel>
+		<appel id="234">
+			<heure_appel>09:34:54</heure_appel>
+			<origine>11</origine>
+			<destination>16</destination>
+		</appel>
+		<appel id="345">
+			<heure_appel>20:17:30</heure_appel>
+			<origine>12</origine>
+			<destination>01</destination>
+		</appel>
+		<appel id="456">
+			<heure_appel>19:44:54</heure_appel>
+			<origine>13</origine>
+			<destination>02</destination>
+		</appel>
+		<appel id="567">
+			<heure_appel>10:34:24</heure_appel>
+			<origine>14</origine>
+			<destination>20</destination>
+		</appel>
+	</appels>			
+</simulation>
