@@ -7,12 +7,14 @@ public class Calendrier {
 
 	public Calendrier(int xtemps, boolean isWeek) throws InterruptedException {
 		// TODO Auto-generated constructor stub
-		this.chrono = new Chronometre();
+		this.chrono = new Chronometre(xtemps);
 		this.isWeek = isWeek;
 		this.dateActuelle = new Date(2012, 01, 15, 00, 00,00);
 		this.dateDebutSimu = Calendar.getInstance();
-		dateDebutSimu.set(2012, 01, 15, 00, 00,00);
+		this.dateDebutSimu.set(2012, 01, 15, 00, 00,00);
 		this.xtemps = xtemps;
+		
+		chrono.start();
 	}
 	
 	// VARIABLES
@@ -39,7 +41,8 @@ public class Calendrier {
 	}
 	
 	public Date getDateActuelle() {
-		return dateActuelle;
+		 calculDateActuelle();
+		 return this.dateActuelle;
 	}
 	
 	public Calendar getDateDebutSimu() {
@@ -63,16 +66,26 @@ public class Calendrier {
 	}
 	//FONCTIONS
 	public void determinerPlageHoraire(){
-		
+		isWeek = true;
+		if(getDateActuelle().getHours() > 18 && getDateActuelle().getHours() < 7 ){
+			isWeek = false;
+		}
 	}
 	/**
 	 * Fonction permettant d'ajouter le temps écoulé à la date de départ de la simulation pour savoir la date actuelle
 	 * @return
 	 */
-	public Date calculDateActuelle(){
-		this.dateDebutSimu.add(Calendar.SECOND, (int) (this.chrono.getTempsEcouleSecs()*this.xtemps));
-		this.dateActuelle = this.dateDebutSimu.getTime();
-		return this.dateActuelle;
+	public void calculDateActuelle(){
+		Calendar temp = Calendar.getInstance();
+		temp = this.dateDebutSimu;
+		temp.add(Calendar.SECOND, (int) (this.chrono.getTempsEcouleSecs()));
+		this.dateActuelle = temp.getTime();
 	}
 
+	public void afficherHeure() throws InterruptedException{
+		for(;;){
+			System.out.println(getDateActuelle());
+			Thread.sleep(1000/xtemps);
+		}
+	}
 }

@@ -206,11 +206,15 @@ public class Batterie {
      * @param destAppel
      * @param uneDate 
      */
-    void creationAppel(int sourceAppel, int destAppel, Date dateAppel){
+    void creationAppelAuto(int sourceAppel, int destAppel, Date dateAppel){
         Appel unAppel = new Appel(sourceAppel, destAppel, dateAppel);
         tabTousLesAppels.add(unAppel);
     }//Fin creationAppel
     
+    void creationAppelManu(int sourceAppel, int destAppel){
+        Appel unAppel = new Appel(sourceAppel, destAppel, this.cal.getDateActuelle());
+        tabTousLesAppels.add(unAppel);
+    }//Fin creationAppel
     
     
     /**
@@ -345,6 +349,22 @@ public class Batterie {
         return "Batterie{" + "tabAscenseur=" + tabAscenseur + ", tabTousLesAppels=" + tabTousLesAppels + ", tabPositionJournee=" + tabPositionJournee + ", tabPositionWeekEnd=" + tabPositionWeekEnd + '}';
     }
     
+    public void stopSimu(){
+    	while(tabAscenseur.get(0).isAlive() || tabAscenseur.get(1).isAlive() || tabAscenseur.get(2).isAlive() || tabAscenseur.get(3).isAlive() || tabAscenseur.get(4).isAlive() || tabAscenseur.get(5).isAlive()){
+    		for(int i=0;i<5;i++){
+	    		if(!tabAscenseur.get(i).getTabDestination().isEmpty() && !tabAscenseur.get(i).isArret()){
+	    			this.tabAscenseur.get(i).destroy();
+	    		}
+    		}
+    	}
+    	this.getCal().getChrono().stop();
+    	System.out.println(this.getCal().getChrono().getTempsEcouleSecs());
+    }
     
+    public void stopSimuBrute(){
+    	for(int i=0;i<5;i++){
+    			this.tabAscenseur.get(i).stop();
+    	}
+    }
     
 }//Fin Class

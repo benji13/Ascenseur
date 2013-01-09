@@ -12,10 +12,18 @@ the Free Software Foundation; either version 2 of the License, or
 
 public class Chronometre {
 
-		private long startTime = 0;
-		private long stopTime = 0;
-		private boolean running = false;
+		private int xtemps;
+		private long startTime;
+		private long stopTime;
+		private boolean running;
 		
+		public Chronometre(int xtemps) {
+			// TODO Auto-generated constructor stub
+			this.xtemps = xtemps;
+			this.startTime = 0;
+			this.stopTime = 0;
+			this.running = false;
+		}
 		
 		public boolean isRunning() {
 			return running;
@@ -34,8 +42,8 @@ public class Chronometre {
 		}
 		
 		
-		//elaspsed time in milliseconds
-		public long getTempsEcoule() {
+		//elaspsed time in seconds
+		public long getTempsEcouleSecs() {
 		    long ecoule;
 		    if (running) {
 		         ecoule = (System.currentTimeMillis() - startTime);
@@ -43,20 +51,7 @@ public class Chronometre {
 		    else {
 		        ecoule = (stopTime - startTime);
 		    }
-		    return ecoule;
+		    return (ecoule*xtemps)/1000;
 		}
-		
-		
-		//elaspsed time in seconds
-		public long getTempsEcouleSecs() {
-		    long ecoule;
-		    if (running) {
-		        ecoule = ((System.currentTimeMillis() - startTime) / 1000);
-		    }
-		    else {
-		        ecoule = ((stopTime - startTime) / 1000);
-		    }
-		    return ecoule;
-	}
 }
 
