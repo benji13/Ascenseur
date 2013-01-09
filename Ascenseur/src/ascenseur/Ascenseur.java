@@ -3,7 +3,6 @@ package ascenseur;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
 
 public class Ascenseur extends Thread {
 	
@@ -165,9 +164,7 @@ public class Ascenseur extends Thread {
 		else{
 			if (this.positionActuelle >= unAppel.getSourceAppel()&& !unAppel.isSensAppel()){
 				is = true;
-				/*System.out.println("Sens de l'appel ");
-				System.out.println("L'appel "+unAppel.getSourceAppel()+"--->"+unAppel.getDestAppel()+" est sur la route de l'ascenseur "+ this.idAscenseur);
-			*/}
+			}
 		}
 		return is;
 	}
@@ -194,7 +191,6 @@ public class Ascenseur extends Thread {
 		// TODO Auto-generated method stub
 		
 		for(;;){
-			//int nbEtageAparcourir;
 			while(!this.tabDestination.isEmpty()){
 				System.out.println("ascenseur N°: " + idAscenseur + "  tabDestination: " + tabDestination);
 				//supprime la destination si elle correspond à l'étage actuel (Utiledans le cas où la source = l'etage à de l'ascenseur s'il est à l'arret)
@@ -213,21 +209,11 @@ public class Ascenseur extends Thread {
 				else{
 					monte = false;
 				}
-				/*		
-				//calcul nombre etage à parcourir
-				nbEtageAparcourir = this.tabDestination.get(0) - positionActuelle;
-				nbEtageAparcourir = Math.abs(nbEtageAparcourir);*/
-				//System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
-			
+
 				//calcul temps du parcours
-				//sleepParcours_old(nbEtageAparcourir);
 				sleepParcours();
 				
-				//changement de l'etage
-				//positionActuelle=tabDestination.get(0);
 				
-				//System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
-					
 				//les appels correspondant à cet etages passe en traité
 				if(positionActuelle == this.tabDestination.get(0)){
 					traitementAppel();	
@@ -243,7 +229,6 @@ public class Ascenseur extends Thread {
 	
 	void repositionnement() throws InterruptedException{
 		// REPOSITIONNEMENT
-		int nbEtageAparcourir;
 		
 		if(positionActuelle != positionRepo){
 			this.tabDestination.add(positionRepo);
@@ -275,7 +260,6 @@ public class Ascenseur extends Thread {
 			}
 		}
 		//On est repositionné
-		//System.out.println("Ascenseur " + idAscenseur + " :Etage Reposisionnement " + positionActuelle);	
 		//ascenseur passe à l'arret
 		arret=true;
 		this.enRepositionnement = false;
@@ -476,66 +460,6 @@ public class Ascenseur extends Thread {
 	 * @throws InterruptedException
 	 * @return
 	 */
-	public void sleepParcours_old(int nbEtageAparcourir) throws InterruptedException{
-		int nbEtage = nbEtageAparcourir;
-		int i=0;
-		if(nbEtage >= 4){
-			for(i=0;i<nbEtage;i++){
-				if(i==0)
-					Thread.sleep((3*1000)/xtemps);
-				if(i==1)
-					Thread.sleep((2*1000)/xtemps);
-				if(i>1 && i<nbEtage-2)
-					Thread.sleep((1*1000)/xtemps);
-				if(i==nbEtage-2)
-					Thread.sleep((2*1000)/xtemps);
-				if(i==nbEtage-1)
-					Thread.sleep((3*1000)/xtemps);
-				if(monte==true)
-					positionActuelle++;
-				if(monte==false)
-					positionActuelle--;
-				System.out.println("Etage: " + positionActuelle);
-			}
-		}
-		else if(nbEtage == 3){
-			for(i=0;i<nbEtage;i++){
-				if(i==0)
-					Thread.sleep((3*1000)/xtemps);
-				if(i==1)
-					Thread.sleep((2*1000)/xtemps);
-				if(i==2)
-					Thread.sleep((3*1000)/xtemps);
-				if(monte==true)
-					positionActuelle++;
-				if(monte==false)
-					positionActuelle--;
-				System.out.println("Etage: " + positionActuelle);
-			}
-		}
-		else if(nbEtage == 2){
-			for(i=0;i<nbEtage;i++){
-				if(i==0)
-					Thread.sleep((3*1000)/xtemps);
-				if(i==1)
-					Thread.sleep((3*1000)/xtemps);
-				if(monte==true)
-					positionActuelle++;
-				if(monte==false)
-					positionActuelle--;
-				System.out.println("Etage: " + positionActuelle);
-			}
-		}
-		else if(nbEtage == 1){
-			Thread.sleep((3*1000)/xtemps);
-			if(monte==true)
-				positionActuelle++;
-			if(monte==false)
-				positionActuelle--;
-			System.out.println("Etage: " + positionActuelle);
-			
-		}
-	}
 	
 	public void sleepParcours() throws InterruptedException{
 		int nbEtage =  Math.abs(tabDestination.get(0) - positionActuelle);
@@ -549,10 +473,10 @@ public class Ascenseur extends Thread {
 			if(nbEtage > 2){
 				Thread.sleep(1000/xtemps);
 			}
-			else if(nbEtage == 2){
+			else if(nbEtage == 2){ //Deceleration 1
 				Thread.sleep(2000/xtemps);
 			}
-			else if(nbEtage == 1){
+			else if(nbEtage == 1){ //Deceleration 2
 				Thread.sleep(3000/xtemps);
 			}	
 		}

@@ -23,8 +23,10 @@ public class Init {
 		//Creéation du calendrier permettant de générer la date de base.
 		Calendar cal1 = Calendar.getInstance(); cal1.set(2012, 01, 15, 15, 00, 00);
 		
-		int xtemps = 1;
+		int xtemps = 60;
+		Calendrier cal= new Calendrier(xtemps, true);
 		
+
 		//Création de plusieurs dates
 		Date date1 = cal1.getTime();
 		System.out.println("Date 1: " + date1);
@@ -38,121 +40,75 @@ public class Init {
 		Date date4 = cal1.getTime();
 		System.out.println("Date 4: " +date4);
 		
-		/*
-		//Création d'appel à partir des dates précedentes
-		Appel Appel1 = new Appel(0, 3, date1);
-		Appel Appel2 = new Appel(4, 13, date2);
-		Appel Appel3 = new Appel(10, 13, date3 );
-		Appel Appel4 = new Appel(13, 18, date4);
-		
-		//Ajoute les appel à la liste
-		ArrayList<Appel> ListeAppelsAtraiter = new ArrayList<Appel> ();
-		ListeAppelsAtraiter.add(Appel1);
-		ListeAppelsAtraiter.add(Appel2);
-		ListeAppelsAtraiter.add(Appel3);
-		ListeAppelsAtraiter.add(Appel4);
-		*/
-		/*
-		//Création des ascenseur
-		Ascenseur ascenseur1 = new Ascenseur(1,0,xtemps);
-		Ascenseur ascenseur2 = new Ascenseur(2,17,xtemps);
-		Ascenseur ascenseur3 = new Ascenseur(3,10,xtemps);
-		Ascenseur ascenseur4 = new Ascenseur(4,40,xtemps);
-		Ascenseur ascenseur5 = new Ascenseur(5,40,xtemps);
-		Ascenseur ascenseur6 = new Ascenseur(6,40,xtemps);
-		
-		//Création du tableau d'ascenseur
-		ArrayList<Ascenseur> tabAscenseur = new ArrayList<Ascenseur>();
-		tabAscenseur.add(ascenseur1);
-		tabAscenseur.add(ascenseur2);
-		tabAscenseur.add(ascenseur3);
-		tabAscenseur.add(ascenseur4);
-		tabAscenseur.add(ascenseur5);
-		tabAscenseur.add(ascenseur6);
-		*/
 		
 		//Création de la batterie
 		System.out.println("## Création de la batterie ##");
 		Batterie laBatterie = new Batterie(xtemps, true);
 		
-		//Simu 1  et 2 eme appel
-		System.out.println("## Création appel N°1 ##");
-		laBatterie.creationAppel(0, 5, date1);
-		System.out.println(" * Source: " + laBatterie.getTabTousLesAppels().get(0).getSourceAppel());
-		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(0).getDestAppel());
+		Thread.sleep(1000);
 		
-		System.out.println("## Création appel N°2 ##");
-		laBatterie.creationAppel(2, 6, date2);
-		System.out.println(" * Source: " + laBatterie.getTabTousLesAppels().get(1).getSourceAppel());
-		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(1).getDestAppel());
+		//Simu appels
+		System.out.println("## Appel N°1 ##");
+		laBatterie.creationAppelManu(35, 40);
 		
-		System.out.println("## Assigne appel N°1 ##");
+	
 		Ascenseur unAscenseur = laBatterie.assignerAppel();
-		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
-		
-		System.out.println("## Assigne appel N°2 ##");
-		unAscenseur = laBatterie.assignerAppel();
-		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
-		System.out.println("tabDestination" + unAscenseur.getTabDestination());
-		laBatterie.repositionnement(unAscenseur);
-		
-		
-		//Simu 3ème appel
-		System.out.println("## Création appel N°3 ##");
-		laBatterie.creationAppel(2, 5, date1);
-		System.out.println(" * Source: " + laBatterie.getTabTousLesAppels().get(2).getSourceAppel());
-		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(2).getDestAppel());
-		System.out.println("## Assigne appel N°3 ##");
-		unAscenseur = laBatterie.assignerAppel();
-		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
-		laBatterie.repositionnement(unAscenseur);
-		
-		//Simu 4ème appel
-		System.out.println("## Création appel N°4 ##");
-		laBatterie.creationAppel(3, 5, date1);
-		System.out.println(" * Source: " + laBatterie.getTabTousLesAppels().get(3).getSourceAppel());
-		System.out.println(" * Destination: " + laBatterie.getTabTousLesAppels().get(3).getDestAppel());
-		System.out.println("## Assigne appel N°4 ##");
-		unAscenseur = laBatterie.assignerAppel();
-		System.out.println(" * Ascenseur N°" + unAscenseur.getIdAscenseur() + " vient vous chercher !");
-		laBatterie.repositionnement(unAscenseur);
-		
+		System.out.println("###################### ASCENSEUR N°" + unAscenseur.getIdAscenseur() + "######################");
 		/*
-		System.out.println("Assignement des 4 appels...");
-		//Assigne 2 appels à ascenseur 1
-		//ascenseur1.addAppel(Appel1);
-		//ascenseur1.setMonte(true);
-		//ascenseur1.addAppel(Appel2);
-		//ascenseur1.addAppel(Appel3);
-		//ascenseur1.addAppel(Appel4);
+		Thread.sleep(4000);
+		System.out.println("## Appel N°2 ##");
+		laBatterie.creationAppelManu(39, 50);
 		
+			
+		unAscenseur = laBatterie.assignerAppel();
+		System.out.println("###################### ASCENSEUR N°" + unAscenseur.getIdAscenseur() + "######################");
+		Thread.sleep(4000);
+		System.out.println("## Appel N°3 ##");
+		laBatterie.creationAppelManu(18, -4);
 		
-		//Tri des appels
-		System.out.println("Tri des appels...");
-		ascenseur1.triAppel();
-		System.out.println("Ascenseur 1: Ma liste d'appel " + ascenseur1.getTabDestination());
+			
+		unAscenseur = laBatterie.assignerAppel();
+		System.out.println("###################### ASCENSEUR N°" + unAscenseur.getIdAscenseur() + "######################");
+		Thread.sleep(4000);
+		System.out.println("## Appel N°4 ##");
+		laBatterie.creationAppelManu(12, 6);
 		
+			
+		unAscenseur = laBatterie.assignerAppel();
+		System.out.println("###################### ASCENSEUR N°" + unAscenseur.getIdAscenseur() + "######################");
+		Thread.sleep(4000);
 		
-		//Création du calendrier
-		Calendrier monCalendrier = new Calendrier(xtemps, true);
-				
-		System.out.println("Traitement des appels en cours...");
-		//Traitement des appels
-		monCalendrier.getChrono().start();
-		System.out.println("Heure debut : " + monCalendrier.calculDateActuelle());
-		ascenseur1.deplacement();
-		ascenseur1.setMonte(false);
-		ascenseur1.deplacement();
-	//	ascenseur1.deplacement();
-	//	ascenseur1.deplacement();
-	//	ascenseur1.deplacement();
-	//	ascenseur1.deplacement();
-	//	ascenseur1.setMonte(false);
-	//	ascenseur1.deplacement();
-		monCalendrier.getChrono().stop();
-		System.out.println("Heure fin : " + monCalendrier.calculDateActuelle());
-		System.out.println("FIN");
+			
+		System.out.println("## Appel N°5 ##");
+		laBatterie.creationAppelManu(40, 6);
+		
+			
+		unAscenseur = laBatterie.assignerAppel();
+		System.out.println("###################### ASCENSEUR N°" + unAscenseur.getIdAscenseur() + "######################");
+		Thread.sleep(4000);
+		System.out.println("## Appel N°6 ##");
+		laBatterie.creationAppelManu(32, -1);
+		
+			
+		unAscenseur = laBatterie.assignerAppel();
+		System.out.println("###################### ASCENSEUR N°" + unAscenseur.getIdAscenseur() + "######################");
+		Thread.sleep(4000);
+		System.out.println("## Appel N°7 ##");
+		laBatterie.creationAppelManu(-1, 15);
+		
+			
+		unAscenseur = laBatterie.assignerAppel();
+		System.out.println("###################### ASCENSEUR N°" + unAscenseur.getIdAscenseur() + "######################");
+		Thread.sleep(4000);
+		System.out.println("## Appel N°8 ##");
+		laBatterie.creationAppelManu(5, 20);
+		
+			
+		unAscenseur = laBatterie.assignerAppel();
+		System.out.println("###################### ASCENSEUR N°" + unAscenseur.getIdAscenseur() + "######################");
 		*/
+		laBatterie.stopSimu();
+
 	}
 
 }
