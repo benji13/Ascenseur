@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Ascenseur {
+public class Ascenseur extends Thread {
 	
 	/**
 	 * @return
@@ -30,13 +30,6 @@ public class Ascenseur {
 		this.tabDestination = new ArrayList<Integer>();
 		this.tabDestinationTemp = new HashSet<Integer>();
 		
-		System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
-		try {
-			this.deplacement();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-}
 	}
 	
 	/**
@@ -164,17 +157,31 @@ public class Ascenseur {
 		boolean is = false;
 		if(this.isMonte())
 		{
-			if (this.positionActuelle >= unAppel.getSourceAppel())
+			if (this.positionActuelle <= unAppel.getSourceAppel() && unAppel.isSensAppel()){
 				is = true;
+				//System.out.println("L'appel "+unAppel.getSourceAppel()+"--->"+unAppel.getDestAppel()+" est sur la route de l'ascenseur "+ this.idAscenseur);
+			}
 		}
 		else{
-			if (this.positionActuelle <= unAppel.getSourceAppel())
+			if (this.positionActuelle >= unAppel.getSourceAppel()&& !unAppel.isSensAppel()){
 				is = true;
+				/*System.out.println("Sens de l'appel ");
+				System.out.println("L'appel "+unAppel.getSourceAppel()+"--->"+unAppel.getDestAppel()+" est sur la route de l'ascenseur "+ this.idAscenseur);
+			*/}
 		}
 		return is;
 	}
 	
 	
+	public void run(){
+			try {
+				System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
+				this.deplacement();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
 	
 	
 	/**
@@ -187,9 +194,9 @@ public class Ascenseur {
 		// TODO Auto-generated method stub
 		
 		for(;;){
-			
-			int nbEtageAparcourir;
+			//int nbEtageAparcourir;
 			while(!this.tabDestination.isEmpty()){
+				System.out.println("ascenseur N°: " + idAscenseur + "  tabDestination: " + tabDestination);
 				//supprime la destination si elle correspond à l'étage actuel (Utiledans le cas où la source = l'etage à de l'ascenseur s'il est à l'arret)
 				if(positionActuelle==this.tabDestination.get(0)){
 					this.tabDestination.remove(0);
@@ -206,15 +213,15 @@ public class Ascenseur {
 				else{
 					monte = false;
 				}
-						
+				/*		
 				//calcul nombre etage à parcourir
 				nbEtageAparcourir = this.tabDestination.get(0) - positionActuelle;
-				nbEtageAparcourir = Math.abs(nbEtageAparcourir);
+				nbEtageAparcourir = Math.abs(nbEtageAparcourir);*/
 				//System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
 			
 				//calcul temps du parcours
 				//sleepParcours_old(nbEtageAparcourir);
-				sleepParcours(nbEtageAparcourir);
+				sleepParcours(1000);
 				
 				//changement de l'etage
 				//positionActuelle=tabDestination.get(0);
@@ -230,18 +237,22 @@ public class Ascenseur {
 			}
 		enAcceleration=0;
 		repositionnement();
+		Thread.sleep(100);
 		}
 	}	
 	
 	void repositionnement() throws InterruptedException{
 		// REPOSITIONNEMENT
 		int nbEtageAparcourir;
+		
 		if(positionActuelle != positionRepo){
 			this.tabDestination.add(positionRepo);
 			System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner");
+			this.enRepositionnement = true;
 		}
 		
 		while(!this.tabDestination.isEmpty() ){
+			System.out.println("Ascenseur n° "+this.getIdAscenseur()+" : ma position repo est : "+this.positionRepo);
 			enAcceleration++;
 			//Regarde s'il doit monter ou descendre pour joindre position de repositionnement
 			if(this.positionActuelle < this.positionRepo){
@@ -267,9 +278,10 @@ public class Ascenseur {
 			}
 		}
 		//On est repositionné
-		System.out.println("Ascenseur " + idAscenseur + " :Etage Reposisionnement " + positionActuelle);	
+		//System.out.println("Ascenseur " + idAscenseur + " :Etage Reposisionnement " + positionActuelle);	
 		//ascenseur passe à l'arret
 		arret=true;
+		this.enRepositionnement = false;
 		enAcceleration=0;
 	}
 	
@@ -323,10 +335,10 @@ public class Ascenseur {
 		tabAppelsTraites.addAll(tabAppelAsupprimer);
 		tabAppelAtraiter.removeAll(tabAppelAsupprimer);
 		this.tabDestination.removeAll(tabSourceAsupprimer);
-		System.out.println("tabAppelAsupprimer" + tabAppelAsupprimer);
-		System.out.println("tabAppelsATraiter" + tabAppelAtraiter);
-		System.out.println("tabAppelsTraites" + tabAppelsTraites);
-		System.out.println("tabDestination" + tabDestination);
+		//System.out.println("tabAppelAsupprimer" + tabAppelAsupprimer);
+		//System.out.println("tabAppelsATraiter" + tabAppelAtraiter);
+		//System.out.println("tabAppelsTraites" + tabAppelsTraites);
+		//System.out.println("tabDestination" + tabDestination);
 		
 	}
 	
@@ -365,14 +377,14 @@ public class Ascenseur {
 	 * C'est l'equivalent d'une simulation, avant de lui affecter l'appel, on calcul le temps eventuel que mettrait l'ascenseur à arriver
 	 * @return
 	 */
-	public int calculDureeTraitementAppel(Appel unAppel){
+	public int calculDureeTraitementAppel(Appel unAppel){ // /!\ Nettoyer code.
 		int i=0;
 		int nbEtageAparcourir;
 		boolean monte = this.monte;
 		tempsParcoursAscenseur=0;
 		
-		// pour toutes les destinations sauf la dernière car pris dans la comparaison
-		for(i=0;i<this.tabDestination.size();i++){
+		// pour toutes les destinations 
+		for(i=0;i<this.tabDestination.size()-1;i++){
 			//Test si on a passé l'étage
 			if(monte){
 				if(unAppel.getDestAppel()<this.tabDestination.get(i)){

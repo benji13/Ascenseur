@@ -6,9 +6,11 @@ package ascenseur;
 import java.util.ArrayList;
 import java.util.Date;
 import java.lang.Math;
+
+import javax.swing.text.Position;
 /**
  *
- * @author XiXiMe
+ * @author Mo & Thibaut
  */
 public class Batterie {
     
@@ -17,8 +19,15 @@ public class Batterie {
     private ArrayList<Appel> tabTousLesAppels;
     private ArrayList<Integer> tabPositionJournee;
     private ArrayList<Integer> tabPositionWeekEnd;
+    private ArrayList<Boolean> tabResaPosition;
     private Calendrier cal;
    
+    public ArrayList<Boolean> getTabResaPosition() {
+		return tabResaPosition;
+	}
+    public void setTabResaPosition(ArrayList<Boolean> tabResaPosition) {
+		this.tabResaPosition = tabResaPosition;
+	}
 	
     //Definition des Getters/Setters --> permet l'acces aux attributs
     public ArrayList<Ascenseur> getTabAscenseur() {
@@ -86,7 +95,7 @@ public class Batterie {
     
 //Cette methode va,pour un ascenseur donné, lui affecter une position de repositionnement la plus appropiée
     void repositionnement(Ascenseur unAscenseur) throws InterruptedException{
-    	if(unAscenseur.isArret()== true && unAscenseur.getTabDestination().isEmpty() ){	
+    	if(unAscenseur.getTabDestination().isEmpty() ){	
 	        int ecart = 40, i, id=-1;
 	        ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
 	        
@@ -99,16 +108,20 @@ public class Batterie {
 	        	tabRepositionement = this.tabPositionWeekEnd;
 	        
 	        for(i=0;i<tabRepositionement.size();i++){
-	        	int temp = Math.abs(unAscenseur.getPositionActuelle() - tabRepositionement.get(i));
-	        	
-	        	if(temp<ecart)
-	        	{
-	        		ecart = temp;
-	        		id = i;
+	        	//Si la position n'a pas été réservée
+	        	if(!this.tabResaPosition.get(i)){
+		        	int temp = Math.abs(unAscenseur.getPositionActuelle() - tabRepositionement.get(i));
+		        	
+		        	if(temp<ecart)
+		        	{
+		        		ecart = temp;
+		        		id = i;
+		        		//Reservation de l'emplacement
+		        		this.tabResaPosition.set(id, true);
+		        	}
 	        	}
 	        }
 	        unAscenseur.setPositionRepo(tabRepositionement.get(id));
-	       // unAscenseur.repositionnement();
     	}
         
     }//Fin repositionnement
@@ -136,25 +149,24 @@ public class Batterie {
      */
     Ascenseur assignerAppel() throws InterruptedException{
     	
-        int id =0;
+        int id =-1;
         int i = 0;
-		int ecart = 40;
+		int ecart = 400;
 		int temp,nbPersonne;
 		Appel unAppel = this.tabTousLesAppels.get((tabTousLesAppels.size()-1));
         boolean affected = false;//boolean permettant de savoir si l'appel a été affecté
         //Affecter un id à l'appel
         unAppel.setIdAppel(this.tabTousLesAppels.size()+1);
         unAppel.determineSens();
-        while(!affected){
-        	
+        while(!affected){	
         //ne pas oublier de changer le sens de direction quand affecte un appel        
         //Recherche l'ascenseur le plus proche à l'arret
     		for(i=0;i<this.tabAscenseur.size();i++){
-    			if(this.tabAscenseur.get(i).isArret()){
+    			if(this.tabAscenseur.get(i).isArret() && !this.tabAscenseur.get(i).isEnRepositionnement()){
     				temp = Math.abs(this.tabAscenseur.get(i).getPositionActuelle() - unAppel.getSourceAppel());
     				if(temp < ecart){
     					ecart = temp;
-    					id = i;
+    					id = this.tabAscenseur.get(i).getIdAscenseur();
     					affected = true;
     					this.tabAscenseur.get(id).setMonte(unAppel.isSensAppel());
     				}
@@ -163,13 +175,14 @@ public class Batterie {
     	
 	    	//Recherche l'ascenseur le plus rapide en mouvement dans le meme sens
 	    	if(!affected){
-	    		int duree = -1;
+	    		int duree = 100000000;
 	    		for(i=0;i<this.tabAscenseur.size();i++){
 	    			if(!this.tabAscenseur.get(i).isFull() && this.tabAscenseur.get(i).isSurLaRoute(unAppel) && !this.tabAscenseur.get(i).isEnRepositionnement()){
     					temp = this.tabAscenseur.get(i).calculDureeTraitementAppel(unAppel);
-    					if(temp<duree && duree!=-1){
+    					if(temp<duree){
     		        		duree = temp;
-    		        		id = i;
+    		        		id = this.tabAscenseur.get(i).getIdAscenseur();
+    		        		affected=true;
     		        	}	
 	    			}
 	    		}
@@ -247,6 +260,12 @@ public class Batterie {
     public Batterie(int xtemps, boolean isWeek) {
         this.tabAscenseur = new ArrayList<Ascenseur>();
         this.tabTousLesAppels = new ArrayList<Appel>();
+        this.tabResaPosition = new ArrayList<Boolean>();
+        for(int i=0;i<6;i++){
+        	//Initialise le tableau de reservation de position repos à faux. (Aucune position n'a été réservée)
+        	Boolean bool = new Boolean(false);
+        	this.tabResaPosition.add(bool);
+        }
         
         try
         {
@@ -300,12 +319,21 @@ public class Batterie {
 			ascenseur5 = new Ascenseur(5,tabPositionWeekEnd.get(5),xtemps);
         }
         
+        ascenseur0.start();
+        ascenseur1.start();
+        ascenseur2.start();
+        ascenseur3.start();
+        ascenseur4.start();
+        ascenseur5.start();
+        
 		this.tabAscenseur.add(ascenseur0);
     	this.tabAscenseur.add(ascenseur1);
     	this.tabAscenseur.add(ascenseur2);
     	this.tabAscenseur.add(ascenseur3);
     	this.tabAscenseur.add(ascenseur4);
     	this.tabAscenseur.add(ascenseur5);
+    	
+   
     }
 
     /**
