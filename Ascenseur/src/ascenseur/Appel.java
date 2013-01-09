@@ -28,6 +28,11 @@ public class Appel {
 		this.dateDebut = dateDebut;
 	}
 
+	//constructeur par defaut utile pour le parseurDOm par exemple. 
+	public Appel() {
+	// TODO Auto-generated constructor stub
+}
+
 	public void setSensAppel(boolean sensAppel) {
 		this.sensAppel = sensAppel;
 	}
