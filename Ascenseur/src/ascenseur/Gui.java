@@ -2,6 +2,9 @@ package ascenseur;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
 
 /**
  * @author r395381
@@ -13,7 +16,7 @@ import java.awt.*;
  *fen.fenetreManu();
  *
  */
-public class Gui {
+public class Gui implements ActionListener {
 	
 	JFrame fenetreChoix;
 	JPanel panelAutomatique, panelManuelle;
@@ -66,6 +69,7 @@ public class Gui {
 		panelManuelle = new JPanel();
 		buttonAuto = new JButton("Automatique");
 		buttonManu = new JButton("Manuelle");
+		buttonManu.addActionListener(this);
 		radioJour = new JRadioButton("Journée");
 		radioSoir = new JRadioButton("Soir et Week-end");
 		groupChoix = new ButtonGroup();
@@ -178,6 +182,7 @@ public class Gui {
 		
 		jeVais = new JComboBox(listEtages);
 		buttonValider = new JButton("Valider");
+		buttonValider.addActionListener(this);
 		panelAppel.add(labelUtilisateur);
 		panelUtilisateur.add(jeVais);
 		panelUtilisateur.add(buttonValider);
@@ -237,10 +242,8 @@ public class Gui {
 		fenetreManu.add(panelGauche, BorderLayout.LINE_START);
 		fenetreManu.add(panelDroit, BorderLayout.LINE_END);
 		
-		fenetreManu.pack();
-		fenetreManu.setVisible(true);
-		
-				
+		fenetreManu.pack();				
+
 	}
 	
 	/**
@@ -258,7 +261,7 @@ public class Gui {
 	 * 
 	 */
 	public void refreshGui(){
-	
+
 	}
 	
 	/**
@@ -278,4 +281,29 @@ public class Gui {
 	public void getListeAppels(){
 		
 	}
+	
+	
+	public void actionPerformed(ActionEvent arg0) {
+		if(arg0.getSource() == buttonManu){
+			  fenetreManu.setVisible(true);
+			  fenetreChoix.setVisible(false);
+		  }
+		
+		
+		  if(arg0.getSource() == buttonValider){
+			  int js, jv;
+			  Date appelDate = new Date();
+			  
+			  js = jeSuis.getSelectedIndex();
+			  jv = jeVais.getSelectedIndex();
+			 			  
+			  System.out.println("appelle depuis "+js+" je vais à"+jv);
+			  
+			  //creationAppel(js, jv, appelDate);
+
+		  }
+	}  
 }
+
+
+
