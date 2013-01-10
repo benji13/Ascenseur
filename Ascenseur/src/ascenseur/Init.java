@@ -18,6 +18,12 @@ public class Init {
 	 * @throws InterruptedException 
 	 */
 	public static void main(String[] args) throws InterruptedException {
+		
+		Gui fen = new Gui();
+		fen.Init();
+		fen.fenetreManu();
+		fen.fenetreStats();	
+		/*
 		System.out.println("Simulation en mode manuel -- en mode Semaine ");
 	
 		//Creéation du calendrier permettant de générer la date de base.
@@ -54,6 +60,9 @@ public class Init {
 	
 		Ascenseur unAscenseur = laBatterie.assignerAppel();
 		System.out.println("###################### ASCENSEUR N°" + unAscenseur.getIdAscenseur() + "######################");
+		*/
+		
+		
 		/*
 		Thread.sleep(4000);
 		System.out.println("## Appel N°2 ##");
@@ -107,7 +116,9 @@ public class Init {
 		unAscenseur = laBatterie.assignerAppel();
 		System.out.println("###################### ASCENSEUR N°" + unAscenseur.getIdAscenseur() + "######################");
 		*/
-		laBatterie.stopSimu();
+		
+		
+		//laBatterie.stopSimu();
 
 	}
 
