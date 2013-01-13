@@ -19,10 +19,17 @@ public class Init {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 		
+
+		
 		Gui fen = new Gui();
 		fen.Init();
 		fen.fenetreManu();
-		fen.fenetreStats();	
+		fen.fenetreStats();
+		//fen.refreshGui();
+		
+		
+
+		
 		/*
 		System.out.println("Simulation en mode manuel -- en mode Semaine ");
 	

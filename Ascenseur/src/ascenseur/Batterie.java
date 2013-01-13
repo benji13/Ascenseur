@@ -5,6 +5,7 @@ package ascenseur;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Observable;
 import java.lang.Math;
 
 import javax.swing.text.Position;
@@ -12,7 +13,7 @@ import javax.swing.text.Position;
  *
  * @author Mo & Thibaut
  */
-public class Batterie {
+public class Batterie{
     
     //Attributs
     private ArrayList<Ascenseur> tabAscenseur;
@@ -20,6 +21,7 @@ public class Batterie {
     private ArrayList<Integer> tabPositionJournee;
     private ArrayList<Integer> tabPositionWeekEnd;
     private ArrayList<Boolean> tabResaPosition;
+    private ArrayList<Thread> tabThread ;
     private Calendrier cal;
    
     public ArrayList<Boolean> getTabResaPosition() {
@@ -265,6 +267,7 @@ public class Batterie {
         this.tabAscenseur = new ArrayList<Ascenseur>();
         this.tabTousLesAppels = new ArrayList<Appel>();
         this.tabResaPosition = new ArrayList<Boolean>();
+        tabThread = new ArrayList<Thread>();
         for(int i=0;i<6;i++){
         	//Initialise le tableau de reservation de position repos à faux. (Aucune position n'a été réservée)
         	Boolean bool = new Boolean(false);
@@ -281,6 +284,7 @@ public class Batterie {
         }
         
         ArrayList<Integer> tabPositionJournee = new ArrayList<Integer>();
+        
         tabPositionJournee.add(0);
         tabPositionJournee.add(0);
         tabPositionJournee.add(0);
@@ -305,6 +309,14 @@ public class Batterie {
         Ascenseur ascenseur4;
         Ascenseur ascenseur5;
         
+        Thread t0;
+        Thread t1;
+        Thread t2;
+        Thread t3;
+        Thread t4;
+        Thread t5;
+        
+        
         
         if(isWeek){
         	ascenseur0 = new Ascenseur(0,tabPositionJournee.get(0),xtemps);
@@ -323,20 +335,30 @@ public class Batterie {
 			ascenseur5 = new Ascenseur(5,tabPositionWeekEnd.get(5),xtemps);
         }
         
-        ascenseur0.start();
-        ascenseur1.start();
-        ascenseur2.start();
-        ascenseur3.start();
-        ascenseur4.start();
-        ascenseur5.start();
+   
+        
+        t0 = new Thread(ascenseur0);
+        t1 = new Thread(ascenseur1);
+        t2 = new Thread(ascenseur2);
+        t3 = new Thread(ascenseur3);
+        t4 = new Thread(ascenseur4);
+        t5 = new Thread(ascenseur5);
+        
+        t0.start();
+        t1.start();
+        t2.start();
+        t3.start();
+        t4.start();
+        t5.start();
+        
+        this.tabThread.add(t0);
         
 		this.tabAscenseur.add(ascenseur0);
     	this.tabAscenseur.add(ascenseur1);
     	this.tabAscenseur.add(ascenseur2);
     	this.tabAscenseur.add(ascenseur3);
     	this.tabAscenseur.add(ascenseur4);
-    	this.tabAscenseur.add(ascenseur5);
-    	
+    	this.tabAscenseur.add(ascenseur5);   	
    
     }
 
@@ -350,10 +372,10 @@ public class Batterie {
     }
     
     public void stopSimu(){
-    	while(tabAscenseur.get(0).isAlive() || tabAscenseur.get(1).isAlive() || tabAscenseur.get(2).isAlive() || tabAscenseur.get(3).isAlive() || tabAscenseur.get(4).isAlive() || tabAscenseur.get(5).isAlive()){
+    	while(tabThread.get(0).isAlive() || tabThread.get(1).isAlive() || tabThread.get(2).isAlive() || tabThread.get(3).isAlive() || tabThread.get(4).isAlive() || tabThread.get(5).isAlive()){
     		for(int i=0;i<6;i++){
-	    		if(tabAscenseur.get(i).isAlive() && tabAscenseur.get(i).getTabDestination().isEmpty() && tabAscenseur.get(i).isArret()){
-	    			this.tabAscenseur.get(i).stop();
+	    		if(tabThread.get(i).isAlive() && tabAscenseur.get(i).getTabDestination().isEmpty() && tabAscenseur.get(i).isArret()){
+	    			this.tabThread.get(i).stop();
 	    		}
     		}
     	}
@@ -363,7 +385,7 @@ public class Batterie {
     
     public void stopSimuBrute(){
     	for(int i=0;i<5;i++){
-    			this.tabAscenseur.get(i).stop();
+    			this.tabThread.get(i).stop();
     	}
     }
     

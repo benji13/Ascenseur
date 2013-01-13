@@ -12,6 +12,8 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * @author benji13
@@ -23,7 +25,7 @@ import java.util.Date;
  *fen.fenetreManu();
  *
  */
-public class Gui implements ActionListener {
+public class Gui  implements ActionListener, Observer {
 	
 	JFrame fenetreChoix;
 	JPanel panelAutomatique, panelManuelle;
@@ -40,10 +42,10 @@ public class Gui implements ActionListener {
 	JButton buttonValider, buttonStats, buttonMonter, bouttonDescendre;
 	JTextField ascA, ascB, ascC, ascD, ascE, ascF, choix, nbr1, nbr2, nbr3, nbr4, nbr5, nbr6, conso1, conso2, conso3, conso4, conso5, conso6, ConsoMoy, ConsoTot, AttMoy, NbrAppTot, DureeSimu;
 	JComboBox jeSuis, jeVais;
-	String[] listEtages;// = { "1", "2", "3", "4", "5" };
+	String[] listEtages;
 	JTable tableauFile;
 	JLabel a, b, c, d, e, f, labelAppel, labelUtilisateur, labelAscenseurs, labelStats, labelNbre, labelConso, labelVide, labelConsoMoy, labelConsoTot, labelAttMoy, labelNbrAppTot, labelDureeSimu; 
-	String[] colonnesAppel = {"Origine",
+	Object[] colonnesAppel = {"Origine",
             "Destination",
             "Ascenseur",
             "Etat"};
@@ -75,10 +77,8 @@ public class Gui implements ActionListener {
 	 * 
 	 */
 	public Gui(){
-		
-		
+
 		int i;
-		
 		
 		fenetreChoix = new JFrame("M²B²T - Choix du Mode");
 		fenetreChoix.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,8 +90,8 @@ public class Gui implements ActionListener {
 		buttonAuto.addActionListener(this);
 		buttonManu = new JButton("Manuelle");
 		buttonManu.addActionListener(this);
-		radioJour = new JRadioButton("Journée");
-		radioSoir = new JRadioButton("Soir et Week-end");
+		radioJour = new JRadioButton("Semaine");
+		radioSoir = new JRadioButton("Week-end");
 		groupChoix = new ButtonGroup();
 		
 		groupChoix.add(radioJour);
@@ -122,14 +122,30 @@ public class Gui implements ActionListener {
 	
 	
 	public void Init() throws InterruptedException{
+		int i;
 		Calendar cal1 = Calendar.getInstance(); cal1.set(2012, 01, 15, 15, 00, 00);
 		
 		xtemps = 1;
 		cal= new Calendrier(xtemps, true);
 		
 		laBatterie = new Batterie(xtemps, true);
+		for (i=0;i<6;i++){
+		laBatterie.getTabAscenseur().get(i).addObserver(this);
 		
 		
+//		laBatterie.creationAppelManu(-1, 15);
+//		laBatterie.assignerAppel();
+//		laBatterie.creationAppelManu(-1, 23);
+//		laBatterie.assignerAppel();
+//		laBatterie.creationAppelManu(25, 32);
+//		laBatterie.assignerAppel();
+//		laBatterie.creationAppelManu(35, 11);
+//		laBatterie.assignerAppel();
+//		laBatterie.creationAppelManu(10, 34);
+//		laBatterie.assignerAppel();
+//		laBatterie.creationAppelManu(-1, 5);
+//		laBatterie.assignerAppel();
+		}
 		
 	}
 	
@@ -190,10 +206,10 @@ public class Gui implements ActionListener {
 		menuBar = new JMenuBar();
 		menu = new JMenu("Reset");
 		menuBar.add(menu);
-		menuResetJ = new JMenuItem("Journée");
+		menuResetJ = new JMenuItem("Semaine");
 		menuResetJ.addActionListener(this);
 		menu.add(menuResetJ);
-		menuResetS = new JMenuItem("Soir et Week-end");
+		menuResetS = new JMenuItem("Week-end");
 		menuResetS.addActionListener(this);
 		menu.add(menuResetS);
 		menu = new JMenu("Autre");
@@ -281,10 +297,10 @@ public class Gui implements ActionListener {
 		 * Panel milieu-droit contenant le tableau 
 		 */
 		panelTableau = new JPanel();
-		
+
 		tableauFile = new JTable(fileAppel, colonnesAppel);
 		tableauFile.setPreferredScrollableViewportSize(new Dimension(500, 70));
-		tableauFile.setFillsViewportHeight(true);
+		//tableauFile.setFillsViewportHeight(true);
 		JScrollPane scrollPane = new JScrollPane(tableauFile);
 		panelTableau.add(tableauFile);
 		panelTableau.add(scrollPane);
@@ -481,14 +497,6 @@ public class Gui implements ActionListener {
 		
 	}
 	
-	/**
-	 * 
-	 * Methode permettant de rafraichir tous les élements d'interface
-	 * 
-	 */
-	public void refreshGui(){
-
-	}
 	
 	/**
 	 * 
@@ -529,9 +537,11 @@ public class Gui implements ActionListener {
 		  }
 		
 		if(arg0.getSource() == menuResetJ){
+			laBatterie.stopSimuBrute();
 			laBatterie = new Batterie(xtemps, true);
 		  }
 		if(arg0.getSource() == menuResetS){
+			laBatterie.stopSimuBrute();
 			laBatterie = new Batterie(xtemps, false);
 		  }
 		if(arg0.getSource() == menuApropos){
@@ -579,6 +589,7 @@ public class Gui implements ActionListener {
 			  jv = jeVais.getSelectedIndex();
 			 			  
 			  System.out.println("appel depuis "+js+" je vais à "+jv);
+			  //System.out.println(laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).toString());
 			  jeSuis.setEnabled(true);  
 			  buttonValider.setEnabled(false);
 			  buttonMonter.setEnabled(true);
@@ -590,6 +601,18 @@ public class Gui implements ActionListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			choix.setText(""+unAscenseur.getIdAscenseur());
+			
+
+					
+		  }
+	}
+
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		
+		if(arg1.equals("repo")){
 			
 			ascA.setText(""+laBatterie.getTabAscenseur().get(0).getPositionActuelle());
 			ascB.setText(""+laBatterie.getTabAscenseur().get(1).getPositionActuelle());
@@ -597,9 +620,19 @@ public class Gui implements ActionListener {
 			ascD.setText(""+laBatterie.getTabAscenseur().get(3).getPositionActuelle());
 			ascE.setText(""+laBatterie.getTabAscenseur().get(4).getPositionActuelle());
 			ascF.setText(""+laBatterie.getTabAscenseur().get(5).getPositionActuelle());
-					
-		  }
+		}
+		
+		if(arg1.equals("deplacement")){
+		ascA.setText(""+laBatterie.getTabAscenseur().get(0).getPositionActuelle());
+		ascB.setText(""+laBatterie.getTabAscenseur().get(1).getPositionActuelle());
+		ascC.setText(""+laBatterie.getTabAscenseur().get(2).getPositionActuelle());
+		ascD.setText(""+laBatterie.getTabAscenseur().get(3).getPositionActuelle());
+		ascE.setText(""+laBatterie.getTabAscenseur().get(4).getPositionActuelle());
+		ascF.setText(""+laBatterie.getTabAscenseur().get(5).getPositionActuelle());
+		}
 	}
+	
+	
 
 }
 

@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class Appel {
 
+	
+
 	private Integer idAppel;
 	private Integer sourceAppel;
 	private boolean traite;//parametre à true si l'appel est traité
@@ -99,6 +101,14 @@ public class Appel {
 		else
 			this.sensAppel = false;
 			
+	}
+	
+	@Override
+	public String toString() {
+		return "Appel [idAppel=" + idAppel + ", sourceAppel=" + sourceAppel
+				+ ", traite=" + traite + ", destAppel=" + destAppel
+				+ ", dateDebut=" + dateDebut + ", dateFin=" + dateFin
+				+ ", sensAppel=" + sensAppel + "]";
 	}
 }
 
