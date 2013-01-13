@@ -28,12 +28,12 @@ public class Ascenseur extends Observable implements Runnable{
 	private boolean enRepositionnement;
 	private int tempsParcoursAscenseur;
 	private int xtemps;
-	
+	private Seconde sec;
 	
 	/**
 	 * @return
 	 */
-	public Ascenseur(int idAscenseur, int positionActuelle,int xtemps) {
+	public Ascenseur(int idAscenseur, int positionActuelle,int xtemps,Seconde sec) {
 		// TODO Auto-generated constructor stub
 		this.idAscenseur = idAscenseur;
 		this.positionActuelle = positionActuelle;
@@ -52,6 +52,7 @@ public class Ascenseur extends Observable implements Runnable{
 		this.tabAppelsTraites = new ArrayList<Appel>();
 		this.tabDestination = new ArrayList<Integer>();
 		this.tabDestinationTemp = new HashSet<Integer>();
+		this.sec = sec;
 		
 	}
 	
@@ -228,7 +229,8 @@ public class Ascenseur extends Observable implements Runnable{
 				if(positionActuelle == this.tabDestination.get(0)){
 					traitementAppel();	
 					System.out.println("Ascenseur "+ idAscenseur +" :Arrêt");
-					Thread.sleep((5*1000)/xtemps);
+					//Thread.sleep((5*1000)/xtemps);
+					this.sec.attenteSeconde(5);
 				}
 			}
 		enAcceleration=0;
@@ -288,7 +290,8 @@ public class Ascenseur extends Observable implements Runnable{
 	    
 				traitementAppel();	
 				System.out.println("Ascenseur "+ idAscenseur +" :Repositionnement OK!");
-				Thread.sleep((5*1000)/xtemps);
+				//Thread.sleep((5*1000)/xtemps);
+				this.sec.attenteSeconde(5);
 			}
 		}
 		//On est repositionné
@@ -496,20 +499,25 @@ public class Ascenseur extends Observable implements Runnable{
 	public void sleepParcours() throws InterruptedException{
 		int nbEtage =  Math.abs(tabDestination.get(0) - positionActuelle);
 		if(enAcceleration == 1){ //premiere acceleration
-			Thread.sleep(3000/xtemps);
+			//Thread.sleep(3000/xtemps);
+			this.sec.attenteSeconde(3);
 		}
 		else if(enAcceleration == 2){ //deuxieme acceleration
-			Thread.sleep(2000/xtemps);
+			//Thread.sleep(2000/xtemps);
+			this.sec.attenteSeconde(2);
 		}
 		else{
 			if(nbEtage > 2){
-				Thread.sleep(1000/xtemps);
+				//Thread.sleep(1000/xtemps);
+				this.sec.attenteSeconde(1);
 			}
 			else if(nbEtage == 2){ //Deceleration 1
-				Thread.sleep(2000/xtemps);
+				//Thread.sleep(2000/xtemps);
+				this.sec.attenteSeconde(2);
 			}
 			else if(nbEtage == 1){ //Deceleration 2
-				Thread.sleep(3000/xtemps);
+//				Thread.sleep(3000/xtemps);
+				this.sec.attenteSeconde(3);
 			}	
 		}
 		if(monte==true)

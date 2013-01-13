@@ -18,13 +18,24 @@ public class Init {
 	 * @throws InterruptedException 
 	 */
 	public static void main(String[] args) throws InterruptedException {
+		Seconde sec = new Seconde();
+		Calendrier cal = new Calendrier(1, true, sec);
 		
-
+//		cal.start();
+//		Thread.sleep(1000);
+//		cal.getChrono().start();
+//		
+//		
 		
-		Gui fen = new Gui();
+		
+		Gui fen = new Gui(sec);
 		fen.Init();
 		fen.fenetreManu();
 		fen.fenetreStats();
+		
+		
+		
+		
 		//fen.refreshGui();
 		
 		

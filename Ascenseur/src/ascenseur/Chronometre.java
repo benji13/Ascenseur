@@ -10,19 +10,32 @@ the Free Software Foundation; either version 2 of the License, or
 */
 
 
-public class Chronometre {
+public class Chronometre extends Thread{
 
 		private int xtemps;
 		private long startTime;
 		private long stopTime;
+		private long actuTime;
 		private boolean running;
+		private Seconde sec;
 		
-		public Chronometre(int xtemps) {
+		public Chronometre(int xtemps, Seconde sec) {
 			// TODO Auto-generated constructor stub
 			this.xtemps = xtemps;
 			this.startTime = 0;
 			this.stopTime = 0;
 			this.running = false;
+			this.sec = sec;
+		}
+		public long getActuTime() {
+			return actuTime;
+		}
+		public void setActuTime(long actuTime) {
+			this.actuTime = actuTime;
+		}
+		public void run (){
+			this.startChrono();
+			chronometrer();
 		}
 		
 		public boolean isRunning() {
@@ -30,20 +43,21 @@ public class Chronometre {
 		}
 
 		
-		public void start() {
+		public void startChrono() {
 		    this.startTime = System.currentTimeMillis();
+		    this.actuTime = 0;
 		    this.running = true;
 		}
 		
 		
-		public void stop() {
+		public void stopChrono() {
 		    this.stopTime = System.currentTimeMillis();
 		    this.running = false;
 		}
 		
 		
 		//elaspsed time in seconds
-		public long getTempsEcouleSecs() {
+		public void getTempsEcouleSecs() {
 		    long ecoule;
 		    if (running) {
 		         ecoule = (System.currentTimeMillis() - startTime);
@@ -51,7 +65,20 @@ public class Chronometre {
 		    else {
 		        ecoule = (stopTime - startTime);
 		    }
-		    return (ecoule*xtemps)/1000;
+	
+		    if(this.actuTime!=((ecoule*xtemps)/1000) && ((ecoule*xtemps) % 1000) == 0){
+		    	sec.declenchementSeconde();
+		    	this.actuTime = (ecoule*xtemps)/1000;
+		    }
+//		    return (ecoule*xtemps)/1000;
+
 		}
+		
+		public void chronometrer(){
+			for(;;){
+				this.getTempsEcouleSecs();
+			}
+		}
+		
 }
 

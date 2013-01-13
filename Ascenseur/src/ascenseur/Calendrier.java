@@ -3,26 +3,27 @@ package ascenseur;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Calendrier {
+public class Calendrier extends Thread{
 
-	public Calendrier(int xtemps, boolean isWeek) throws InterruptedException {
+	public Calendrier(int xtemps, boolean isWeek, Seconde sec) throws InterruptedException {
 		// TODO Auto-generated constructor stub
-		this.chrono = new Chronometre(xtemps);
+		this.chrono = new Chronometre(xtemps,sec);
 		this.isWeek = isWeek;
-		this.dateActuelle = new Date(2012, 01, 15, 00, 00,00);
 		this.dateDebutSimu = Calendar.getInstance();
 		this.dateDebutSimu.set(2012, 01, 15, 00, 00,00);
+		this.dateActuelle = Calendar.getInstance();
+		this.dateActuelle.set(2012, 01, 15, 00, 00,00);
 		this.xtemps = xtemps;
-		
-		chrono.start();
+		this.sec = sec;
 	}
 	
 	// VARIABLES
 	private Chronometre chrono;
 	private boolean isWeek;
-	private Date dateActuelle;
+	private Calendar dateActuelle;
 	private Calendar dateDebutSimu;
 	private int xtemps;
+	private Seconde sec;
 	
 	// GETTER SETTER
 	public Chronometre getChrono() {
@@ -40,9 +41,8 @@ public class Calendrier {
 		this.isWeek = isWeek;
 	}
 	
-	public Date getDateActuelle() {
-		 calculDateActuelle();
-		 return this.dateActuelle;
+	public Calendar getDateActuelle() {
+		return this.dateActuelle;
 	}
 	
 	public Calendar getDateDebutSimu() {
@@ -53,7 +53,7 @@ public class Calendrier {
 		return xtemps;
 	}
 	
-	public void setDateActuelle(Date dateActuelle) {
+	public void setDateActuelle(Calendar dateActuelle) {
 		this.dateActuelle = dateActuelle;
 	}
 	
@@ -67,25 +67,25 @@ public class Calendrier {
 	//FONCTIONS
 	public void determinerPlageHoraire(){
 		isWeek = true;
-		if(getDateActuelle().getHours() > 18 && getDateActuelle().getHours() < 7 ){
+		if(getDateActuelle().HOUR > 18 && getDateActuelle().HOUR < 7 ){
 			isWeek = false;
 		}
-	}
-	/**
-	 * Fonction permettant d'ajouter le temps écoulé à la date de départ de la simulation pour savoir la date actuelle
-	 * @return
-	 */
-	public void calculDateActuelle(){
-		Calendar temp = Calendar.getInstance();
-		temp = this.dateDebutSimu;
-		temp.add(Calendar.SECOND, (int) (this.chrono.getTempsEcouleSecs()));
-		this.dateActuelle = temp.getTime();
 	}
 
 	public void afficherHeure() throws InterruptedException{
 		for(;;){
-			System.out.println(getDateActuelle());
-			Thread.sleep(1000/xtemps);
+			sec.attenteSeconde(1);
+			this.dateActuelle.add(Calendar.SECOND, 1);
+			System.out.println(this.dateActuelle.getTime());
+		}
+	}
+	
+	public void run(){
+		try {
+			afficherHeure();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

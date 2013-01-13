@@ -23,6 +23,7 @@ public class Batterie{
     private ArrayList<Boolean> tabResaPosition;
     private ArrayList<Thread> tabThread ;
     private Calendrier cal;
+    private Seconde sec;
    
     public ArrayList<Boolean> getTabResaPosition() {
 		return tabResaPosition;
@@ -112,7 +113,7 @@ public class Batterie{
 	        for(i=0;i<tabRepositionement.size();i++){
 	        	//Si la position n'a pas été réservée
 	        	if(!this.tabResaPosition.get(i)){
-		        	int temp = Math.abs(unAscenseur.getPositionActuelle() - tabRepositionement.get(i));
+		        	int temp = Math.abs(unAscenseur.getTabDestination().get(unAscenseur.getTabDestination().size()-1) - tabRepositionement.get(i));
 		        	
 		        	if(temp<ecart)
 		        	{
@@ -129,7 +130,16 @@ public class Batterie{
     }//Fin repositionnement
     
     
-    
+    public void libererReservation(ArrayList<Integer> tabRepositionement,int etage){
+    	int id=0;
+    	
+    	for(int i=0;i<6;i++){
+    		if(etage==tabRepositionement.get(i)){
+    			id=i;
+    		}
+    	}
+    	this.tabResaPosition.set(id, true);
+    }
     /**
      * Methode permettant de marquer un Appel comme "traite"
      * @return void
@@ -137,7 +147,7 @@ public class Batterie{
      * @param unAppel 
      */
     void majDateFinAppel(Appel unAppel){
-        unAppel.setDateFin(this.cal.getDateActuelle());
+        unAppel.setDateFin(this.cal.getDateActuelle().getTime());
         
     }//Fin majDateFinAppel
     
@@ -190,12 +200,24 @@ public class Batterie{
 	    		}
 	    	}
         }
+        ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
+        this.cal.determinerPlageHoraire();
+        
+        if(this.cal.isWeek()){
+        	tabRepositionement = this.tabPositionJournee;
+        }
+        else
+        	tabRepositionement = this.tabPositionWeekEnd;
+        
+        System.out.println(tabRepositionement.size()-1);
         if(affected)
         {
+        	libererReservation(tabRepositionement,this.tabAscenseur.get(id).getPositionRepo());
     		nbPersonne = this.tabAscenseur.get(id).getNbPersonne();
     		this.tabAscenseur.get(id).addAppel(unAppel);
 			this.tabAscenseur.get(id).setNbPersonne(nbPersonne++);
 			tabAscenseur.get(id).triAppel();
+			this.repositionnement(tabAscenseur.get(id));
         }
     return tabAscenseur.get(id);
     }//Fin assignerAppel
@@ -214,7 +236,7 @@ public class Batterie{
     }//Fin creationAppel
     
     void creationAppelManu(int sourceAppel, int destAppel){
-        Appel unAppel = new Appel(sourceAppel, destAppel, this.cal.getDateActuelle());
+        Appel unAppel = new Appel(sourceAppel, destAppel, this.cal.getDateActuelle().getTime());
         tabTousLesAppels.add(unAppel);
     }//Fin creationAppel
     
@@ -263,7 +285,7 @@ public class Batterie{
     
     
     //Definition du constructeur de la classe
-    public Batterie(int xtemps, boolean isWeek) {
+    public Batterie(int xtemps, boolean isWeek,Seconde sec) {
         this.tabAscenseur = new ArrayList<Ascenseur>();
         this.tabTousLesAppels = new ArrayList<Appel>();
         this.tabResaPosition = new ArrayList<Boolean>();
@@ -276,7 +298,8 @@ public class Batterie{
         
         try
         {
-        	this.cal = new Calendrier(xtemps, isWeek);
+        	this.cal = new Calendrier(xtemps, isWeek, sec);
+        	this.cal.getChrono().start();
         }
         catch (InterruptedException e)
         {
@@ -319,20 +342,20 @@ public class Batterie{
         
         
         if(isWeek){
-        	ascenseur0 = new Ascenseur(0,tabPositionJournee.get(0),xtemps);
-    		ascenseur1 = new Ascenseur(1,tabPositionJournee.get(1),xtemps);
-    		ascenseur2 = new Ascenseur(2,tabPositionJournee.get(2),xtemps);
-    		ascenseur3 = new Ascenseur(3,tabPositionJournee.get(3),xtemps);
-    		ascenseur4 = new Ascenseur(4,tabPositionJournee.get(4),xtemps);
-    		ascenseur5 = new Ascenseur(5,tabPositionJournee.get(5),xtemps);
+        	ascenseur0 = new Ascenseur(0,tabPositionJournee.get(0),xtemps,sec);
+    		ascenseur1 = new Ascenseur(1,tabPositionJournee.get(1),xtemps,sec);
+    		ascenseur2 = new Ascenseur(2,tabPositionJournee.get(2),xtemps,sec);
+    		ascenseur3 = new Ascenseur(3,tabPositionJournee.get(3),xtemps,sec);
+    		ascenseur4 = new Ascenseur(4,tabPositionJournee.get(4),xtemps,sec);
+    		ascenseur5 = new Ascenseur(5,tabPositionJournee.get(5),xtemps,sec);
         }
         else {
-        	ascenseur0 = new Ascenseur(0,tabPositionWeekEnd.get(0),xtemps);
-			ascenseur1 = new Ascenseur(1,tabPositionWeekEnd.get(1),xtemps);
-			ascenseur2 = new Ascenseur(2,tabPositionWeekEnd.get(2),xtemps);
-			ascenseur3 = new Ascenseur(3,tabPositionWeekEnd.get(3),xtemps);
-			ascenseur4 = new Ascenseur(4,tabPositionWeekEnd.get(4),xtemps);
-			ascenseur5 = new Ascenseur(5,tabPositionWeekEnd.get(5),xtemps);
+        	ascenseur0 = new Ascenseur(0,tabPositionWeekEnd.get(0),xtemps,sec);
+			ascenseur1 = new Ascenseur(1,tabPositionWeekEnd.get(1),xtemps,sec);
+			ascenseur2 = new Ascenseur(2,tabPositionWeekEnd.get(2),xtemps,sec);
+			ascenseur3 = new Ascenseur(3,tabPositionWeekEnd.get(3),xtemps,sec);
+			ascenseur4 = new Ascenseur(4,tabPositionWeekEnd.get(4),xtemps,sec);
+			ascenseur5 = new Ascenseur(5,tabPositionWeekEnd.get(5),xtemps,sec);
         }
         
    
@@ -380,7 +403,7 @@ public class Batterie{
     		}
     	}
     	this.getCal().getChrono().stop();
-    	System.out.println("Temps Totale Simu en accelerée: "+this.getCal().getChrono().getTempsEcouleSecs());
+    	System.out.println("Temps Totale Simu en accelerée: "+this.getCal().getDateActuelle().getTime());
     }
     
     public void stopSimuBrute(){

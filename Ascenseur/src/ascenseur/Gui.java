@@ -68,7 +68,7 @@ public class Gui  implements ActionListener, Observer {
 	int xtemps;
 	Calendrier cal;
 	Ascenseur unAscenseur;
-	
+	Seconde sec;
 	
 
 	/**
@@ -76,7 +76,7 @@ public class Gui  implements ActionListener, Observer {
 	 * Fenetre initial et constructeur de la classe GUI
 	 * 
 	 */
-	public Gui(){
+	public Gui(Seconde sec){
 
 		int i;
 		
@@ -118,33 +118,36 @@ public class Gui  implements ActionListener, Observer {
 		fenetreChoix.pack();
 		fenetreChoix.setVisible(true);
 		
+		this.sec =sec;
+		
 	}
-	
+//	debut com
 	
 	public void Init() throws InterruptedException{
 		int i;
+		Seconde sec = new Seconde();
 		Calendar cal1 = Calendar.getInstance(); cal1.set(2012, 01, 15, 15, 00, 00);
 		
 		xtemps = 1;
-		cal= new Calendrier(xtemps, true);
-		
-		laBatterie = new Batterie(xtemps, true);
+
+
+		laBatterie = new Batterie(xtemps, true,sec);
 		for (i=0;i<6;i++){
-		laBatterie.getTabAscenseur().get(i).addObserver(this);
+			laBatterie.getTabAscenseur().get(i).addObserver(this);
+
 		
-		
-//		laBatterie.creationAppelManu(-1, 15);
-//		laBatterie.assignerAppel();
-//		laBatterie.creationAppelManu(-1, 23);
-//		laBatterie.assignerAppel();
-//		laBatterie.creationAppelManu(25, 32);
-//		laBatterie.assignerAppel();
-//		laBatterie.creationAppelManu(35, 11);
-//		laBatterie.assignerAppel();
-//		laBatterie.creationAppelManu(10, 34);
-//		laBatterie.assignerAppel();
-//		laBatterie.creationAppelManu(-1, 5);
-//		laBatterie.assignerAppel();
+	//		laBatterie.creationAppelManu(-1, 15);
+	//		laBatterie.assignerAppel();
+	//		laBatterie.creationAppelManu(-1, 23);
+	//		laBatterie.assignerAppel();
+	//		laBatterie.creationAppelManu(25, 32);
+	//		laBatterie.assignerAppel();
+	//		laBatterie.creationAppelManu(35, 11);
+	//		laBatterie.assignerAppel();
+	//		laBatterie.creationAppelManu(10, 34);
+	//		laBatterie.assignerAppel();
+	//		laBatterie.creationAppelManu(-1, 5);
+	//		laBatterie.assignerAppel();
 		}
 		
 	}
@@ -538,11 +541,11 @@ public class Gui  implements ActionListener, Observer {
 		
 		if(arg0.getSource() == menuResetJ){
 			laBatterie.stopSimuBrute();
-			laBatterie = new Batterie(xtemps, true);
+			laBatterie = new Batterie(xtemps, true,sec);
 		  }
 		if(arg0.getSource() == menuResetS){
 			laBatterie.stopSimuBrute();
-			laBatterie = new Batterie(xtemps, false);
+			laBatterie = new Batterie(xtemps, false,sec);
 		  }
 		if(arg0.getSource() == menuApropos){
 			System.out.println("A propos");
