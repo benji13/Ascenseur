@@ -1,10 +1,34 @@
 package ascenseur;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Observable;
 
-public class Ascenseur extends Thread {
+public class Ascenseur extends Observable implements Runnable{
+	
+	/**
+	 * @param args
+	 */
+	// VARIABLES
+	private int idAscenseur;
+	private boolean arret; //0 arret; 1 en deplacement
+	private ArrayList<Appel> tabAppelAtraiter;
+	private ArrayList<Appel> tabAppelsTraites;
+	private ArrayList<Integer> tabDestination;
+	private HashSet<Integer> tabDestinationTemp;
+	private int positionActuelle;
+	private int enAcceleration;
+	private int nbPersonne;
+	private int consommation;
+	private boolean monte; //0 monte ; 1 descend
+	private int positionRepo;
+	private boolean enRepositionnement;
+	private int tempsParcoursAscenseur;
+	private int xtemps;
+	
 	
 	/**
 	 * @return
@@ -31,25 +55,7 @@ public class Ascenseur extends Thread {
 		
 	}
 	
-	/**
-	 * @param args
-	 */
-	// VARIABLES
-	private int idAscenseur;
-	private boolean arret; //0 arret; 1 en deplacement
-	private ArrayList<Appel> tabAppelAtraiter;
-	private ArrayList<Appel> tabAppelsTraites;
-	private ArrayList<Integer> tabDestination;
-	private HashSet<Integer> tabDestinationTemp;
-	private int positionActuelle;
-	private int enAcceleration;
-	private int nbPersonne;
-	private int consommation;
-	private boolean monte; //0 monte ; 1 descend
-	private int positionRepo;
-	private boolean enRepositionnement;
-	private int tempsParcoursAscenseur;
-	private int xtemps;
+
 	
 	// GETTER ET SETTER
 	public int getEnAcceleration() {
@@ -193,6 +199,10 @@ public class Ascenseur extends Thread {
 		for(;;){
 			while(!this.tabDestination.isEmpty()){
 				System.out.println("ascenseur N°: " + idAscenseur + "  tabDestination: " + tabDestination);
+			
+			      setChanged();
+			      notifyObservers("deplacement");
+				
 				//supprime la destination si elle correspond à l'étage actuel (Utiledans le cas où la source = l'etage à de l'ascenseur s'il est à l'arret)
 				if(positionActuelle==this.tabDestination.get(0)){
 					this.tabDestination.remove(0);
@@ -222,21 +232,36 @@ public class Ascenseur extends Thread {
 				}
 			}
 		enAcceleration=0;
-		repositionnement();
+		repositionnement();		
 		Thread.sleep(100);
 		}
+		
+		
 	}	
 	
 	void repositionnement() throws InterruptedException{
 		// REPOSITIONNEMENT
+	      
 		
 		if(positionActuelle != positionRepo){
 			this.tabDestination.add(positionRepo);
 			System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner");
 			this.enRepositionnement = true;
+			
+			//////////////////////////
+			setChanged();
+		    notifyObservers("repo");
+		    ///////////////////////////
 		}
 		
 		while(!this.tabDestination.isEmpty() ){
+			
+			//////////////////////////
+			setChanged();
+		    notifyObservers("repo");
+			//////////////////////////
+
+		    
 			//System.out.println("Ascenseur n° "+this.getIdAscenseur()+" : ma position repo est : "+this.positionRepo);
 			enAcceleration++;
 			//Regarde s'il doit monter ou descendre pour joindre position de repositionnement
@@ -254,6 +279,13 @@ public class Ascenseur extends Thread {
 			
 			//les appels correspondant à cet etages passe en traité
 			if(positionActuelle == this.tabDestination.get(0)){
+				
+				//////////////////////////
+				setChanged();
+				notifyObservers("repo");
+				//////////////////////////
+	    
+	    
 				traitementAppel();	
 				System.out.println("Ascenseur "+ idAscenseur +" :Repositionnement OK!");
 				Thread.sleep((5*1000)/xtemps);
@@ -512,4 +544,5 @@ public class Ascenseur extends Thread {
 		}
 		return isFull;
 	}
+
 }
