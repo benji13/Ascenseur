@@ -33,7 +33,7 @@ public class Gui  implements ActionListener, Observer {
 	JRadioButton radioJour, radioSoir;
 	ButtonGroup groupChoix;
 	
-	String[] listEtagesDyna;
+	
 	JFrame fenetreManu, fenetreStats;
 	JPanel panelMenu, panelGauche, panelDroit, panelAppel, panelUtilisateur, panelAscenseur, panelTableau, panelStats, panelHaut, panelBas, panel1, panel2, panel3;
 	JMenuBar menuBar;
@@ -42,25 +42,29 @@ public class Gui  implements ActionListener, Observer {
 	JButton buttonValider, buttonStats, buttonMonter, bouttonDescendre;
 	JTextField ascA, ascB, ascC, ascD, ascE, ascF, choix, nbr1, nbr2, nbr3, nbr4, nbr5, nbr6, conso1, conso2, conso3, conso4, conso5, conso6, ConsoMoy, ConsoTot, AttMoy, NbrAppTot, DureeSimu;
 	JComboBox jeSuis, jeVais;
-	String[] listEtages;
+	Integer[] listEtages;
+	Integer[] listEtagesDyna;
 	JTable tableauFile;
 	JLabel a, b, c, d, e, f, labelAppel, labelUtilisateur, labelAscenseurs, labelStats, labelNbre, labelConso, labelVide, labelConsoMoy, labelConsoTot, labelAttMoy, labelNbrAppTot, labelDureeSimu; 
+	String[] ascenseurString = {"A","B","C","D","E","F"};
 	Object[] colonnesAppel = {"Origine",
             "Destination",
             "Ascenseur",
             "Etat"};
-	Object[][] fileAppel = {
-		    {"4", "6",
-		     "E", "En cours"},
-		    {"12", "21",
-		     "A", "En cours"},
-		    {"34", "33",
-		     "C", "En attente"},
-		    {"3", "23",
-		     "F", "En attente"},
-		    {"31", "17",
-		     "F", "En attente"}
-		};
+	Object[][] fileAppel = {{"4", "6","E", "En cours"}};
+	
+//	= {
+//		    {"4", "6",
+//		     "E", "En cours"},
+//		    {"12", "21",
+//		     "A", "En cours"},
+//		    {"34", "33",
+//		     "C", "En attente"},
+//		    {"3", "23",
+//		     "F", "En attente"},
+//		    {"31", "17",
+//		     "F", "En attente"}
+//		};
 	
 	
 	
@@ -80,7 +84,7 @@ public class Gui  implements ActionListener, Observer {
 
 		int i;
 		
-		fenetreChoix = new JFrame("M²B²T - Choix du Mode");
+		fenetreChoix = new JFrame("Mï¿½Bï¿½T - Choix du Mode");
 		fenetreChoix.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		fenetreChoix.setResizable(false);
 		
@@ -162,9 +166,9 @@ public class Gui  implements ActionListener, Observer {
 	public void fenetreManu(){
 		
 		int i;
-		listEtagesDyna = new String[45];
+		listEtagesDyna = new Integer[45];
 		
-		fenetreManu = new JFrame("M²B²T - Gestion d'ascenseurs");
+		fenetreManu = new JFrame("Mï¿½Bï¿½T - Gestion d'ascenseurs");
 		fenetreManu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		fenetreManu.setResizable(false);
 		fenetreChoix.setLayout(new BorderLayout());
@@ -189,7 +193,6 @@ public class Gui  implements ActionListener, Observer {
 		/**
 		 * Declaration des panels
 		 */
-		panelMenu = new JPanel();
 		panelGauche = new JPanel();
 		panelDroit = new JPanel();
 		panelAppel = new JPanel();
@@ -229,9 +232,9 @@ public class Gui  implements ActionListener, Observer {
 		 * Panel de gauche pour choisir monter ou descendre
 		 */
 		
-		listEtages = new String[45];
+		listEtages = new Integer[45];
 		for(i=0;i<=44;i++){
-			listEtages[i]=""+ (i-4) ;
+			listEtages[i]= (i-4) ;
 		}
 		
 		jeSuis = new JComboBox(listEtages);
@@ -242,7 +245,8 @@ public class Gui  implements ActionListener, Observer {
 		bouttonDescendre.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bouttonDescendre.addActionListener(this);
 		bouttonDescendre.addActionListener(this);
-		choix = new JTextField("D");
+		choix = new JTextField("");
+		choix.setEditable(false);
 		
 		//panelAppel.add(labelAppel);
 		panelAppel.add(jeSuis);
@@ -256,6 +260,7 @@ public class Gui  implements ActionListener, Observer {
 		
 		
 		jeVais = new JComboBox(listEtages);
+		jeVais.setEnabled(false);
 		buttonValider = new JButton("Valider");
 		buttonValider.addActionListener(this);
 		buttonValider.setEnabled(false);
@@ -278,6 +283,13 @@ public class Gui  implements ActionListener, Observer {
 		ascD = new JTextField();
 		ascE = new JTextField();
 		ascF = new JTextField();
+		
+		ascA.setEditable(false);
+		ascB.setEditable(false);
+		ascC.setEditable(false);
+		ascD.setEditable(false);
+		ascE.setEditable(false);
+		ascF.setEditable(false);
 		
 		//panelAscenseur.add(labelAscenseurs);
 		panelAscenseur.add(a);
@@ -325,7 +337,7 @@ public class Gui  implements ActionListener, Observer {
 		panelStats.setBorder(new TitledBorder("Ascenseurs"));
 		
 		/**
-		 * Ajout des differents panels à la fenetre principale 
+		 * Ajout des differents panels ï¿½ la fenetre principale 
 		 */
 		fenetreManu.add(panelGauche, BorderLayout.LINE_START);
 		fenetreManu.add(panelDroit, BorderLayout.LINE_END);
@@ -353,7 +365,7 @@ public class Gui  implements ActionListener, Observer {
 	 */
 	public void fenetreStats(){
 		
-		fenetreStats = new JFrame("M²B²T - Statistiques");
+		fenetreStats = new JFrame("Mï¿½Bï¿½T - Statistiques");
 		fenetreStats.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		/**
@@ -385,7 +397,7 @@ public class Gui  implements ActionListener, Observer {
 		labelConsoTot = new JLabel("Consommation Totale",SwingConstants.CENTER);
 		labelAttMoy = new JLabel("Attente Moyenne",SwingConstants.CENTER);
 		labelNbrAppTot = new JLabel("Nombre d'appels Total",SwingConstants.CENTER);
-		labelDureeSimu = new JLabel("Durée simulation",SwingConstants.CENTER);
+		labelDureeSimu = new JLabel("Durï¿½e simulation",SwingConstants.CENTER);
 		
 		
 		/**
@@ -476,7 +488,7 @@ public class Gui  implements ActionListener, Observer {
 		panelBas.add(panel3);
 		
 		/**
-		 * Ajout des differents panels à la fenetre principale 
+		 * Ajout des differents panels ï¿½ la fenetre principale 
 		 */
 		fenetreStats.add(panelHaut, BorderLayout.NORTH);
 		fenetreStats.add(panelBas, BorderLayout.SOUTH);
@@ -503,7 +515,7 @@ public class Gui  implements ActionListener, Observer {
 	
 	/**
 	 * 
-	 * Methode permettant de récuperer la position actuelle des 6 ascenceurs
+	 * Methode permettant de rï¿½cuperer la position actuelle des 6 ascenceurs
 	 *  
 	 */
 	public void getPositionAsc(){
@@ -558,28 +570,39 @@ public class Gui  implements ActionListener, Observer {
 		if(arg0.getSource() == bouttonDescendre){
 			int i;
 			jeSuis.setEnabled(false);
+			jeVais.setEnabled(true);
 			buttonValider.setEnabled(true);
 			buttonMonter.setEnabled(false);
 			bouttonDescendre.setEnabled(false);
 			
 			for(i=0;i<jeSuis.getSelectedIndex();i++){
-				listEtagesDyna[i]=""+ (i-4) ;
+				listEtagesDyna[i]= (i-4) ;
 			}
-			jeVais.setModel(new JComboBox(listEtagesDyna).getModel());
+			jeVais.removeAllItems();
+			
+			for(i=0;i<jeSuis.getSelectedIndex();i++){
+				jeVais.addItem(listEtagesDyna[i]);
+			}
 			
 		  }
 		
 		if(arg0.getSource() == buttonMonter){
 			int i;
 			jeSuis.setEnabled(false);
+			jeVais.setEnabled(true);
 			buttonValider.setEnabled(true);
 			buttonMonter.setEnabled(false);
 			bouttonDescendre.setEnabled(false);
 			
-			for(i=jeSuis.getSelectedIndex();i<=44;i++){
-				listEtagesDyna[i]=""+ (i-4) ;
+			for(i=jeSuis.getSelectedIndex()+1;i<=44;i++){
+				listEtagesDyna[i]= (i-4) ;
 			}
-			jeVais.setModel(new JComboBox(listEtagesDyna).getModel());
+			
+			jeVais.removeAllItems();
+			
+			for(i=jeSuis.getSelectedIndex()+1;i<=44;i++){
+				jeVais.addItem(listEtagesDyna[i]);
+			}
 			
 		  }
 		
@@ -588,12 +611,12 @@ public class Gui  implements ActionListener, Observer {
 			  int js, jv;
 			  Date appelDate = new Date();
 			  
-			  js = jeSuis.getSelectedIndex();
-			  jv = jeVais.getSelectedIndex();
+			  js = (Integer) jeSuis.getSelectedItem();
+			  jv = (Integer) jeVais.getSelectedItem();
 			 			  
-			  System.out.println("appel depuis "+js+" je vais à "+jv);
-			  //System.out.println(laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).toString());
+			  System.out.println("appel depuis "+js+" je vais ï¿½ "+jv);
 			  jeSuis.setEnabled(true);  
+			  jeVais.setEnabled(false);
 			  buttonValider.setEnabled(false);
 			  buttonMonter.setEnabled(true);
 			  bouttonDescendre.setEnabled(true);
@@ -604,7 +627,7 @@ public class Gui  implements ActionListener, Observer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			choix.setText(""+unAscenseur.getIdAscenseur());
+			choix.setText(ascenseurString[unAscenseur.getIdAscenseur()]);
 			
 
 					
@@ -626,16 +649,24 @@ public class Gui  implements ActionListener, Observer {
 		}
 		
 		if(arg1.equals("deplacement")){
-		ascA.setText(""+laBatterie.getTabAscenseur().get(0).getPositionActuelle());
-		ascB.setText(""+laBatterie.getTabAscenseur().get(1).getPositionActuelle());
-		ascC.setText(""+laBatterie.getTabAscenseur().get(2).getPositionActuelle());
-		ascD.setText(""+laBatterie.getTabAscenseur().get(3).getPositionActuelle());
-		ascE.setText(""+laBatterie.getTabAscenseur().get(4).getPositionActuelle());
-		ascF.setText(""+laBatterie.getTabAscenseur().get(5).getPositionActuelle());
+			ascA.setText(""+laBatterie.getTabAscenseur().get(0).getPositionActuelle());
+			ascB.setText(""+laBatterie.getTabAscenseur().get(1).getPositionActuelle());
+			ascC.setText(""+laBatterie.getTabAscenseur().get(2).getPositionActuelle());
+			ascD.setText(""+laBatterie.getTabAscenseur().get(3).getPositionActuelle());
+			ascE.setText(""+laBatterie.getTabAscenseur().get(4).getPositionActuelle());
+			ascF.setText(""+laBatterie.getTabAscenseur().get(5).getPositionActuelle());
 		}
+		
+		if(arg1.equals("listAppel")){
+			System.out.println(laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getSourceAppel());
+			System.out.println(laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getDestAppel());
+			System.out.println(laBatterie.getTabAscenseur().get(0).getIdAscenseur());
+			System.out.println(laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getEtatAppel());
+			
+		
+		}
+		
 	}
-	
-	
 
 }
 
