@@ -5,10 +5,8 @@ package ascenseur;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Observable;
 import java.lang.Math;
 
-import javax.swing.text.Position;
 /**
  *
  * @author Mo & Thibaut
@@ -18,18 +16,18 @@ public class Batterie{
     //Attributs
     private ArrayList<Ascenseur> tabAscenseur;
     private ArrayList<Appel> tabTousLesAppels;
-    private ArrayList<Integer> tabPositionJournee;
-    private ArrayList<Integer> tabPositionWeekEnd;
-    private ArrayList<Boolean> tabResaPosition;
+    private static ArrayList<Integer> tabPositionJournee;
+    private static ArrayList<Integer> tabPositionWeekEnd;
+    private static ArrayList<Boolean> tabResaPosition;
     private ArrayList<Thread> tabThread ;
     private Calendrier cal;
-    private Seconde sec;
+    private static boolean semaine; //true si en semaine, false si en week end 
    
     public ArrayList<Boolean> getTabResaPosition() {
 		return tabResaPosition;
 	}
     public void setTabResaPosition(ArrayList<Boolean> tabResaPosition) {
-		this.tabResaPosition = tabResaPosition;
+		Batterie.tabResaPosition = tabResaPosition;
 	}
 	
     //Definition des Getters/Setters --> permet l'acces aux attributs
@@ -54,7 +52,7 @@ public class Batterie{
     }
 
     public void setTabPositionJournee(ArrayList <Integer> tabPositionJournee) {
-        this.tabPositionJournee = tabPositionJournee;
+        Batterie.tabPositionJournee = tabPositionJournee;
     }
 
     public ArrayList<Integer> getTabPositionWeekEnd() {
@@ -62,7 +60,7 @@ public class Batterie{
     }
 
     public void setTabPositionWeekEnd(ArrayList <Integer> tabPositionWeekEnd) {
-        this.tabPositionWeekEnd = tabPositionWeekEnd;
+        Batterie.tabPositionWeekEnd = tabPositionWeekEnd;
     }
     
     public void setCal(Calendrier cal) {
@@ -75,17 +73,7 @@ public class Batterie{
     
     
     //Definitions des methodes    
-    /**
-     * Methode d'initialisation de la Batterie
-     * @return : void
-     * @param : Calendier uneDate 
-     */
-    void init(Calendrier uneDate){
-        
-    }//Fin init
-    
-    
-    
+
     /**
      * Methode de repositionnement des acsenseurs.
      * Permet le repositionnment de chaque ascenseur independemment.
@@ -97,30 +85,28 @@ public class Batterie{
      */
     
 //Cette methode va,pour un ascenseur donné, lui affecter une position de repositionnement la plus appropiée
-    void repositionnement(Ascenseur unAscenseur) throws InterruptedException{
+    public static void repositionnement(Ascenseur unAscenseur) throws InterruptedException{
     	if(unAscenseur.getTabDestination().isEmpty() ){	
 	        int ecart = 40, i, id=-1;
 	        ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
 	        
-	        this.cal.determinerPlageHoraire();
-	        
-	        if(this.cal.isWeek()){
-	        	tabRepositionement = this.tabPositionJournee;
+	        if(Batterie.semaine){
+	        	tabRepositionement = Batterie.tabPositionJournee;
 	        }
 	        else
-	        	tabRepositionement = this.tabPositionWeekEnd;
+	        	tabRepositionement = Batterie.tabPositionWeekEnd;
 	        
-	        for(i=0;i<tabRepositionement.size();i++){
+	        for(i=0;i<6;i++){
 	        	//Si la position n'a pas été réservée
-	        	if(!this.tabResaPosition.get(i)){
-		        	int temp = Math.abs(unAscenseur.getTabDestination().get(unAscenseur.getTabDestination().size()-1) - tabRepositionement.get(i));
+	        	if(!Batterie.tabResaPosition.get(i)){
+		        	int temp = Math.abs(unAscenseur.getPositionActuelle() - tabRepositionement.get(i));
 		        	
 		        	if(temp<ecart)
 		        	{
 		        		ecart = temp;
 		        		id = i;
 		        		//Reservation de l'emplacement
-		        		this.tabResaPosition.set(id, true);
+		        		Batterie.tabResaPosition.set(id, true);
 		        	}
 	        	}
 	        }
@@ -138,7 +124,7 @@ public class Batterie{
     			id=i;
     		}
     	}
-    	this.tabResaPosition.set(id, true);
+    	Batterie.tabResaPosition.set(id, false);
     }
     /**
      * Methode permettant de marquer un Appel comme "traite"
@@ -173,7 +159,7 @@ public class Batterie{
         while(!affected){	
         //ne pas oublier de changer le sens de direction quand affecte un appel        
         //Recherche l'ascenseur le plus proche à l'arret
-    		for(i=0;i<this.tabAscenseur.size();i++){
+    		for(i=0;i<6;i++){
     			if(this.tabAscenseur.get(i).isArret() && !this.tabAscenseur.get(i).isEnRepositionnement()){
     				temp = Math.abs(this.tabAscenseur.get(i).getPositionActuelle() - unAppel.getSourceAppel());
     				if(temp < ecart){
@@ -188,7 +174,7 @@ public class Batterie{
 	    	//Recherche l'ascenseur le plus rapide en mouvement dans le meme sens
 	    	if(!affected){
 	    		int duree = 100000000;
-	    		for(i=0;i<this.tabAscenseur.size();i++){
+	    		for(i=0;i<6;i++){
 	    			if(!this.tabAscenseur.get(i).isFull() && this.tabAscenseur.get(i).isSurLaRoute(unAppel) && !this.tabAscenseur.get(i).isEnRepositionnement()){
     					temp = this.tabAscenseur.get(i).calculDureeTraitementAppel(unAppel);
     					if(temp<duree){
@@ -204,12 +190,11 @@ public class Batterie{
         this.cal.determinerPlageHoraire();
         
         if(this.cal.isWeek()){
-        	tabRepositionement = this.tabPositionJournee;
+        	tabRepositionement = Batterie.tabPositionJournee;
         }
         else
-        	tabRepositionement = this.tabPositionWeekEnd;
+        	tabRepositionement = Batterie.tabPositionWeekEnd;
         
-        System.out.println(tabRepositionement.size()-1);
         if(affected)
         {
         	libererReservation(tabRepositionement,this.tabAscenseur.get(id).getPositionRepo());
@@ -217,7 +202,6 @@ public class Batterie{
     		this.tabAscenseur.get(id).addAppel(unAppel);
 			this.tabAscenseur.get(id).setNbPersonne(nbPersonne++);
 			tabAscenseur.get(id).triAppel();
-			this.repositionnement(tabAscenseur.get(id));
         }
     return tabAscenseur.get(id);
     }//Fin assignerAppel
@@ -288,12 +272,12 @@ public class Batterie{
     public Batterie(int xtemps, boolean isWeek,Seconde sec) {
         this.tabAscenseur = new ArrayList<Ascenseur>();
         this.tabTousLesAppels = new ArrayList<Appel>();
-        this.tabResaPosition = new ArrayList<Boolean>();
+        Batterie.tabResaPosition = new ArrayList<Boolean>();
         tabThread = new ArrayList<Thread>();
         for(int i=0;i<6;i++){
         	//Initialise le tableau de reservation de position repos à faux. (Aucune position n'a été réservée)
         	Boolean bool = new Boolean(false);
-        	this.tabResaPosition.add(bool);
+        	Batterie.tabResaPosition.add(bool);
         }
         
         try
@@ -322,9 +306,9 @@ public class Batterie{
         tabPositionJournee.add(0);
         tabPositionJournee.add(0);
         tabPositionJournee.add(-2);
-        this.tabPositionJournee = tabPositionJournee;
-        this.tabPositionWeekEnd = tabPositionWeekEnd;
-        
+        Batterie.tabPositionJournee = tabPositionJournee;
+        Batterie.tabPositionWeekEnd = tabPositionWeekEnd;
+        Batterie.semaine = isWeek;
         Ascenseur ascenseur0;
         Ascenseur ascenseur1;
         Ascenseur ascenseur2;
@@ -375,6 +359,11 @@ public class Batterie{
         t5.start();
         
         this.tabThread.add(t0);
+        this.tabThread.add(t1);
+        this.tabThread.add(t2);
+        this.tabThread.add(t3);
+        this.tabThread.add(t4);
+        this.tabThread.add(t5);
         
 		this.tabAscenseur.add(ascenseur0);
     	this.tabAscenseur.add(ascenseur1);

@@ -1,7 +1,6 @@
 package ascenseur;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -200,7 +199,7 @@ public class Ascenseur extends Observable implements Runnable{
 		for(;;){
 			while(!this.tabDestination.isEmpty()){
 				System.out.println("ascenseur N°: " + idAscenseur + "  tabDestination: " + tabDestination);
-			
+				
 			      setChanged();
 			      notifyObservers("deplacement");
 				
@@ -233,23 +232,21 @@ public class Ascenseur extends Observable implements Runnable{
 					this.sec.attenteSeconde(5);
 				}
 			}
-		enAcceleration=0;
-		repositionnement();		
-		Thread.sleep(100);
+			enAcceleration=0;
+			repositionnement();		
+			Thread.sleep(100);
 		}
-		
-		
 	}	
 	
 	void repositionnement() throws InterruptedException{
 		// REPOSITIONNEMENT
-	      
-		
+	
 		if(positionActuelle != positionRepo){
-			this.tabDestination.add(positionRepo);
-			System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner");
 			this.enRepositionnement = true;
-			
+			//assigne la position de repositionnement
+		    Batterie.repositionnement(this);
+		    this.tabDestination.add(positionRepo);
+			System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner");
 			//////////////////////////
 			setChanged();
 		    notifyObservers("repo");
