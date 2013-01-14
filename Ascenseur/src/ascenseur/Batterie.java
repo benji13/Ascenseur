@@ -274,9 +274,10 @@ public class Batterie{
         this.tabTousLesAppels = new ArrayList<Appel>();
         Batterie.tabResaPosition = new ArrayList<Boolean>();
         tabThread = new ArrayList<Thread>();
+       
         for(int i=0;i<6;i++){
         	//Initialise le tableau de reservation de position repos à faux. (Aucune position n'a été réservée)
-        	Boolean bool = new Boolean(false);
+        	Boolean bool = new Boolean(true);
         	Batterie.tabResaPosition.add(bool);
         }
         
