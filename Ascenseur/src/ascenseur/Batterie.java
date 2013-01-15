@@ -307,9 +307,9 @@ public class Batterie{
         tabPositionWeekEnd.add(38);
         tabPositionWeekEnd.add(38);
         tabPositionWeekEnd.add(38);
-        tabPositionJournee.add(0);
-        tabPositionJournee.add(0);
-        tabPositionJournee.add(-2);
+        tabPositionWeekEnd.add(0);
+        tabPositionWeekEnd.add(0);
+        tabPositionWeekEnd.add(-2);
         Batterie.tabPositionJournee = tabPositionJournee;
         Batterie.tabPositionWeekEnd = tabPositionWeekEnd;
         Batterie.semaine = isWeek;
