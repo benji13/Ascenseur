@@ -17,6 +17,7 @@ public class Calendrier extends Thread{
 		this.sec = sec;
 	}
 	
+	
 	// VARIABLES
 	private Chronometre chrono;
 	private boolean isWeek;

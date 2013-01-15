@@ -96,6 +96,7 @@ public class Batterie{
 	        else
 	        	tabRepositionement = Batterie.tabPositionWeekEnd;
 	        
+	        
 	        for(i=0;i<6;i++){
 	        	//Si la position n'a pas été réservée
 	        	if(!Batterie.tabResaPosition.get(i)){

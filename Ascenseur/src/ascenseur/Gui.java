@@ -122,8 +122,7 @@ public class Gui  implements ActionListener, Observer {
 		fenetreChoix.pack();
 		fenetreChoix.setVisible(true);
 		
-		this.sec =sec;
-		
+		this.sec =sec;	
 	}
 //	debut com
 	

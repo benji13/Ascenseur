@@ -19,6 +19,7 @@ public class Chronometre extends Thread{
 		private boolean running;
 		private Seconde sec;
 		
+		
 		public Chronometre(int xtemps, Seconde sec) {
 			// TODO Auto-generated constructor stub
 			this.xtemps = xtemps;

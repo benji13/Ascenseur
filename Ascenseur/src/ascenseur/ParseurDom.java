@@ -28,6 +28,7 @@ import org.xml.sax.SAXException;
  */
 public class ParseurDom {
 
+	
 	/**
 	 * @param args the command line arguments
 	 */

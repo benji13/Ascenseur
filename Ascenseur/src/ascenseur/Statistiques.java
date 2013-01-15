@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class Statistiques {
 	
+	
 	 ArrayList <Integer> tabnbAppel;
 	 ArrayList <Integer> tabConso;
 	 Integer consoTotal;

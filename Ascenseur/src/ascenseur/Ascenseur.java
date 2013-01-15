@@ -336,6 +336,7 @@ public class Ascenseur extends Observable implements Runnable{
 	 * @return
 	 */
 	public void traitementAppel() {
+		
 		// TODO Auto-generated method stub
 		ArrayList<Appel> tabAppelAsupprimer = new ArrayList<Appel>();
 		ArrayList<Integer> tabSourceAsupprimer = new ArrayList<Integer>();

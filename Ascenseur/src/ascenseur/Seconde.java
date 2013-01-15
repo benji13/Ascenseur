@@ -10,4 +10,5 @@ public class Seconde {
 		 }
 	 public synchronized void declenchementSeconde () { /*System.out.println("Declenchement seconde");*/notifyAll () ; }
 
+	 
 }
