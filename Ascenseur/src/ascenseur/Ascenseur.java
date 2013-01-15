@@ -226,6 +226,11 @@ public class Ascenseur extends Observable implements Runnable{
 				
 				//les appels correspondant à cet etages passe en traité
 				if(positionActuelle == this.tabDestination.get(0)){
+					
+					//////////////////////////
+					setChanged();
+					notifyObservers("deplacement");
+					//////////////////////////
 					traitementAppel();	
 					System.out.println("Ascenseur "+ idAscenseur +" :Arrêt");
 					//Thread.sleep((5*1000)/xtemps);
@@ -337,6 +342,11 @@ public class Ascenseur extends Observable implements Runnable{
 	 */
 	public void traitementAppel() {
 		
+		//////////////////////////
+		setChanged();
+		notifyObservers("listAppel");
+		//////////////////////////
+		
 		// TODO Auto-generated method stub
 		ArrayList<Appel> tabAppelAsupprimer = new ArrayList<Appel>();
 		ArrayList<Integer> tabSourceAsupprimer = new ArrayList<Integer>();
@@ -363,6 +373,12 @@ public class Ascenseur extends Observable implements Runnable{
 	public void triAppel() {
 		//Fonction triant les appels en attente
 		//remplissage d'un tableau avec les destinations des appels
+		
+		//////////////////////////
+		setChanged();
+		notifyObservers("listAppel");
+		//////////////////////////
+
 		for (Appel appel : this.tabAppelAtraiter) {
 			this.tabDestination.add(appel.getDestAppel());
 			if(appel.getSourceAppel() != this.positionActuelle)
