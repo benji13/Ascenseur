@@ -96,7 +96,7 @@ public class Batterie{
 	        else
 	        	tabRepositionement = Batterie.tabPositionWeekEnd;
 	        
-	        
+	        System.out.println(unAscenseur.getIdAscenseur()+" : "+Batterie.tabResaPosition);
 	        for(i=0;i<6;i++){
 	        	//Si la position n'a pas été réservée
 	        	if(!Batterie.tabResaPosition.get(i)){
@@ -106,11 +106,11 @@ public class Batterie{
 		        	{
 		        		ecart = temp;
 		        		id = i;
-		        		//Reservation de l'emplacement
-		        		Batterie.tabResaPosition.set(id, true);
 		        	}
 	        	}
 	        }
+    		//Reservation de l'emplacement
+    		Batterie.tabResaPosition.set(id, true);
 	        unAscenseur.setPositionRepo(tabRepositionement.get(id));
     	}
         
@@ -121,11 +121,13 @@ public class Batterie{
     	int id=0;
     	
     	for(int i=0;i<6;i++){
-    		if(etage==tabRepositionement.get(i)){
+    		if(Batterie.tabResaPosition.get(i) && etage==tabRepositionement.get(i)){
     			id=i;
     		}
     	}
+    	
     	Batterie.tabResaPosition.set(id, false);
+    	System.out.println("Liberation de la reservation de l'ascenseur " +Batterie.tabResaPosition);
     }
     /**
      * Methode permettant de marquer un Appel comme "traite"

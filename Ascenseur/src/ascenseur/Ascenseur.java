@@ -354,15 +354,17 @@ public class Ascenseur extends Observable implements Runnable{
 		tabAppelAsupprimer = rechercheAppel(this.positionActuelle);
 		tabSourceAsupprimer = rechercheSource(this.positionActuelle);
 		
+		for(int i=0;i<tabAppelAsupprimer.size();i++){
+			tabAppelAsupprimer.get(i).setTraite(true);
+		}
+		
 		//Déplace les appels de Atraiter vers Traiter
 		
 		tabAppelsTraites.addAll(tabAppelAsupprimer);
 		tabAppelAtraiter.removeAll(tabAppelAsupprimer);
 		this.tabDestination.removeAll(tabSourceAsupprimer);
-		//System.out.println("tabAppelAsupprimer" + tabAppelAsupprimer);
-		//System.out.println("tabAppelsATraiter" + tabAppelAtraiter);
-		//System.out.println("tabAppelsTraites" + tabAppelsTraites);
-		//System.out.println("tabDestination" + tabDestination);
+		
+		
 		
 	}
 	
