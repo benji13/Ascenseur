@@ -318,7 +318,7 @@ public class Gui  implements ActionListener, Observer {
 		 */
 		panelTableau.setBorder(new TitledBorder("Traitement des appels"));
 		//tableauFile = new JTable(fileAppel, colonnesAppel);
-		model.setNumRows(4);
+		//model.setNumRows(4);
 		model.setColumnIdentifiers(colonnesAppel);
 		model.insertRow(0, fileAppel);
 		tableauFile = new JTable(model);
@@ -566,7 +566,23 @@ public class Gui  implements ActionListener, Observer {
 			laBatterie = new Batterie(xtemps, false,sec);
 		  }
 		if(arg0.getSource() == menuApropos){
-			System.out.println("A propos");
+			JDialog aPropos = new JDialog(fenetreManu,"A propos",true);
+			JPanel aProposg = new JPanel();
+			JPanel aProposd = new JPanel();
+			aProposd.setLayout(new GridLayout(4,1));
+			ImageIcon antIcon = new ImageIcon("ascenseur.gif");
+			JLabel LImage = new JLabel(antIcon);
+			aProposg.add(LImage);
+			aProposd.add(new JLabel("Groupe I - M²B²T"));
+			aProposd.add(new JLabel("Camus - Courvoisier - Ndiaye - Olivier - Pollet-Villard"));
+			aProposd.add(new JLabel("Projet Ascenseur V1.0"));
+			aProposd.add(new JLabel("Janvier 2013"));
+			aPropos.add(aProposg,BorderLayout.WEST);
+			aPropos.add(aProposd,BorderLayout.EAST);
+			aPropos.pack();
+			aPropos.setVisible(true);
+			
+			aPropos.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		  }
 		if(arg0.getSource() == menuQuitter){
 			System.exit(0);
@@ -671,7 +687,7 @@ public class Gui  implements ActionListener, Observer {
 //			fileAppel[2] = laBatterie.getTabAscenseur().get(0).getIdAscenseur();
 //			fileAppel[3] = laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getEtatAppel();
 //			
-//			tableauFile.removeAll();
+			//tableauFile.removeAll();
 //			model.removeRow(0);
 //			model.insertRow(0, fileAppel);
 //			
@@ -681,6 +697,24 @@ public class Gui  implements ActionListener, Observer {
 //			System.out.println(laBatterie.getTabAscenseur().get(0).getIdAscenseur());
 //			System.out.println(laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getEtatAppel());
 //			
+			int i, j;
+			
+			for(i=0;i<model.getRowCount();i++){
+				model.removeRow(i);
+			}
+			
+			
+			for(i=0;i<6;i++){
+				if(laBatterie.getTabAscenseur().get(i).getTabAppelAtraiter().size() != 0){
+					for(j=0;j<laBatterie.getTabAscenseur().get(i).getTabAppelAtraiter().size();j++){
+						fileAppel[0] = laBatterie.getTabAscenseur().get(i).getTabAppelAtraiter().get(j).getSourceAppel();
+						fileAppel[1] = laBatterie.getTabAscenseur().get(i).getTabAppelAtraiter().get(j).getDestAppel();
+						fileAppel[2] = laBatterie.getTabAscenseur().get(i).getIdAscenseur();
+						fileAppel[3] = laBatterie.getTabAscenseur().get(i).getTabAppelAtraiter().get(j).getEtatAppel();
+						model.insertRow(i+j, fileAppel);
+					}
+				}
+			}
 		
 		}
 		
