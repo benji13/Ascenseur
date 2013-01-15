@@ -139,10 +139,7 @@ public class Gui  implements ActionListener, Observer {
 		
 		xtemps = 1;
 
-
-		laBatterie = new Batterie(xtemps, true,sec);
-		for (i=0;i<6;i++){
-			laBatterie.getTabAscenseur().get(i).addObserver(this);
+		
 
 		
 	//		laBatterie.creationAppelManu(-1, 15);
@@ -157,7 +154,7 @@ public class Gui  implements ActionListener, Observer {
 	//		laBatterie.assignerAppel();
 	//		laBatterie.creationAppelManu(-1, 5);
 	//		laBatterie.assignerAppel();
-		}
+
 		
 	}
 	
@@ -542,8 +539,19 @@ public class Gui  implements ActionListener, Observer {
 	public void actionPerformed(ActionEvent arg0) {
 			
 		if(arg0.getSource() == buttonManu){
+			int i;
 			  fenetreManu.setVisible(true);
 			  fenetreChoix.setVisible(false);
+			  
+			  if(radioJour.isSelected()){
+					laBatterie = new Batterie(xtemps, true,sec);
+				}
+				else if(radioSoir.isSelected()){
+					laBatterie = new Batterie(xtemps, false,sec);
+				}
+				for (i=0;i<6;i++){
+					laBatterie.getTabAscenseur().get(i).addObserver(this);
+				}
 		  }
 		
 		if(arg0.getSource() == buttonAuto){
@@ -697,24 +705,24 @@ public class Gui  implements ActionListener, Observer {
 //			System.out.println(laBatterie.getTabAscenseur().get(0).getIdAscenseur());
 //			System.out.println(laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getEtatAppel());
 //			
-			int i, j;
-			
-			for(i=0;i<model.getRowCount();i++){
-				model.removeRow(i);
-			}
-			
-			
-			for(i=0;i<6;i++){
-				if(laBatterie.getTabAscenseur().get(i).getTabAppelAtraiter().size() != 0){
-					for(j=0;j<laBatterie.getTabAscenseur().get(i).getTabAppelAtraiter().size();j++){
-						fileAppel[0] = laBatterie.getTabAscenseur().get(i).getTabAppelAtraiter().get(j).getSourceAppel();
-						fileAppel[1] = laBatterie.getTabAscenseur().get(i).getTabAppelAtraiter().get(j).getDestAppel();
-						fileAppel[2] = laBatterie.getTabAscenseur().get(i).getIdAscenseur();
-						fileAppel[3] = laBatterie.getTabAscenseur().get(i).getTabAppelAtraiter().get(j).getEtatAppel();
-						model.insertRow(i+j, fileAppel);
-					}
-				}
-			}
+//			int i, j;
+//			
+//			for(i=0;i<model.getRowCount();i++){
+//				model.removeRow(i);
+//			}
+//			
+//			
+//			for(i=0;i<6;i++){
+//				if(laBatterie.getTabAscenseur().get(i).getTabAppelsTraites().size() != 0){
+//					for(j=0;j<laBatterie.getTabAscenseur().get(i).getTabAppelsTraites().size();j++){
+//						fileAppel[0] = laBatterie.getTabAscenseur().get(i).getTabAppelsTraites().get(j).getSourceAppel();
+//						fileAppel[1] = laBatterie.getTabAscenseur().get(i).getTabAppelsTraites().get(j).getDestAppel();
+//						fileAppel[2] = laBatterie.getTabAscenseur().get(i).getIdAscenseur();
+//						fileAppel[3] = laBatterie.getTabAscenseur().get(i).getTabAppelsTraites().get(j).getEtatAppel();
+//						model.insertRow((i*6)+j, fileAppel);
+//					}
+//				}
+//			}
 		
 		}
 		
