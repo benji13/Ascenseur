@@ -20,7 +20,7 @@ public class Batterie{
     private static ArrayList<Integer> tabPositionWeekEnd;
     private static ArrayList<Boolean> tabResaPosition;
     private ArrayList<Thread> tabThread ;
-    private Calendrier cal;
+    private static Calendrier cal;
     private static boolean semaine; //true si en semaine, false si en week end 
     
     public static void setSemaine(boolean semaine) {
@@ -139,8 +139,8 @@ public class Batterie{
      * @param uneDate
      * @param unAppel 
      */
-    void majDateFinAppel(Appel unAppel){
-        unAppel.setDateFin(this.cal.getDateActuelle().getTime());
+    public static void majDateFinAppel(Appel unAppel){
+        unAppel.setDateFin(Batterie.cal.getDateActuelle().getTime());
         
     }//Fin majDateFinAppel
     
@@ -322,7 +322,7 @@ public class Batterie{
         
         Batterie.tabPositionJournee = tabPositionJournee;
         Batterie.tabPositionWeekEnd = tabPositionWeekEnd;
-        Batterie.semaine = isWeek;
+        this.getCal().determinerPlageHoraire();
         
         Ascenseur ascenseur0;
         Ascenseur ascenseur1;

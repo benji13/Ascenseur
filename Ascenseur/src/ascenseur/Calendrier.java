@@ -80,7 +80,6 @@ public class Calendrier extends Thread{
 			this.dateActuelle.add(Calendar.SECOND, 1);
 			//System.out.println(this.dateActuelle.getTime());
 			if(this.dateActuelle.get(Calendar.MINUTE) == 0 && this.dateActuelle.get(Calendar.SECOND) == 0){
-				
 				determinerPlageHoraire();
 				Batterie.setSemaine(this.isWeek);
 				
