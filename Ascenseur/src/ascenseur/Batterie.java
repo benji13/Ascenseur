@@ -22,7 +22,10 @@ public class Batterie{
     private ArrayList<Thread> tabThread ;
     private Calendrier cal;
     private static boolean semaine; //true si en semaine, false si en week end 
-   
+    
+    public static void setSemaine(boolean semaine) {
+		Batterie.semaine = semaine;
+	}
     public ArrayList<Boolean> getTabResaPosition() {
 		return tabResaPosition;
 	}
@@ -153,7 +156,7 @@ public class Batterie{
         int id =-1;
         int i = 0;
 		int ecart = 400;
-		int temp,nbPersonne;
+		int temp,nbPersonne,zoneCritique;
 		Appel unAppel = this.tabTousLesAppels.get((tabTousLesAppels.size()-1));
         boolean affected = false;//boolean permettant de savoir si l'appel a été affecté
         //Affecter un id à l'appel
@@ -178,7 +181,9 @@ public class Batterie{
 	    	if(!affected){
 	    		int duree = 100000000;
 	    		for(i=0;i<6;i++){
-	    			if(!this.tabAscenseur.get(i).isFull() && this.tabAscenseur.get(i).isSurLaRoute(unAppel) && !this.tabAscenseur.get(i).isEnRepositionnement()){
+	    			//Si la source de l'appel se trouve à moins de 2 etages d'ecart l'ascenseur ne doit pas etre séléctioné, car l'ascenseur ne pourra pas s'arrêter
+	    			zoneCritique = Math.abs(this.tabAscenseur.get(i).getPositionActuelle() - unAppel.getSourceAppel());
+	    			if(!this.tabAscenseur.get(i).isFull() && !this.tabAscenseur.get(i).isEnRepositionnement() && zoneCritique>2 &&this.tabAscenseur.get(i).isSurLaRoute(unAppel) ){
     					temp = this.tabAscenseur.get(i).calculDureeTraitementAppel(unAppel);
     					if(temp<duree){
     		        		duree = temp;
@@ -287,6 +292,7 @@ public class Batterie{
         try
         {
         	this.cal = new Calendrier(xtemps, isWeek, sec);
+        	this.cal.start();
         	this.cal.getChrono().start();
         }
         catch (InterruptedException e)
