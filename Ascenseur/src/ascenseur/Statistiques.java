@@ -6,12 +6,17 @@ import java.util.Date;
 
 public class Statistiques {
 	
+	public Statistiques(Seconde sec) {
+		// TODO Auto-generated constructor stub
+		this.sec = sec;
+	}
 	
 	 ArrayList <Integer> tabnbAppel;
 	 ArrayList <Integer> tabConso;
 	 Integer consoTotal;
 	 Integer nbAppelTotal;
 	 Date totalDuree;
+	 Seconde sec;
 	 
 	 public Integer getConsoTotal() {
 		return consoTotal;
@@ -43,12 +48,14 @@ public class Statistiques {
 	public void setTotalDuree(Date totalDuree) {
 		this.totalDuree = totalDuree;
 	}
+	
+	
 	/**
 	 *  
 	 * @param unBatterie
 	 */
-	 void calculTotalDuree(Batterie unBatterie){
-	
+	 void calculTotalDuree(Batterie laBatterie){
+		 long duree = laBatterie.getCal().getChrono().getActuTime();
 	 }
 	 
 	 void calculTotalConso(ArrayList <Ascenseur> tabAscenseur){

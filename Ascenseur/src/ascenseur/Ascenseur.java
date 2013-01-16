@@ -28,6 +28,7 @@ public class Ascenseur extends Observable implements Runnable{
 	private int tempsParcoursAscenseur;
 	private int xtemps;
 	private Seconde sec;
+	private Batterie laBatterie;
 	
 	/**
 	 * @return
@@ -223,7 +224,6 @@ public class Ascenseur extends Observable implements Runnable{
 				//calcul temps du parcours
 				sleepParcours();
 				
-				
 				//les appels correspondant à cet etages passe en traité
 				if(positionActuelle == this.tabDestination.get(0)){
 					
@@ -356,13 +356,16 @@ public class Ascenseur extends Observable implements Runnable{
 		
 		for(int i=0;i<tabAppelAsupprimer.size();i++){
 			tabAppelAsupprimer.get(i).setTraite(true);
+			Batterie.majDateFinAppel(tabAppelAsupprimer.get(i));
 		}
 		
 		//Déplace les appels de Atraiter vers Traiter
-		
 		tabAppelsTraites.addAll(tabAppelAsupprimer);
 		tabAppelAtraiter.removeAll(tabAppelAsupprimer);
 		this.tabDestination.removeAll(tabSourceAsupprimer);
+		
+		
+		
 		
 		
 		
@@ -538,8 +541,12 @@ public class Ascenseur extends Observable implements Runnable{
 		}
 		if(monte==true)
 			positionActuelle++;
+			//Consommation
+			this.consommation += 1500;
 		if(monte==false)
 			positionActuelle--;
+			//Consommation
+			this.consommation += 1500;
 		System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
 	}
 	
