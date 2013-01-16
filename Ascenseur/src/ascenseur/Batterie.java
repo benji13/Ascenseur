@@ -90,7 +90,7 @@ public class Batterie{
 //Cette methode va,pour un ascenseur donné, lui affecter une position de repositionnement la plus appropiée
     public static void repositionnement(Ascenseur unAscenseur) throws InterruptedException{
     	if(unAscenseur.getTabDestination().isEmpty() ){	
-	        int ecart = 40, i, id=-1;
+	        int ecart = 400, i, id=-1;
 	        ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
 	        
 	        if(Batterie.semaine){
@@ -116,13 +116,11 @@ public class Batterie{
     		Batterie.tabResaPosition.set(id, true);
 	        unAscenseur.setPositionRepo(tabRepositionement.get(id));
     	}
-        
     }//Fin repositionnement
-    
     
     public void libererReservation(ArrayList<Integer> tabRepositionement,int etage){
     	int id=0;
-    	
+    	System.out.println(tabRepositionement);
     	for(int i=0;i<6;i++){
     		if(Batterie.tabResaPosition.get(i) && etage==tabRepositionement.get(i)){
     			id=i;
@@ -130,8 +128,11 @@ public class Batterie{
     	}
     	
     	Batterie.tabResaPosition.set(id, false);
-    	System.out.println("Liberation de la reservation de l'ascenseur " +Batterie.tabResaPosition);
+    	System.out.println("liberation de "+tabRepositionement.get(id));   	
     }
+    
+    
+    
     /**
      * Methode permettant de marquer un Appel comme "traite"
      * @return void
@@ -203,15 +204,16 @@ public class Batterie{
         else
         	tabRepositionement = Batterie.tabPositionWeekEnd;
         
-        if(affected)
-        {
+        if(affected){
         	libererReservation(tabRepositionement,this.tabAscenseur.get(id).getPositionRepo());
+        	System.out.println("Liberation de la reservation de l'ascenseur "+ this.tabAscenseur.get(id).getIdAscenseur() +" " +Batterie.tabResaPosition);
     		nbPersonne = this.tabAscenseur.get(id).getNbPersonne();
     		this.tabAscenseur.get(id).addAppel(unAppel);
 			this.tabAscenseur.get(id).setNbPersonne(nbPersonne++);
 			tabAscenseur.get(id).triAppel();
         }
-    return tabAscenseur.get(id);
+        
+        return tabAscenseur.get(id);
     }//Fin assignerAppel
     
     
@@ -316,9 +318,12 @@ public class Batterie{
         tabPositionWeekEnd.add(0);
         tabPositionWeekEnd.add(0);
         tabPositionWeekEnd.add(-2);
+        
+        
         Batterie.tabPositionJournee = tabPositionJournee;
         Batterie.tabPositionWeekEnd = tabPositionWeekEnd;
         Batterie.semaine = isWeek;
+        
         Ascenseur ascenseur0;
         Ascenseur ascenseur1;
         Ascenseur ascenseur2;

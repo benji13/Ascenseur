@@ -68,19 +68,23 @@ public class Calendrier extends Thread{
 	//FONCTIONS
 	public void determinerPlageHoraire(){
 		isWeek = true;
-		if(getDateActuelle().get(Calendar.HOUR) > 18 && getDateActuelle().get(Calendar.HOUR) < 7 ){
+		if(getDateActuelle().get(Calendar.HOUR) > 18 || getDateActuelle().get(Calendar.HOUR) < 7 ){
 			isWeek = false;
 		}
+		Batterie.setSemaine(isWeek);
 	}
 
 	public void afficherHeure() throws InterruptedException{
 		for(;;){
 			sec.attenteSeconde(1);
 			this.dateActuelle.add(Calendar.SECOND, 1);
-			System.out.println(this.dateActuelle.getTime());
-//			if(this.dateActuelle.get(Calendar.MINUTE) == 0 && this.dateActuelle.get(Calendar.SECOND) == 0){
-//				determinerPlageHoraire();
-//			}
+			//System.out.println(this.dateActuelle.getTime());
+			if(this.dateActuelle.get(Calendar.MINUTE) == 0 && this.dateActuelle.get(Calendar.SECOND) == 0){
+				
+				determinerPlageHoraire();
+				Batterie.setSemaine(this.isWeek);
+				
+			}
 
 		}
 	}

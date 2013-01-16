@@ -251,7 +251,7 @@ public class Ascenseur extends Observable implements Runnable{
 			//assigne la position de repositionnement
 		    Batterie.repositionnement(this);
 		    this.tabDestination.add(positionRepo);
-			System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner");
+			System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner au " + this.positionActuelle);
 			//////////////////////////
 			setChanged();
 		    notifyObservers("repo");
