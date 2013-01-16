@@ -19,13 +19,13 @@ public class Init {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 		Seconde sec = new Seconde();
-		Calendrier cal = new Calendrier(600, true, sec);
+		Calendrier cal = new Calendrier(1, true, sec);
 		
 //		cal.start();
 //		Thread.sleep(1000);
 //		cal.getChrono().start();
 //		
-		
+//		
 		
 		Gui fen = new Gui(sec);
 		fen.Init();

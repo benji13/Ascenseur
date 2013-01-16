@@ -66,13 +66,11 @@ public class Chronometre extends Thread{
 		    else {
 		        ecoule = (stopTime - startTime);
 		    }
-	
+		    
 		    if(this.actuTime!=((ecoule*xtemps)/1000) && ((ecoule*xtemps) % 1000) == 0){
 		    	sec.declenchementSeconde();
 		    	this.actuTime = (ecoule*xtemps)/1000;
 		    }
-//		    return (ecoule*xtemps)/1000;
-
 		}
 		
 		public void chronometrer(){

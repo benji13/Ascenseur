@@ -4,7 +4,7 @@ public class Seconde {
 	 public synchronized void attenteSeconde   (int nbSec) throws InterruptedException {
 		 
 		 	for(int i=0;i<nbSec;i++){
-		 		//System.out.println("Attente "+i+" seconde");
+//		 		System.out.println("Attente "+i+" seconde");
 		 		wait () ; 
 		 	}
 		 }
