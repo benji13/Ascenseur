@@ -31,6 +31,7 @@ public class Init {
 		fen.Init();
 		fen.fenetreManu();
 		fen.fenetreStats();
+		fen.fenetreVisu();
 		
 		
 		

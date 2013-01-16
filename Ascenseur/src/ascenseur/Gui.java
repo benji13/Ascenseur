@@ -1,6 +1,7 @@
 package ascenseur;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -13,6 +14,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -26,7 +28,7 @@ import java.util.Observer;
  *Gui fen = new Gui();
  *fen.fenetreManu();
  *
- */
+  */
 public class Gui  implements ActionListener, Observer {
 	
 	JFrame fenetreChoix;
@@ -36,19 +38,21 @@ public class Gui  implements ActionListener, Observer {
 	ButtonGroup groupChoix;
 	
 	
-	JFrame fenetreManu, fenetreStats;
-	JPanel panelMenu, panelGauche, panelDroit, panelAppel, panelUtilisateur, panelAscenseur, panelTableau, panelStats, panelHaut, panelBas, panel1, panel2, panel3;
+	JFrame fenetreManu, fenetreStats, fenetreVisu;
+	JPanel panelMenu, panelGauche, panelMilieu, panelDroit, panelAppel, panelUtilisateur, panelAscenseur, panelTableau, panelStats, panelHaut, panelBas, panel1, panel2, panel3;
 	JMenuBar menuBar;
 	JMenu menu, sousMenu;
 	JMenuItem menuItem, menuResetJ, menuResetS, menuApropos, menuQuitter;
-	JButton buttonValider, buttonStats, buttonMonter, bouttonDescendre;
+	JButton buttonValider, buttonStats, buttonMonter, bouttonDescendre, bouttonVisu;
 	JTextField ascA, ascB, ascC, ascD, ascE, ascF, choix, nbr1, nbr2, nbr3, nbr4, nbr5, nbr6, conso1, conso2, conso3, conso4, conso5, conso6, ConsoMoy, ConsoTot, AttMoy, NbrAppTot, DureeSimu;
-	JComboBox jeSuis, jeVais;
+	JComboBox jeSuis, jeVais, nbrPersonne;
 	Integer[] listEtages;
 	Integer[] listEtagesDyna;
+	Integer[] listPersonne;
 	JTable tableauFile;
-	JLabel a, b, c, d, e, f, labelAppel, labelUtilisateur, labelAscenseurs, labelStats, labelNbre, labelConso, labelVide, labelConsoMoy, labelConsoTot, labelAttMoy, labelNbrAppTot, labelDureeSimu; 
+	JLabel a, b, c, d, e, f, labelAppel, labelUtilisateur, labelAscenseurs, labelStats, labelNbre, labelConso, labelVide, labelConsoMoy, labelConsoTot, labelAttMoy, labelNbrAppTot, labelDureeSimu, labelHorloge; 
 	String[] ascenseurString = {"A","B","C","D","E","F"};
+	Border  blackline = BorderFactory.createLineBorder(Color.black);
 	
 	Object[] colonnesAppel = {"Origine",
             "Destination",
@@ -57,21 +61,10 @@ public class Gui  implements ActionListener, Observer {
 	Object[] fileAppel = {"null", "null","null", "null"};
 	
 	DefaultTableModel model = new DefaultTableModel();
-	
-//	= {
-//		    {"4", "6",
-//		     "E", "En cours"},
-//		    {"12", "21",
-//		     "A", "En cours"},
-//		    {"34", "33",
-//		     "C", "En attente"},
-//		    {"3", "23",
-//		     "F", "En attente"},
-//		    {"31", "17",
-//		     "F", "En attente"}
-//		};
-	
-	
+
+	JSlider slider0, slider1, slider2, slider3, slider4, slider5;
+	static final int RDC= 0;
+	static final int SOMMET = 44;
 	
 	Batterie laBatterie;
 	int xtemps;
@@ -174,6 +167,7 @@ public class Gui  implements ActionListener, Observer {
 		 * Declaration des panels
 		 */
 		panelGauche = new JPanel();
+		panelMilieu = new JPanel();
 		panelDroit = new JPanel();
 		panelAppel = new JPanel();
 		panelUtilisateur = new JPanel();
@@ -181,7 +175,7 @@ public class Gui  implements ActionListener, Observer {
 		panelTableau = new JPanel();
 		//panelStats = new JPanel();
 		panelGauche.setLayout(new BoxLayout(panelGauche, BoxLayout.PAGE_AXIS));
-		panelDroit.setLayout(new BoxLayout(panelDroit, BoxLayout.PAGE_AXIS));
+		panelMilieu.setLayout(new BoxLayout(panelMilieu, BoxLayout.PAGE_AXIS));
 		panelAppel.setLayout(new BoxLayout(panelAppel, BoxLayout.PAGE_AXIS));
 		panelUtilisateur.setLayout(new BoxLayout(panelUtilisateur, BoxLayout.PAGE_AXIS));
 
@@ -217,7 +211,13 @@ public class Gui  implements ActionListener, Observer {
 			listEtages[i]= (i-4) ;
 		}
 		
+		listPersonne = new Integer[15];
+		for(i=0;i<15;i++){
+			listPersonne[i]= i+1;
+		}
+		
 		jeSuis = new JComboBox(listEtages);
+		jeSuis.setBorder(new TitledBorder("Etage d'appel"));
 		buttonMonter = new JButton("^^ Monter");
 		buttonMonter.setAlignmentX(Component.CENTER_ALIGNMENT);
 		buttonMonter.addActionListener(this);
@@ -235,21 +235,26 @@ public class Gui  implements ActionListener, Observer {
 		panelAppel.add(bouttonDescendre);
 		panelGauche.add(panelAppel);
 		
-		panelAppel.setBorder(new TitledBorder("Appel"));
+		panelAppel.setBorder(new TitledBorder(blackline, "Appel", TitledBorder.CENTER, 0, null));
+
 		
 		
 		
 		jeVais = new JComboBox(listEtages);
+		jeVais.setBorder(new TitledBorder("Etage de destination"));
 		jeVais.setEnabled(false);
+		nbrPersonne = new JComboBox(listPersonne);
+		nbrPersonne.setBorder(new TitledBorder("Nbr de personne"));
 		buttonValider = new JButton("Valider");
 		buttonValider.addActionListener(this);
 		buttonValider.setEnabled(false);
 		//panelAppel.add(labelUtilisateur);
 		panelUtilisateur.add(jeVais);
+		panelUtilisateur.add(nbrPersonne);
 		panelUtilisateur.add(buttonValider);
 		panelGauche.add(panelUtilisateur);
 		
-		panelUtilisateur.setBorder(new TitledBorder("Utilisateur"));
+		panelUtilisateur.setBorder(new TitledBorder(blackline, "Utilisateur", TitledBorder.CENTER, 0, null));
 		
 		
 		/**
@@ -284,24 +289,30 @@ public class Gui  implements ActionListener, Observer {
 		panelAscenseur.add(ascD);
 		panelAscenseur.add(ascE);
 		panelAscenseur.add(ascF);
-		panelAscenseur.setBorder(new TitledBorder("Ascenseurs"));
+		panelAscenseur.setBorder(new TitledBorder(blackline, "Ascenseurs", TitledBorder.CENTER, 0, null));
+
 		
-		panelDroit.add(panelAscenseur);
+		panelMilieu.add(panelAscenseur);
 		
 		/**
-		 * Panel milieu-droit contenant le tableau 
+		 * Panel milieu contenant le tableau 
 		 */
-		panelTableau.setBorder(new TitledBorder("Traitement des appels"));
+		panelTableau.setBorder(new TitledBorder(blackline, "Traitement des appels", TitledBorder.CENTER, 0, null));
 		//tableauFile = new JTable(fileAppel, colonnesAppel);
 		//model.setNumRows(4);
 		model.setColumnIdentifiers(colonnesAppel);
 		model.insertRow(0, fileAppel);
 		tableauFile = new JTable(model);
+		tableauFile.setEnabled(false);
 		tableauFile.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		JScrollPane scrollPane = new JScrollPane(tableauFile);
 		panelTableau.add(scrollPane);
-		panelDroit.add(panelTableau);
+		panelMilieu.add(panelTableau);
 		
+		
+		/**
+		 * Panel de droite contenant le l'horloge 
+		 */
 		
 		
 		
@@ -312,16 +323,24 @@ public class Gui  implements ActionListener, Observer {
 		panelStats = new JPanel();
 		buttonStats = new JButton("Acceder aux statistiques");
 		buttonStats.addActionListener(this);
+		
+		bouttonVisu = new JButton("Surprise !!!");
+		bouttonVisu.addActionListener(this);
+		
+		labelHorloge = new JLabel();
 		//panelStats.add(labelStats);
 		panelStats.add(buttonStats);
-		panelDroit.add(panelStats);
-		panelStats.setBorder(new TitledBorder("Ascenseurs"));
+		panelStats.add(bouttonVisu);
+		panelStats.add(labelHorloge);
+		panelMilieu.add(panelStats);
+		
+		panelStats.setBorder(new TitledBorder(blackline, "Informations", TitledBorder.CENTER, 0, null));
 		
 		/**
 		 * Ajout des differents panels   la fenetre principale 
 		 */
 		fenetreManu.add(panelGauche, BorderLayout.LINE_START);
-		fenetreManu.add(panelDroit, BorderLayout.LINE_END);
+		fenetreManu.add(panelMilieu, BorderLayout.CENTER);
 		
 		fenetreManu.pack();				
 
@@ -489,6 +508,86 @@ public class Gui  implements ActionListener, Observer {
 		
 	}
 	
+	
+	/**
+	 * 
+	 * Fenetre de visualisation
+	 * 
+	 */
+public void fenetreVisu(){
+		
+		fenetreVisu = new JFrame("M²B²T - Visualisation");
+		fenetreVisu.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		fenetreVisu.setResizable(false);
+		
+		JPanel panelSlider = new JPanel();
+		panelSlider.setLayout(new GridLayout(1,6));
+		
+		Hashtable labelTable = new Hashtable();
+		labelTable.put( new Integer( 0 ), new JLabel("Sous-Sol") );
+		labelTable.put( new Integer( 4 ), new JLabel("RDC") );
+		labelTable.put( new Integer( SOMMET ), new JLabel("Sommet") );
+		
+		slider0 = new JSlider(JSlider.VERTICAL, RDC, SOMMET, 0);
+		slider0.setMajorTickSpacing(1);
+		slider0.setPaintTicks(true);
+		slider0.setLabelTable( labelTable );
+		slider0.setPaintLabels(true);
+		
+		
+		slider1 = new JSlider(JSlider.VERTICAL, RDC, SOMMET, 0);
+		slider1.setMajorTickSpacing(1);
+		slider1.setPaintTicks(true);
+		slider1.setLabelTable( labelTable );
+		slider1.setPaintLabels(true);
+
+		slider2 = new JSlider(JSlider.VERTICAL, RDC, SOMMET, 0);
+		slider2.setMajorTickSpacing(1);
+		slider2.setPaintTicks(true);
+		slider2.setLabelTable( labelTable );
+		slider2.setPaintLabels(true);
+		
+		slider3 = new JSlider(JSlider.VERTICAL, RDC, SOMMET, 0);
+		slider3.setMajorTickSpacing(1);
+		slider3.setPaintTicks(true);
+		slider3.setLabelTable( labelTable );
+		slider3.setPaintLabels(true);
+		
+		slider4 = new JSlider(JSlider.VERTICAL, RDC, SOMMET, 0);
+		slider4.setMajorTickSpacing(1);
+		slider4.setPaintTicks(true);
+		slider4.setLabelTable( labelTable );
+		slider4.setPaintLabels(true);
+
+		
+		slider5 = new JSlider(JSlider.VERTICAL, RDC, SOMMET, 0);
+		slider5.setMajorTickSpacing(1);
+		slider5.setPaintTicks(true);
+		slider5.setLabelTable( labelTable );
+		slider5.setPaintLabels(true);
+		
+		panelSlider.add(slider0);
+		panelSlider.add(slider1);
+		panelSlider.add(slider2);
+		panelSlider.add(slider3);
+		panelSlider.add(slider4);
+		panelSlider.add(slider5);
+			
+		fenetreVisu.add(panelSlider);
+		
+		/**
+		 * Fait disparaitre la fenetre de statistique et apparaitre la fenetre manuelle lors de la fermeture de la fenetre 
+		 */
+		fenetreVisu.addWindowListener(new WindowAdapter() {
+		      public void windowClosing(WindowEvent e) {
+		    	  fenetreVisu.setVisible(false);
+		      }
+		    });
+		
+		fenetreVisu.pack();
+		fenetreVisu.setVisible(false);
+	}
+	
 	public void fenetreAuto(){
 		
 	}
@@ -530,6 +629,19 @@ public class Gui  implements ActionListener, Observer {
 				for (i=0;i<6;i++){
 					laBatterie.getTabAscenseur().get(i).addObserver(this);
 				}
+				
+				ascA.setText(""+laBatterie.getTabAscenseur().get(0).getPositionActuelle());
+				ascB.setText(""+laBatterie.getTabAscenseur().get(1).getPositionActuelle());
+				ascC.setText(""+laBatterie.getTabAscenseur().get(2).getPositionActuelle());
+				ascD.setText(""+laBatterie.getTabAscenseur().get(3).getPositionActuelle());
+				ascE.setText(""+laBatterie.getTabAscenseur().get(4).getPositionActuelle());
+				ascF.setText(""+laBatterie.getTabAscenseur().get(5).getPositionActuelle());
+				slider0.setValue(laBatterie.getTabAscenseur().get(0).getPositionActuelle()+4);
+				slider1.setValue(laBatterie.getTabAscenseur().get(1).getPositionActuelle()+4);
+				slider2.setValue(laBatterie.getTabAscenseur().get(2).getPositionActuelle()+4);
+				slider3.setValue(laBatterie.getTabAscenseur().get(3).getPositionActuelle()+4);
+				slider4.setValue(laBatterie.getTabAscenseur().get(4).getPositionActuelle()+4);
+				slider5.setValue(laBatterie.getTabAscenseur().get(5).getPositionActuelle()+4);
 		  }
 		
 		if(arg0.getSource() == buttonAuto){
@@ -541,6 +653,10 @@ public class Gui  implements ActionListener, Observer {
 		  if(arg0.getSource() == buttonStats){
 			  fenetreManu.setVisible(false);
 			  fenetreStats.setVisible(true);
+		  }
+		  
+		  if(arg0.getSource() == bouttonVisu){
+			  fenetreVisu.setVisible(true);
 		  }
 		
 		if(arg0.getSource() == menuResetJ){
@@ -646,26 +762,51 @@ public class Gui  implements ActionListener, Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		
-		if(arg1.equals("repo")){
-			
+//		if(arg1.equals("repo0")){
+//			ascA.setText(""+laBatterie.getTabAscenseur().get(0).getPositionActuelle());
+//		}
+//		if(arg1.equals("repo1")){
+//			ascB.setText(""+laBatterie.getTabAscenseur().get(1).getPositionActuelle());
+//		}
+//		if(arg1.equals("repo2")){
+//			ascC.setText(""+laBatterie.getTabAscenseur().get(2).getPositionActuelle());
+//		}
+//		if(arg1.equals("repo3")){
+//			ascD.setText(""+laBatterie.getTabAscenseur().get(3).getPositionActuelle());
+//		}
+//		if(arg1.equals("repo4")){
+//			ascE.setText(""+laBatterie.getTabAscenseur().get(4).getPositionActuelle());
+//		}
+//		if(arg1.equals("repo5")){
+//			ascF.setText(""+laBatterie.getTabAscenseur().get(5).getPositionActuelle());
+//		}
+		
+		if(arg1.equals("deplacement0") || arg1.equals("repo0")){
 			ascA.setText(""+laBatterie.getTabAscenseur().get(0).getPositionActuelle());
+			slider0.setValue(laBatterie.getTabAscenseur().get(0).getPositionActuelle()+4);
+		}
+		if(arg1.equals("deplacement1") || arg1.equals("repo1")){
 			ascB.setText(""+laBatterie.getTabAscenseur().get(1).getPositionActuelle());
+			slider1.setValue(laBatterie.getTabAscenseur().get(1).getPositionActuelle()+4);
+		}
+		if(arg1.equals("deplacement2") || arg1.equals("repo2")){
 			ascC.setText(""+laBatterie.getTabAscenseur().get(2).getPositionActuelle());
+			slider2.setValue(laBatterie.getTabAscenseur().get(2).getPositionActuelle()+4);
+		}
+		if(arg1.equals("deplacement3") || arg1.equals("repo3")){
 			ascD.setText(""+laBatterie.getTabAscenseur().get(3).getPositionActuelle());
+			slider3.setValue(laBatterie.getTabAscenseur().get(3).getPositionActuelle()+4);
+		}
+		if(arg1.equals("deplacement4") || arg1.equals("repo4")){
 			ascE.setText(""+laBatterie.getTabAscenseur().get(4).getPositionActuelle());
+			slider4.setValue(laBatterie.getTabAscenseur().get(4).getPositionActuelle()+4);
+		}
+		if(arg1.equals("deplacement5") || arg1.equals("repo5")){
 			ascF.setText(""+laBatterie.getTabAscenseur().get(5).getPositionActuelle());
+			slider5.setValue(laBatterie.getTabAscenseur().get(5).getPositionActuelle()+4);
 		}
 		
-		if(arg1.equals("deplacement")){
-			ascA.setText(""+laBatterie.getTabAscenseur().get(0).getPositionActuelle());
-			ascB.setText(""+laBatterie.getTabAscenseur().get(1).getPositionActuelle());
-			ascC.setText(""+laBatterie.getTabAscenseur().get(2).getPositionActuelle());
-			ascD.setText(""+laBatterie.getTabAscenseur().get(3).getPositionActuelle());
-			ascE.setText(""+laBatterie.getTabAscenseur().get(4).getPositionActuelle());
-			ascF.setText(""+laBatterie.getTabAscenseur().get(5).getPositionActuelle());
-		}
-		
-		if(arg1.equals("listAppel")){
+		if(arg1.equals("tabAppel")){
 			
 //			
 //			fileAppel[0] = laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getSourceAppel();
@@ -673,35 +814,22 @@ public class Gui  implements ActionListener, Observer {
 //			fileAppel[2] = laBatterie.getTabAscenseur().get(0).getIdAscenseur();
 //			fileAppel[3] = laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getEtatAppel();
 //			
-			//tableauFile.removeAll();
-//			model.removeRow(0);
-//			model.insertRow(0, fileAppel);
-//			
-//			
-//			System.out.println(laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getSourceAppel());
-//			System.out.println(laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getDestAppel());
-//			System.out.println(laBatterie.getTabAscenseur().get(0).getIdAscenseur());
-//			System.out.println(laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getEtatAppel());
-//			
-//			int i, j;
-//			
-//			for(i=0;i<model.getRowCount();i++){
-//				model.removeRow(i);
-//			}
-//			
-//			
-//			for(i=0;i<6;i++){
-//				if(laBatterie.getTabAscenseur().get(i).getTabAppelsTraites().size() != 0){
-//					for(j=0;j<laBatterie.getTabAscenseur().get(i).getTabAppelsTraites().size();j++){
-//						fileAppel[0] = laBatterie.getTabAscenseur().get(i).getTabAppelsTraites().get(j).getSourceAppel();
-//						fileAppel[1] = laBatterie.getTabAscenseur().get(i).getTabAppelsTraites().get(j).getDestAppel();
-//						fileAppel[2] = laBatterie.getTabAscenseur().get(i).getIdAscenseur();
-//						fileAppel[3] = laBatterie.getTabAscenseur().get(i).getTabAppelsTraites().get(j).getEtatAppel();
-//						model.insertRow((i*6)+j, fileAppel);
-//					}
-//				}
-//			}
-		
+
+			int i;
+			
+			for(i=0;i<model.getRowCount();i++){
+				model.removeRow(i);
+			}
+			
+			for(i=0; i<6;i++){
+				for (Appel appel : laBatterie.getTabAscenseur().get(i).tabAppelAtraiter) {
+					fileAppel[0] = appel.getSourceAppel();
+					fileAppel[1] = appel.getDestAppel();
+					fileAppel[2] = laBatterie.getTabAscenseur().get(i).getIdAscenseur();
+					fileAppel[3] = appel.getEtatAppel();
+					model.addRow(fileAppel);
+				}
+			}
 		}
 		
 	}

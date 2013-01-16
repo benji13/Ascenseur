@@ -14,7 +14,7 @@ public class Ascenseur extends Observable implements Runnable{
 	// VARIABLES
 	private int idAscenseur;
 	private boolean arret; //0 arret; 1 en deplacement
-	private ArrayList<Appel> tabAppelAtraiter;
+	public ArrayList<Appel> tabAppelAtraiter;
 	private ArrayList<Appel> tabAppelsTraites;
 	private ArrayList<Integer> tabDestination;
 	private HashSet<Integer> tabDestinationTemp;
@@ -201,7 +201,7 @@ public class Ascenseur extends Observable implements Runnable{
 				System.out.println("ascenseur N°: " + idAscenseur + "  tabDestination: " + tabDestination);
 				
 			      setChanged();
-			      notifyObservers("deplacement");
+			      notifyObservers("deplacement"+this.getIdAscenseur());
 				
 				//supprime la destination si elle correspond à l'étage actuel (Utiledans le cas où la source = l'etage à de l'ascenseur s'il est à l'arret)
 				if(positionActuelle==this.tabDestination.get(0)){
@@ -228,7 +228,7 @@ public class Ascenseur extends Observable implements Runnable{
 					
 					//////////////////////////
 					setChanged();
-					notifyObservers("deplacement");
+					notifyObservers("deplacement"+this.getIdAscenseur());
 					//////////////////////////
 					traitementAppel();	
 					System.out.println("Ascenseur "+ idAscenseur +" :Arrêt");
@@ -253,7 +253,7 @@ public class Ascenseur extends Observable implements Runnable{
 			System.out.println("Ascenseur "+ idAscenseur +" :Je vais me repositionner au " + this.positionActuelle);
 			//////////////////////////
 			setChanged();
-		    notifyObservers("repo");
+		    notifyObservers("repo"+this.getIdAscenseur());
 		    ///////////////////////////
 		}
 		
@@ -261,7 +261,7 @@ public class Ascenseur extends Observable implements Runnable{
 			
 			//////////////////////////
 			setChanged();
-		    notifyObservers("repo");
+		    notifyObservers("repo"+this.getIdAscenseur());
 			//////////////////////////
 
 		    
@@ -285,7 +285,7 @@ public class Ascenseur extends Observable implements Runnable{
 				
 				//////////////////////////
 				setChanged();
-				notifyObservers("repo");
+				notifyObservers("repo"+this.getIdAscenseur());
 				//////////////////////////
 	    
 	    
@@ -343,7 +343,7 @@ public class Ascenseur extends Observable implements Runnable{
 		
 		//////////////////////////
 		setChanged();
-		notifyObservers("listAppel");
+		notifyObservers("tabAppel");
 		//////////////////////////
 		
 		// TODO Auto-generated method stub
@@ -380,7 +380,7 @@ public class Ascenseur extends Observable implements Runnable{
 		
 		//////////////////////////
 		setChanged();
-		notifyObservers("listAppel");
+		notifyObservers("tabAppel");
 		//////////////////////////
 
 		for (Appel appel : this.tabAppelAtraiter) {
