@@ -13,10 +13,13 @@ public class Statistiques {
 	
 	 ArrayList <Integer> tabnbAppel;
 	 ArrayList <Integer> tabConso;
+	 ArrayList <Integer> tabConsoMoyenne;
 	 Integer consoTotal;
 	 Integer nbAppelTotal;
 	 Date totalDuree;
 	 Seconde sec;
+	 Integer ConsoMoyenneTotale;
+	 long attenteMoyenne;
 	 
 	 public Integer getConsoTotal() {
 		return consoTotal;
@@ -103,5 +106,38 @@ public class Statistiques {
 		 {
 			 this.tabConso.set(i, tabAscenseur.get(i).getConsommation());
 		 }
+	 }
+	 
+	 void calculConsoMoyenne(ArrayList <Ascenseur> tabAscenseur){
+		 int i;
+		 
+		 for(i=0; i<tabAscenseur.size();i++)
+		 {
+			 this.tabConsoMoyenne.set(i, tabAscenseur.get(i).getConsommation()/tabnbAppel.get(i));
+		 }
+	 }
+	 
+	 void calculConsoMoyenneTotale(ArrayList <Ascenseur> tabAscenseur){
+		 int i;
+		 
+		 for(i=0; i<tabAscenseur.size();i++)
+		 {
+			 this.ConsoMoyenneTotale += this.tabConsoMoyenne.get(i);
+		 }
+	 }
+	 
+	 void calculAttenteMoyenne(ArrayList <Ascenseur> tabAscenseur){
+		 int i;
+		 long dureeUnAppel=0;
+		 
+		 for(i=0; i<tabAscenseur.size();i++)
+		 {
+			 for (Appel unAppel : tabAscenseur.get(i).getTabAppelsTraites()) {
+				 dureeUnAppel = unAppel.getDateFin().getTime() - unAppel.getDateDebut().getTime();
+				 this.attenteMoyenne += dureeUnAppel;
+			}
+			 
+		 }
+		 this.attenteMoyenne= this.attenteMoyenne/this.nbAppelTotal;
 	 }
 }
