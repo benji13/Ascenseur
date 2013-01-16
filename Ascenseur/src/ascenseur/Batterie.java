@@ -67,7 +67,7 @@ public class Batterie{
     }
     
     public void setCal(Calendrier cal) {
-		this.cal = cal;
+		Batterie.cal = cal;
 	}
     
     public Calendrier getCal() {
@@ -196,9 +196,9 @@ public class Batterie{
 	    	}
         }
         ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
-        this.cal.determinerPlageHoraire();
+        Batterie.cal.determinerPlageHoraire();
         
-        if(this.cal.isWeek()){
+        if(Batterie.cal.isWeek()){
         	tabRepositionement = Batterie.tabPositionJournee;
         }
         else
@@ -230,7 +230,7 @@ public class Batterie{
     }//Fin creationAppel
     
     void creationAppelManu(int sourceAppel, int destAppel){
-        Appel unAppel = new Appel(sourceAppel, destAppel, this.cal.getDateActuelle().getTime());
+        Appel unAppel = new Appel(sourceAppel, destAppel, Batterie.cal.getDateActuelle().getTime());
         tabTousLesAppels.add(unAppel);
     }//Fin creationAppel
     
@@ -279,7 +279,7 @@ public class Batterie{
     
     
     //Definition du constructeur de la classe
-    public Batterie(int xtemps, boolean isWeek,Seconde sec) {
+    public Batterie(int xtemps,Seconde sec) {
         this.tabAscenseur = new ArrayList<Ascenseur>();
         this.tabTousLesAppels = new ArrayList<Appel>();
         Batterie.tabResaPosition = new ArrayList<Boolean>();
@@ -293,9 +293,9 @@ public class Batterie{
         
         try
         {
-        	this.cal = new Calendrier(xtemps, isWeek, sec);
-        	this.cal.start();
-        	this.cal.getChrono().start();
+        	Batterie.cal = new Calendrier(xtemps,sec);
+        	Batterie.cal.start();
+        	Batterie.cal.getChrono().start();
         }
         catch (InterruptedException e)
         {
@@ -340,7 +340,7 @@ public class Batterie{
         
         
         
-        if(isWeek){
+        if(Batterie.cal.isWeek()){
         	ascenseur0 = new Ascenseur(0,tabPositionJournee.get(0),xtemps,sec);
     		ascenseur1 = new Ascenseur(1,tabPositionJournee.get(1),xtemps,sec);
     		ascenseur2 = new Ascenseur(2,tabPositionJournee.get(2),xtemps,sec);

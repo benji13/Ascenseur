@@ -19,7 +19,7 @@ public class Init {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 		Seconde sec = new Seconde();
-		Calendrier cal = new Calendrier(1, true, sec);
+		Calendrier cal = new Calendrier(1,sec);
 		
 //		cal.start();
 //		Thread.sleep(1000);
