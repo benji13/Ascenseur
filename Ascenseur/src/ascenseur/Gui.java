@@ -131,7 +131,6 @@ public class Gui  implements ActionListener, Observer {
 //	debut com
 	
 	public void Init() throws InterruptedException{
-		Seconde sec = new Seconde();
 		Calendar cal1 = Calendar.getInstance(); cal1.set(2012, 01, 15, 15, 00, 00);
 		
 		xtemps = 1;	
@@ -523,10 +522,10 @@ public class Gui  implements ActionListener, Observer {
 			  fenetreChoix.setVisible(false);
 			  
 			  if(radioJour.isSelected()){
-					laBatterie = new Batterie(xtemps, true,sec);
+					laBatterie = new Batterie(xtemps,sec);
 				}
 				else if(radioSoir.isSelected()){
-					laBatterie = new Batterie(xtemps, false,sec);
+					laBatterie = new Batterie(xtemps,sec);
 				}
 				for (i=0;i<6;i++){
 					laBatterie.getTabAscenseur().get(i).addObserver(this);
@@ -546,11 +545,11 @@ public class Gui  implements ActionListener, Observer {
 		
 		if(arg0.getSource() == menuResetJ){
 			laBatterie.stopSimuBrute();
-			laBatterie = new Batterie(xtemps, true,sec);
+			laBatterie = new Batterie(xtemps,sec);
 		  }
 		if(arg0.getSource() == menuResetS){
 			laBatterie.stopSimuBrute();
-			laBatterie = new Batterie(xtemps, false,sec);
+			laBatterie = new Batterie(xtemps,sec);
 		  }
 		if(arg0.getSource() == menuApropos){
 			JDialog aPropos = new JDialog(fenetreManu,"A propos",true);

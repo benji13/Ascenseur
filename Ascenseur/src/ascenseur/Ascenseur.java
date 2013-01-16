@@ -28,7 +28,6 @@ public class Ascenseur extends Observable implements Runnable{
 	private int tempsParcoursAscenseur;
 	private int xtemps;
 	private Seconde sec;
-	private Batterie laBatterie;
 	
 	/**
 	 * @return
