@@ -87,4 +87,18 @@ class DatePicker {
                 cal.set(year, month, Integer.parseInt(day));
                 return sdf.format(cal.getTime());
         }
+        
+        public int[] setPickedDateTable() {
+        	int tablePicked[] = {0,0,0};
+            if (day.equals(""))
+                    return tablePicked;
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
+                            "dd-MM-yyyy");
+            java.util.Calendar cal = java.util.Calendar.getInstance();
+            //cal.set(year, month, Integer.parseInt(day));
+            tablePicked[0] = cal.get(Integer.parseInt(day));
+            tablePicked[1] = cal.get(month);
+            tablePicked[2] = cal.get(year);
+            return tablePicked;
+    }
 }

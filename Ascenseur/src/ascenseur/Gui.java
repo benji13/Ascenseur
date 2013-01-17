@@ -39,6 +39,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 	JRadioButton radioJour, radioSoir;
 	ButtonGroup groupChoix;
 	
+	int[] tableDateSim = {0,0,0,0};
 	
 	JFrame fenetreManu, fenetreStats, fenetreVisu;
 	JPanel panelMenu, panelGauche, panelMilieu, panelDroit, panelAppel, panelUtilisateur, panelAscenseur, panelTableau, panelStats, panelHaut, panelBas, panelRefresh, panel1, panel2, panel3;
@@ -691,7 +692,12 @@ public void ouvertureFichier() {
 	public void actionPerformed(ActionEvent arg0) {
 		
 		if(arg0.getSource() == bu){
-			text.setText(new DatePicker(pickDate).setPickedDate());
+			int i;
+			DatePicker D = new DatePicker(pickDate);
+			for(i=0;i<3;i++){
+				tableDateSim[i] = D.setPickedDateTable()[i];
+				System.out.println(""+tableDateSim[i]);
+			}
 		  }
 			
 		if(arg0.getSource() == buttonManu){

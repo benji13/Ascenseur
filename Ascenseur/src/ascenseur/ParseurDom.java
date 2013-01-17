@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -99,7 +100,8 @@ public class ParseurDom {
 			d.setSourceAppel(Integer.parseInt(lesOrigine.item(i).getTextContent()));
 
 			//On extraie l'heure d'un appel :
-			Date date = null;
+			Calendar date;
+			date = Calendar.getInstance();
 			//On precise le format de la date
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
 			//On récupère dans le fichier XML le champ heure_appel
@@ -107,7 +109,7 @@ public class ParseurDom {
 
 			try {
 				//On parse le champ heure_appel selon le format prevu au dessu : hh:mm:ss
-				date = simpleDateFormat.parse(dateXML);
+				date.setTime(simpleDateFormat.parse(dateXML));
 				//System.out.println(date);
 			} catch (ParseException e) {
 				// Affichage des erreurs de parsing sur la String dateXML
