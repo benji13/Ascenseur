@@ -21,6 +21,30 @@ public class Statistiques {
 	 Integer ConsoMoyenneTotale;
 	 long attenteMoyenne;
 	 
+	 public long getAttenteMoyenne() {
+		return attenteMoyenne;
+	}
+	 public Integer getConsoMoyenneTotale() {
+		return ConsoMoyenneTotale;
+	}
+	 public Seconde getSec() {
+		return sec;
+	}
+	 public ArrayList<Integer> getTabConsoMoyenne() {
+		return tabConsoMoyenne;
+	}
+	 public void setAttenteMoyenne(long attenteMoyenne) {
+		this.attenteMoyenne = attenteMoyenne;
+	}
+	 public void setConsoMoyenneTotale(Integer consoMoyenneTotale) {
+		ConsoMoyenneTotale = consoMoyenneTotale;
+	}
+	 public void setSec(Seconde sec) {
+		this.sec = sec;
+	}
+	 public void setTabConsoMoyenne(ArrayList<Integer> tabConsoMoyenne) {
+		this.tabConsoMoyenne = tabConsoMoyenne;
+	}
 	 public Integer getConsoTotal() {
 		return consoTotal;
 	}
@@ -52,6 +76,20 @@ public class Statistiques {
 		this.totalDuree = totalDuree;
 	}
 	
+	
+	void calculStatistique(Batterie laBatterie){
+		calculTotalDuree(laBatterie);
+		
+		calculNbTotalAppel(laBatterie.getTabAscenseur());
+		calculNbAppel(laBatterie.getTabAscenseur());
+		
+		calculAttenteMoyenne(laBatterie.getTabAscenseur());
+		
+		calculConso(laBatterie.getTabAscenseur());
+		calculConsoMoyenneTotale(laBatterie.getTabAscenseur());
+		calculConsoMoyenne(laBatterie.getTabAscenseur());
+		calculTotalConso(laBatterie.getTabAscenseur());
+	}
 	
 	/**
 	 *  
