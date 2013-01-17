@@ -128,7 +128,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 	public void Init() throws InterruptedException{
 		Calendar cal1 = Calendar.getInstance(); cal1.set(2012, 01, 15, 15, 00, 00);
 		
-		xtemps = 1000;	
+		xtemps = 1;	
 	}
 	
 	
@@ -290,6 +290,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		panelAscenseur.add(ascD);
 		panelAscenseur.add(ascE);
 		panelAscenseur.add(ascF);
+		
 		panelAscenseur.setBorder(new TitledBorder(blackline, "Ascenseurs", TitledBorder.CENTER, 0, null));
 
 		
@@ -316,11 +317,11 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		 */
 		
 		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
-		labelTable.put( new Integer( 0 ), new JLabel("Min") );
+		labelTable.put( new Integer( 1 ), new JLabel("Min") );
 		labelTable.put( new Integer( 10 ), new JLabel("Max") );
 		labelTable.put( new Integer( 5 ), new JLabel("5") );
 		
-		sliderAcc = new JSlider(JSlider.VERTICAL, 0, 10, 0);
+		sliderAcc = new JSlider(JSlider.VERTICAL, 1, 10, 1);
 		sliderAcc.setMajorTickSpacing(1);
 		sliderAcc.setPaintTicks(true);
 		sliderAcc.setLabelTable( labelTable );
@@ -681,7 +682,11 @@ public void fenetreVisu(){
 				slider3.setValue(laBatterie.getTabAscenseur().get(3).getPositionActuelle()+4);
 				slider4.setValue(laBatterie.getTabAscenseur().get(4).getPositionActuelle()+4);
 				slider5.setValue(laBatterie.getTabAscenseur().get(5).getPositionActuelle()+4);
-		  }
+		  
+				for(i=0;i<model.getRowCount();i++){
+					model.removeRow(i);
+				}
+		}
 		
 		if(arg0.getSource() == buttonAuto){
 			  ouvertureFichier();
@@ -699,8 +704,11 @@ public void fenetreVisu(){
 		  }
 		
 		if(arg0.getSource() == menuResetJ){
+			fenetreChoix.setVisible(true);
+			fenetreStats.setVisible(false);
+			fenetreVisu.setVisible(false);
 			laBatterie.stopSimuBrute();
-			laBatterie = new Batterie(xtemps,sec);
+			fenetreManu.dispose();
 		  }
 		if(arg0.getSource() == menuResetS){
 			laBatterie.stopSimuBrute();
@@ -824,8 +832,8 @@ public void fenetreVisu(){
 //			calTemp = laBatterie.getCal();
 //			dateTemp = laBatterie.getCal().getDateActuelle().getTime();
 //			labelHorloge.setText(""+calTemp.getDateActuelle().getTime());
-//			
-//			Batterie.
+			
+
 		}
 		
 		
@@ -855,14 +863,6 @@ public void fenetreVisu(){
 		}
 		
 		if(arg1.equals("tabAppel")){
-			
-//			
-//			fileAppel[0] = laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getSourceAppel();
-//			fileAppel[1] = laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getDestAppel();
-//			fileAppel[2] = laBatterie.getTabAscenseur().get(0).getIdAscenseur();
-//			fileAppel[3] = laBatterie.getTabAscenseur().get(0).getTabAppelAtraiter().get(0).getEtatAppel();
-//			
-
 			int i;
 			
 			for(i=0;i<model.getRowCount();i++){
@@ -888,6 +888,7 @@ public void fenetreVisu(){
 		
 		if(arg0.getSource() == sliderAcc){
 			System.out.println(""+sliderAcc.getValue());
+			laBatterie.setXTempx(sliderAcc.getValue());
 		}
 		
 	}

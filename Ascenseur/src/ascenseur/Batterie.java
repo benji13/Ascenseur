@@ -23,7 +23,12 @@ public class Batterie{
     private static Calendrier cal;
     private static boolean semaine; //true si en semaine, false si en week end 
     private static boolean changement; // nous indique s'il y a un changement de mode ou pas
+        
     
+    public void setXTempx(int xtemps){
+    	Batterie.cal.getChrono().setXtemps(xtemps);   	
+    }
+       
     public static void setChangement(boolean changement) {
 		Batterie.changement = changement;
 	}
@@ -365,20 +370,20 @@ public class Batterie{
         
         
         if(Batterie.semaine){
-        	ascenseur0 = new Ascenseur(0,tabPositionJournee.get(0),xtemps,sec);
-    		ascenseur1 = new Ascenseur(1,tabPositionJournee.get(1),xtemps,sec);
-    		ascenseur2 = new Ascenseur(2,tabPositionJournee.get(2),xtemps,sec);
-    		ascenseur3 = new Ascenseur(3,tabPositionJournee.get(3),xtemps,sec);
-    		ascenseur4 = new Ascenseur(4,tabPositionJournee.get(4),xtemps,sec);
-    		ascenseur5 = new Ascenseur(5,tabPositionJournee.get(5),xtemps,sec);
+        	ascenseur0 = new Ascenseur(0,tabPositionJournee.get(0),sec);
+    		ascenseur1 = new Ascenseur(1,tabPositionJournee.get(1),sec);
+    		ascenseur2 = new Ascenseur(2,tabPositionJournee.get(2),sec);
+    		ascenseur3 = new Ascenseur(3,tabPositionJournee.get(3),sec);
+    		ascenseur4 = new Ascenseur(4,tabPositionJournee.get(4),sec);
+    		ascenseur5 = new Ascenseur(5,tabPositionJournee.get(5),sec);
         }
         else {
-        	ascenseur0 = new Ascenseur(0,tabPositionWeekEnd.get(0),xtemps,sec);
-			ascenseur1 = new Ascenseur(1,tabPositionWeekEnd.get(1),xtemps,sec);
-			ascenseur2 = new Ascenseur(2,tabPositionWeekEnd.get(2),xtemps,sec);
-			ascenseur3 = new Ascenseur(3,tabPositionWeekEnd.get(3),xtemps,sec);
-			ascenseur4 = new Ascenseur(4,tabPositionWeekEnd.get(4),xtemps,sec);
-			ascenseur5 = new Ascenseur(5,tabPositionWeekEnd.get(5),xtemps,sec);
+        	ascenseur0 = new Ascenseur(0,tabPositionWeekEnd.get(0),sec);
+			ascenseur1 = new Ascenseur(1,tabPositionWeekEnd.get(1),sec);
+			ascenseur2 = new Ascenseur(2,tabPositionWeekEnd.get(2),sec);
+			ascenseur3 = new Ascenseur(3,tabPositionWeekEnd.get(3),sec);
+			ascenseur4 = new Ascenseur(4,tabPositionWeekEnd.get(4),sec);
+			ascenseur5 = new Ascenseur(5,tabPositionWeekEnd.get(5),sec);
         }
         
    
@@ -477,20 +482,20 @@ public class Batterie{
         
         
         if(Batterie.semaine){
-        	ascenseur0 = new Ascenseur(0,tabPositionJournee.get(0),xtemps,sec);
-    		ascenseur1 = new Ascenseur(1,tabPositionJournee.get(1),xtemps,sec);
-    		ascenseur2 = new Ascenseur(2,tabPositionJournee.get(2),xtemps,sec);
-    		ascenseur3 = new Ascenseur(3,tabPositionJournee.get(3),xtemps,sec);
-    		ascenseur4 = new Ascenseur(4,tabPositionJournee.get(4),xtemps,sec);
-    		ascenseur5 = new Ascenseur(5,tabPositionJournee.get(5),xtemps,sec);
+        	ascenseur0 = new Ascenseur(0,tabPositionJournee.get(0),sec);
+    		ascenseur1 = new Ascenseur(1,tabPositionJournee.get(1),sec);
+    		ascenseur2 = new Ascenseur(2,tabPositionJournee.get(2),sec);
+    		ascenseur3 = new Ascenseur(3,tabPositionJournee.get(3),sec);
+    		ascenseur4 = new Ascenseur(4,tabPositionJournee.get(4),sec);
+    		ascenseur5 = new Ascenseur(5,tabPositionJournee.get(5),sec);
         }
         else {
-        	ascenseur0 = new Ascenseur(0,tabPositionWeekEnd.get(0),xtemps,sec);
-			ascenseur1 = new Ascenseur(1,tabPositionWeekEnd.get(1),xtemps,sec);
-			ascenseur2 = new Ascenseur(2,tabPositionWeekEnd.get(2),xtemps,sec);
-			ascenseur3 = new Ascenseur(3,tabPositionWeekEnd.get(3),xtemps,sec);
-			ascenseur4 = new Ascenseur(4,tabPositionWeekEnd.get(4),xtemps,sec);
-			ascenseur5 = new Ascenseur(5,tabPositionWeekEnd.get(5),xtemps,sec);
+        	ascenseur0 = new Ascenseur(0,tabPositionWeekEnd.get(0),sec);
+			ascenseur1 = new Ascenseur(1,tabPositionWeekEnd.get(1),sec);
+			ascenseur2 = new Ascenseur(2,tabPositionWeekEnd.get(2),sec);
+			ascenseur3 = new Ascenseur(3,tabPositionWeekEnd.get(3),sec);
+			ascenseur4 = new Ascenseur(4,tabPositionWeekEnd.get(4),sec);
+			ascenseur5 = new Ascenseur(5,tabPositionWeekEnd.get(5),sec);
         }
         
    
@@ -550,6 +555,13 @@ public class Batterie{
     	for(int i=0;i<5;i++){
     			this.tabThread.get(i).stop();
     	}
+    	this.getCal().getChrono().stop();
+    	try {
+			this.finalize();
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
 }//Fin Class

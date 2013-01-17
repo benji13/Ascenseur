@@ -79,6 +79,10 @@ public class Chronometre extends Thread{
 				this.getTempsEcouleSecs();
 			}
 		}
+		public void setXtemps(int xtemps) {
+			this.xtemps = xtemps;
+			
+		}
 		
 }
 
