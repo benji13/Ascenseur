@@ -26,13 +26,12 @@ public class Ascenseur extends Observable implements Runnable{
 	private int positionRepo;
 	private boolean enRepositionnement;
 	private int tempsParcoursAscenseur;
-	private int xtemps;
 	private Seconde sec;
 	
 	/**
 	 * @return
 	 */
-	public Ascenseur(int idAscenseur, int positionActuelle,int xtemps,Seconde sec) {
+	public Ascenseur(int idAscenseur, int positionActuelle,Seconde sec) {
 		// TODO Auto-generated constructor stub
 		this.idAscenseur = idAscenseur;
 		this.positionActuelle = positionActuelle;
@@ -44,7 +43,6 @@ public class Ascenseur extends Observable implements Runnable{
 		this.consommation = 0;
 		this.monte = false; // Descend
 		this.tempsParcoursAscenseur = 0;
-		this.xtemps = xtemps;
 		this.enRepositionnement = false;
 		
 		this.tabAppelAtraiter = new ArrayList<Appel>();
@@ -145,12 +143,6 @@ public class Ascenseur extends Observable implements Runnable{
 	}
 	public void setMonte(boolean monte) {
 		this.monte = monte;
-	}
-	public int getXtemps() {
-		return xtemps;
-	}
-	public void setXtemps(int xtemps) {
-		this.xtemps = xtemps;
 	}
 	// FONCTIONS
 	/**
@@ -425,19 +417,19 @@ public class Ascenseur extends Observable implements Runnable{
 					
 					// Calcul du temps à attendre entre le parcours de ces deux etages cumulé avec l'ancien
 					if(nbEtageAparcourir >= 4){
-						tempsParcoursAscenseur = tempsParcoursAscenseur + ((10+(nbEtageAparcourir-4))*1000)/xtemps;
+						tempsParcoursAscenseur = tempsParcoursAscenseur + ((10+(nbEtageAparcourir-4)));
 					}
 					else if(nbEtageAparcourir == 3){
-						tempsParcoursAscenseur = tempsParcoursAscenseur + ((8*1000)/xtemps);
+						tempsParcoursAscenseur = tempsParcoursAscenseur + 8;
 					}
 					else if(nbEtageAparcourir == 2){
-						tempsParcoursAscenseur = tempsParcoursAscenseur + ((6*1000)/xtemps);
+						tempsParcoursAscenseur = tempsParcoursAscenseur + 6;
 					}
 					else if(nbEtageAparcourir == 1){
-						tempsParcoursAscenseur = tempsParcoursAscenseur + ((3*1000)/xtemps);
+						tempsParcoursAscenseur = tempsParcoursAscenseur + 3;
 					}
 					// ajout 5 secondes d'arrêt
-					tempsParcoursAscenseur = tempsParcoursAscenseur + ((5*1000)/xtemps);
+					tempsParcoursAscenseur = tempsParcoursAscenseur + 5;
 				}
 			}
 			else if(!monte){
@@ -448,19 +440,19 @@ public class Ascenseur extends Observable implements Runnable{
 					
 					// Calcul du temps à attendre entre le parcours de ces deux etages cumulé avec l'ancien
 					if(nbEtageAparcourir >= 4){
-						tempsParcoursAscenseur = tempsParcoursAscenseur + ((10+(nbEtageAparcourir-4))*1000)/xtemps;
+						tempsParcoursAscenseur = tempsParcoursAscenseur + ((10+(nbEtageAparcourir-4)));
 					}
 					else if(nbEtageAparcourir == 3){
-						tempsParcoursAscenseur = tempsParcoursAscenseur + ((8*1000)/xtemps);
+						tempsParcoursAscenseur = tempsParcoursAscenseur + 8;
 					}
 					else if(nbEtageAparcourir == 2){
-						tempsParcoursAscenseur = tempsParcoursAscenseur + ((6*1000)/xtemps);
+						tempsParcoursAscenseur = tempsParcoursAscenseur + 6;
 					}
 					else if(nbEtageAparcourir == 1){
-						tempsParcoursAscenseur = tempsParcoursAscenseur + ((3*1000)/xtemps);
+						tempsParcoursAscenseur = tempsParcoursAscenseur + 3;
 					}
 					// ajout 5 secondes d'arrêt
-					tempsParcoursAscenseur = tempsParcoursAscenseur + ((5*1000)/xtemps);
+					tempsParcoursAscenseur = tempsParcoursAscenseur + 5;
 				}
 			}
 		
@@ -486,19 +478,19 @@ public class Ascenseur extends Observable implements Runnable{
 			
 			// Calcul du temps à attendre entre le parcours de ces deux etages cumulé avec l'ancien
 			if(nbEtageAparcourir >= 4){
-				tempsParcoursAscenseur = tempsParcoursAscenseur + ((10+(nbEtageAparcourir-4))*1000)/xtemps;
+				tempsParcoursAscenseur = tempsParcoursAscenseur + ((10+(nbEtageAparcourir-4)));
 			}
 			else if(nbEtageAparcourir == 3){
-				tempsParcoursAscenseur = tempsParcoursAscenseur + ((8*1000)/xtemps);
+				tempsParcoursAscenseur = tempsParcoursAscenseur + 8;
 			}
 			else if(nbEtageAparcourir == 2){
-				tempsParcoursAscenseur = tempsParcoursAscenseur + ((6*1000)/xtemps);
+				tempsParcoursAscenseur = tempsParcoursAscenseur + 6;
 			}
 			else if(nbEtageAparcourir == 1){
-				tempsParcoursAscenseur = tempsParcoursAscenseur + ((3*1000)/xtemps);
+				tempsParcoursAscenseur = tempsParcoursAscenseur + 3;
 			}
 		// ajout 5 secondes d'arrêt
-		tempsParcoursAscenseur = tempsParcoursAscenseur + ((5*1000)/xtemps);
+		tempsParcoursAscenseur = tempsParcoursAscenseur + 5;
 		}
 		return tempsParcoursAscenseur;
 	}
