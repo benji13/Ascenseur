@@ -15,7 +15,7 @@ import java.lang.Math;
  *
  * @author Mo & Thibaut
  */
-public class Batterie{
+public class Batterie extends Thread{
     
     //Attributs
     private ArrayList<Ascenseur> tabAscenseur;
@@ -95,7 +95,9 @@ public class Batterie{
     
     
     //Definitions des methodes    
-
+    public void run(){
+    	this.assignerAppelAuto();
+    }
     /**
      * Methode de repositionnement des acsenseurs.
      * Permet le repositionnment de chaque ascenseur independemment.
@@ -180,77 +182,7 @@ public class Batterie{
      * @param unAppel 
      * @throws InterruptedException 
      */
-    Ascenseur assignerAppel() throws InterruptedException{
-    	
-        int id =-1;
-        int i = 0;
-		int ecart = 400;
-		int temp,nbPersonne,zoneCritique;
-		Appel unAppel = this.tabTousLesAppels.get((tabTousLesAppels.size()-1));
-        boolean affected = false;//boolean permettant de savoir si l'appel a été affecté
-        //Affecter un id à l'appel
-        unAppel.setIdAppel(this.tabTousLesAppels.size()+1);
-        unAppel.determineSens();
-        while(!affected){	
-        //ne pas oublier de changer le sens de direction quand affecte un appel        
-        //Recherche l'ascenseur le plus proche à l'arret
-    		for(i=0;i<6;i++){
-    			if(this.tabAscenseur.get(i).isArret() && !this.tabAscenseur.get(i).isEnRepositionnement()){
-    				temp = Math.abs(this.tabAscenseur.get(i).getPositionActuelle() - unAppel.getSourceAppel());
-    				if(temp < ecart){
-    					ecart = temp;
-    					id = this.tabAscenseur.get(i).getIdAscenseur();
-    					affected = true;
-    					this.tabAscenseur.get(id).setMonte(unAppel.isSensAppel());
-    				}
-    			}
-    		}
-    	
-	    	//Recherche l'ascenseur le plus rapide en mouvement dans le meme sens
-	    	if(!affected){
-	    		int duree = 100000000;
-	    		for(i=0;i<6;i++){
-	    			//Si la source de l'appel se trouve à moins de 2 etages d'ecart l'ascenseur ne doit pas etre séléctioné, car l'ascenseur ne pourra pas s'arrêter
-	    			zoneCritique = Math.abs(this.tabAscenseur.get(i).getPositionActuelle() - unAppel.getSourceAppel());
-	    			if(!this.tabAscenseur.get(i).isFull() && !this.tabAscenseur.get(i).isEnRepositionnement() && zoneCritique>2 &&this.tabAscenseur.get(i).isSurLaRoute(unAppel) ){
-    					temp = this.tabAscenseur.get(i).calculDureeTraitementAppel(unAppel);
-    					if(temp<duree){
-    		        		duree = temp;
-    		        		id = this.tabAscenseur.get(i).getIdAscenseur();
-    		        		affected=true;
-    		        	}	
-	    			}
-	    		}
-	    	}
-        }
-        ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
-
-        if(Batterie.changement){
-        	 for(int k=0;k<6;k++){
-             	//Initialise le tableau de reservation de position repos à faux. (Aucune position n'a été réservée)
-             	Boolean bool = new Boolean(false);
-             	Batterie.tabResaPosition.set(k, bool);
-             }
-        }
-        if(Batterie.semaine){
-        	tabRepositionement = Batterie.tabPositionJournee;
-        }
-        else
-        	tabRepositionement = Batterie.tabPositionWeekEnd;
-       
-        if(affected){
-        	libererReservation(tabRepositionement,this.tabAscenseur.get(id).getPositionRepo());
-        	System.out.println("Liberation de la reservation de l'ascenseur "+ this.tabAscenseur.get(id).getIdAscenseur() +" " +Batterie.tabResaPosition);
-    		nbPersonne = this.tabAscenseur.get(id).getNbPersonne();
-    		this.tabAscenseur.get(id).addAppel(unAppel);
-			this.tabAscenseur.get(id).setNbPersonne(nbPersonne++);
-			tabAscenseur.get(id).triAppel();
-        }
-        
-        return tabAscenseur.get(id);
-    }//Fin assignerAppel
-
-    Ascenseur assignerAppelAuto(Appel unAppel) throws InterruptedException{
+    Ascenseur assignerAppel(Appel unAppel) throws InterruptedException{
     	
         int id =-1;
         int i = 0;
@@ -318,14 +250,14 @@ public class Batterie{
         
         return tabAscenseur.get(id);
     }//Fin assignerAppel
-    
+
     public void assignerAppelAuto(){
     	int i = 0;
     	while(i<this.tabTousLesAppels.size()){
 	    	try {
 				sec.attenteSeconde(1);
 				if(Batterie.cal.getDateActuelle().getTime().compareTo(this.tabTousLesAppels.get(i).getDateDebut().getTime())==0){
-					assignerAppel();
+					assignerAppel(this.tabTousLesAppels.get(i));
 				}				
 	    	} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -642,6 +574,7 @@ public class Batterie{
         	System.out.println("Erreur construction");
         }
     	this.getCal().determinerPlageHoraire();
+    	this.start();
     }
     
     
