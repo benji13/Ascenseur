@@ -41,18 +41,18 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 	
 	
 	JFrame fenetreManu, fenetreStats, fenetreVisu;
-	JPanel panelMenu, panelGauche, panelMilieu, panelDroit, panelAppel, panelUtilisateur, panelAscenseur, panelTableau, panelStats, panelHaut, panelBas, panel1, panel2, panel3;
+	JPanel panelMenu, panelGauche, panelMilieu, panelDroit, panelAppel, panelUtilisateur, panelAscenseur, panelTableau, panelStats, panelHaut, panelBas, panelRefresh, panel1, panel2, panel3;
 	JMenuBar menuBar;
 	JMenu menu, sousMenu;
-	JMenuItem menuItem, menuResetJ, menuResetS, menuApropos, menuQuitter;
-	JButton buttonValider, buttonStats, buttonMonter, bouttonDescendre, bouttonVisu;
-	JTextField ascA, ascB, ascC, ascD, ascE, ascF, choix, nbr1, nbr2, nbr3, nbr4, nbr5, nbr6, conso1, conso2, conso3, conso4, conso5, conso6, ConsoMoy, ConsoTot, AttMoy, NbrAppTot, DureeSimu;
+	JMenuItem menuItem, menuResetJ, menuApropos, menuQuitter;
+	JButton buttonValider, buttonStats, buttonMonter, bouttonDescendre, bouttonVisu, bouttonRefreshStat;
+	JTextField ascA, ascB, ascC, ascD, ascE, ascF, choix, nbr1, nbr2, nbr3, nbr4, nbr5, nbr6, consoTotAsc1, consoTotAsc2, consoTotAsc3, consoTotAsc4, consoTotAsc5, consoTotAsc6, conso1, conso2, conso3, conso4, conso5, conso6, ConsoMoy, ConsoTot, AttMoy, NbrAppTot, DureeSimu;
 	JComboBox jeSuis, jeVais, nbrPersonne;
 	Integer[] listEtages;
 	Integer[] listEtagesDyna;
 	Integer[] listPersonne;
 	JTable tableauFile;
-	JLabel a, b, c, d, e, f, labelAppel, labelUtilisateur, labelAscenseurs, labelStats, labelNbre, labelConso, labelVide, labelConsoMoy, labelConsoTot, labelAttMoy, labelNbrAppTot, labelDureeSimu, labelHorloge; 
+	JLabel a, b, c, d, e, f, labelAppel, labelUtilisateur, labelAscenseurs, labelStats, labelNbre, labelConso, labelVide, labelConsoMoy, labelConsoTot, labelAttMoy, labelConsoTotAsc, labelNbrAppTot, labelDureeSimu, labelHorloge; 
 	String[] ascenseurString = {"A","B","C","D","E","F"};
 	Border  blackline = BorderFactory.createLineBorder(Color.black);
 	
@@ -65,6 +65,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 	DefaultTableModel model = new DefaultTableModel();
 
 	JSlider slider0, slider1, slider2, slider3, slider4, slider5, sliderAcc;
+	
 	static final int RDC= 0;
 	static final int SOMMET = 44;
 	
@@ -73,6 +74,15 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 	Calendrier cal;
 	Ascenseur unAscenseur;
 	Seconde sec;
+	
+	
+	JLabel label;
+    final JTextField text;
+    JButton bu ;
+    JPanel p ;
+    final JFrame pickDate ;
+    
+    Statistiques objStats;
 	
 
 	/**
@@ -111,11 +121,26 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		panelManuelle.setBorder(new TitledBorder("Mode Manuelle"));
 		
 		panelManuelle.add(buttonManu);
-		panelManuelle.add(radioJour);
-		panelManuelle.add(radioSoir);
+		//panelManuelle.add(radioJour);
+		//panelManuelle.add(radioSoir);
+		
+		label = new JLabel("Selected Date:");
+        text = new JTextField(20);
+        bu = new JButton("popup");
+        p = new JPanel();
+        pickDate = new JFrame();
+        
+        p.add(label);
+        p.add(text);
+        p.add(bu);
+        bu.addActionListener(this);
+        
+        panelManuelle.add(p);
 		
 		fenetreChoix.add(panelAutomatique);
 		fenetreChoix.add(panelManuelle);
+		
+		
 		
 		fenetreChoix.pack();
 		fenetreChoix.setVisible(true);
@@ -123,13 +148,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		this.sec =sec;
 		
 	}
-//	debut com
-	
-	public void Init() throws InterruptedException{
-		Calendar cal1 = Calendar.getInstance(); cal1.set(2012, 01, 15, 15, 00, 00);
-		
-		xtemps = 1;	
-	}
+
 	
 	
 	
@@ -188,12 +207,9 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		menuBar = new JMenuBar();
 		menu = new JMenu("Reset");
 		menuBar.add(menu);
-		menuResetJ = new JMenuItem("Semaine");
+		menuResetJ = new JMenuItem("Démarrer une nouvelle simu");
 		menuResetJ.addActionListener(this);
 		menu.add(menuResetJ);
-		menuResetS = new JMenuItem("Week-end");
-		menuResetS.addActionListener(this);
-		menu.add(menuResetS);
 		menu = new JMenu("Autre");
 		menuBar.add(menu);
 		menuApropos = new JMenuItem("A propos");
@@ -363,28 +379,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 	}
 	
 	
-	
-	
-	
-	
-	
-	 public void ouvertureFichier() {
-         JFileChooser ouverture = new JFileChooser(".simu");
-         FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichiers de simu", "simu");	
-         ouverture.setFileSelectionMode(JFileChooser.FILES_ONLY );
-         ouverture.setFileFilter(filtre);
-         ouverture.setAcceptAllFileFilterUsed(false);
-         ouverture.showOpenDialog(null);
-         File f = ouverture.getSelectedFile();
-         String fichier = f.getName();
-         System.out.println("Choix : " + fichier);
- }
-	 
-	 
-	 
-	 
-	 
-	 
+
 	 
 	
 	/**
@@ -397,6 +392,8 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		fenetreStats = new JFrame("M²B²T - Statistiques");
 		fenetreStats.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
+		objStats = new Statistiques();
+		
 		/**
 		 * Declaration des panels
 		 */
@@ -404,6 +401,8 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		panelHaut.setBorder(new TitledBorder("Ascenseurs" ));
 		panelBas = new JPanel();
 		panelBas.setBorder(new TitledBorder("Statistiques Globales"));
+		panelRefresh = new JPanel();
+		panelRefresh.setBorder(new TitledBorder("Refresh" ));
 		panel1 = new JPanel();
 		panel2 = new JPanel();
 		panel3 = new JPanel();
@@ -414,6 +413,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		labelAscenseurs = new JLabel("Ascenseurs");
 		labelStats = new JLabel("Statistiques Globales");
 		labelNbre = new JLabel("Nombre d'appels total",SwingConstants.CENTER);
+		labelConsoTotAsc = new JLabel("Consommation totale",SwingConstants.CENTER);
 		labelConso = new JLabel("Consommation moyenne",SwingConstants.CENTER);
 		labelVide = new JLabel("");
 		a = new JLabel("A",SwingConstants.CENTER);
@@ -427,7 +427,8 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		labelAttMoy = new JLabel("Attente Moyenne",SwingConstants.CENTER);
 		labelNbrAppTot = new JLabel("Nombre d'appels Total",SwingConstants.CENTER);
 		labelDureeSimu = new JLabel("Dur e simulation",SwingConstants.CENTER);
-		
+		bouttonRefreshStat = new JButton("Resfresh");
+		bouttonRefreshStat.addActionListener(this);
 		
 		/**
 		 * Declaration des TextFiels
@@ -444,6 +445,20 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		nbr5.setEnabled(false);
 		nbr6 = new JTextField();
 		nbr6.setEnabled(false);
+		
+		consoTotAsc1 = new JTextField();
+		consoTotAsc1.setEnabled(false);
+		consoTotAsc2= new JTextField();
+		consoTotAsc2.setEnabled(false);
+		consoTotAsc3 = new JTextField();
+		consoTotAsc3.setEnabled(false);
+		consoTotAsc4 = new JTextField();
+		consoTotAsc4.setEnabled(false);
+		consoTotAsc5 = new JTextField();
+		consoTotAsc5.setEnabled(false);
+		consoTotAsc6 = new JTextField();
+		consoTotAsc6.setEnabled(false);
+		
 		conso1 = new JTextField();
 		conso1.setEnabled(false);
 		conso2 = new JTextField();
@@ -471,7 +486,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		/**
 		 * Panel Ascenseurs contenant un tableau
 		 */
-		panelHaut.setLayout(new GridLayout(3,7,20,10));
+		panelHaut.setLayout(new GridLayout(4,7,20,10));
 		panelHaut.add(labelVide);
 		panelHaut.add(a);
 		panelHaut.add(b);
@@ -486,6 +501,13 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		panelHaut.add(nbr4);
 		panelHaut.add(nbr5);
 		panelHaut.add(nbr6);
+		panelHaut.add(labelConsoTotAsc);
+		panelHaut.add(consoTotAsc1);
+		panelHaut.add(consoTotAsc2);
+		panelHaut.add(consoTotAsc3);
+		panelHaut.add(consoTotAsc4);
+		panelHaut.add(consoTotAsc5);
+		panelHaut.add(consoTotAsc6);
 		panelHaut.add(labelConso);
 		panelHaut.add(conso1);
 		panelHaut.add(conso2);
@@ -516,11 +538,14 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		panel3.add(AttMoy);
 		panelBas.add(panel3);
 		
+		panelRefresh.add(bouttonRefreshStat);
+		
 		/**
 		 * Ajout des differents panels   la fenetre principale 
 		 */
 		fenetreStats.add(panelHaut, BorderLayout.NORTH);
-		fenetreStats.add(panelBas, BorderLayout.SOUTH);
+		fenetreStats.add(panelBas, BorderLayout.CENTER);
+		fenetreStats.add(panelRefresh, BorderLayout.SOUTH);
 		
 
 
@@ -627,33 +652,47 @@ public void fenetreVisu(){
 		fenetreVisu.pack();
 		fenetreVisu.setVisible(false);
 	}
+
+
+public void ouvertureFichier() {
+    JFileChooser ouverture = new JFileChooser(".simu");
+    FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichiers de simu", "simu");	
+    ouverture.setFileSelectionMode(JFileChooser.FILES_ONLY );
+    ouverture.setFileFilter(filtre);
+    ouverture.setAcceptAllFileFilterUsed(false);
+    ouverture.showOpenDialog(null);
+    File f = ouverture.getSelectedFile();
+    String fichier = f.getName();
+    System.out.println("Choix : " + fichier);
+}
 	
 	public void fenetreAuto(){
 		
 	}
 	
 	
-	/**
-	 * 
-	 * Methode permettant de r cuperer la position actuelle des 6 ascenceurs
-	 *  
-	 */
-	public void getPositionAsc(){
+
+	
+	public void Init() throws InterruptedException{
+		Calendar cal1 = Calendar.getInstance(); cal1.set(2012, 01, 15, 15, 00, 00);
+		
+		xtemps = 1;	
+	}
+	
+	
+	public void refreshPositions(String nomAsc){
+		
 		
 	}
 	
-	/**
-	 * 
-	 * Methode permettant de recuperer la liste des appels
-	 * 
-	 */
-	public void getListeAppels(){
-		
-	}
-	
+
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		
+		if(arg0.getSource() == bu){
+			text.setText(new DatePicker(pickDate).setPickedDate());
+		  }
 			
 		if(arg0.getSource() == buttonManu){
 			int i;
@@ -710,10 +749,6 @@ public void fenetreVisu(){
 			laBatterie.stopSimuBrute();
 			fenetreManu.dispose();
 		  }
-		if(arg0.getSource() == menuResetS){
-			laBatterie.stopSimuBrute();
-			laBatterie = new Batterie(xtemps,sec);
-		  }
 		if(arg0.getSource() == menuApropos){
 			JDialog aPropos = new JDialog(fenetreManu,"A propos",true);
 			JPanel aProposg = new JPanel();
@@ -722,7 +757,7 @@ public void fenetreVisu(){
 			ImageIcon antIcon = new ImageIcon("ascenseur.gif");
 			JLabel LImage = new JLabel(antIcon);
 			aProposg.add(LImage);
-			aProposd.add(new JLabel("Groupe I - MÂ²BÂ²T"));
+			aProposd.add(new JLabel("Groupe I - M²B²T"));
 			aProposd.add(new JLabel("Camus - Courvoisier - Ndiaye - Olivier - Pollet-Villard"));
 			aProposd.add(new JLabel("Projet Ascenseur V1.0"));
 			aProposd.add(new JLabel("Janvier 2013"));
@@ -815,10 +850,15 @@ public void fenetreVisu(){
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			choix.setText(ascenseurString[unAscenseur.getIdAscenseur()]);
-			
-
-					
+			choix.setText(ascenseurString[unAscenseur.getIdAscenseur()]);		
+		  }
+		  
+		  if(arg0.getSource() == bouttonRefreshStat){
+			  objStats.calculStatistique(laBatterie);
+			  
+			  for(Integer nbrApp : objStats.getTabnbAppel()){
+				  System.out.println(""+nbrApp);
+			  }
 		  }
 	}
 

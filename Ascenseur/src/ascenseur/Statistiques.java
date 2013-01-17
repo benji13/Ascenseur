@@ -6,20 +6,31 @@ import java.util.Date;
 
 public class Statistiques {
 	
-	public Statistiques(Seconde sec) {
-		// TODO Auto-generated constructor stub
-		this.sec = sec;
+	private ArrayList <Integer> tabnbAppel;
+	 private ArrayList <Integer> tabConso;
+	 private ArrayList <Integer> tabConsoMoyenne;
+	 private Integer consoTotal = 0;
+	 private Integer nbAppelTotal = 0;
+	 private Date totalDuree;
+	 private Seconde sec;
+	 private Integer ConsoMoyenneTotale = 0;
+	 private long attenteMoyenne;
+	
+	public Statistiques() {
+		int i;
+		
+		tabnbAppel = new ArrayList();
+		tabConso = new ArrayList();
+		tabConsoMoyenne = new ArrayList();
+		
+//		for(i=0; i<6;i++){
+//			this.tabnbAppel.set(i,0);
+//			this.tabConso.set(i, 0);
+//			this.tabConsoMoyenne.set(i, 0);
+//		}		
 	}
 	
-	 ArrayList <Integer> tabnbAppel;
-	 ArrayList <Integer> tabConso;
-	 ArrayList <Integer> tabConsoMoyenne;
-	 Integer consoTotal;
-	 Integer nbAppelTotal;
-	 Date totalDuree;
-	 Seconde sec;
-	 Integer ConsoMoyenneTotale;
-	 long attenteMoyenne;
+	 
 	 
 	 public long getAttenteMoyenne() {
 		return attenteMoyenne;
@@ -114,9 +125,9 @@ public class Statistiques {
 	 void calculNbTotalAppel(ArrayList <Ascenseur> tabAscenseur){
 		int i;
 			
-		for(i=0;i<tabAscenseur.size();i++)
+		for(Ascenseur asc : tabAscenseur)
 		{
-			this.nbAppelTotal += tabAscenseur.get(i).getTabAppelsTraites().size();
+			this.nbAppelTotal += asc.getTabAppelsTraites().size();
 		}
 	 }
 /**
@@ -125,11 +136,12 @@ public class Statistiques {
  */
 	 //Calcule le nombre d'appel par ascenseur, il met à jour le tableau tabnbAppel
 	 void calculNbAppel(ArrayList <Ascenseur> tabAscenseur){
-		 int i;
+		 int i = 0;
 		 
-		 for(i=0; i<tabAscenseur.size();i++)
+		 for(Ascenseur asc : tabAscenseur)
 		 {
-			 this.tabnbAppel.set(i, tabAscenseur.get(i).getTabAppelsTraites().size());
+			 this.tabnbAppel.add(i, asc.getTabAppelsTraites().size());
+			 i++;
 		 }
 	 }
 /**
@@ -138,44 +150,55 @@ public class Statistiques {
  */
 	//Calcule la conso totale par ascenseur, il met à jour le tableau tabConso
 	 void calculConso(ArrayList <Ascenseur> tabAscenseur){
-		 int i;
+		 int i = 0;
 		 
-		 for(i=0; i<tabAscenseur.size();i++)
+		 for(Ascenseur asc : tabAscenseur)
 		 {
-			 this.tabConso.set(i, tabAscenseur.get(i).getConsommation());
+			 this.tabConso.add(i, asc.getConsommation());
+			 i++;
 		 }
 	 }
 	 
 	 void calculConsoMoyenne(ArrayList <Ascenseur> tabAscenseur){
-		 int i;
+		 int i = 0;
 		 
-		 for(i=0; i<tabAscenseur.size();i++)
+		 for(Ascenseur asc : tabAscenseur)
 		 {
-			 this.tabConsoMoyenne.set(i, tabAscenseur.get(i).getConsommation()/tabnbAppel.get(i));
+			 if(tabnbAppel.get(i) != 0){
+				 this.tabConsoMoyenne.set(i, asc.getConsommation()/tabnbAppel.get(i));
+			 }
+			 i++;
 		 }
 	 }
 	 
 	 void calculConsoMoyenneTotale(ArrayList <Ascenseur> tabAscenseur){
-		 int i;
+		 int i = 0;
 		 
-		 for(i=0; i<tabAscenseur.size();i++)
+		 for(Integer asc : tabConsoMoyenne)
 		 {
 			 this.ConsoMoyenneTotale += this.tabConsoMoyenne.get(i);
+			 i++;
 		 }
 	 }
 	 
 	 void calculAttenteMoyenne(ArrayList <Ascenseur> tabAscenseur){
-		 int i;
+		 int i = 0;
 		 long dureeUnAppel=0;
 		 
-		 for(i=0; i<tabAscenseur.size();i++)
+		 for(Ascenseur asc : tabAscenseur)
 		 {
-			 for (Appel unAppel : tabAscenseur.get(i).getTabAppelsTraites()) {
+			 for (Appel unAppel : asc.getTabAppelsTraites()) {
 				 dureeUnAppel = unAppel.getDateFin().getTime() - unAppel.getDateDebut().getTime();
 				 this.attenteMoyenne += dureeUnAppel;
+				 i++;
 			}
 			 
 		 }
-		 this.attenteMoyenne= this.attenteMoyenne/this.nbAppelTotal;
+		 if(nbAppelTotal != 0){
+			 this.attenteMoyenne = this.attenteMoyenne/this.nbAppelTotal;
+		 }
+		 else{
+			 this.attenteMoyenne = 0;
+		 }
 	 }
 }
