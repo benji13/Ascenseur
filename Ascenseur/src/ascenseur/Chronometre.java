@@ -27,6 +27,7 @@ public class Chronometre extends Thread{
 			this.stopTime = 0;
 			this.running = false;
 			this.sec = sec;
+			this.setPriority(MAX_PRIORITY);
 		}
 		public long getActuTime() {
 			return actuTime;

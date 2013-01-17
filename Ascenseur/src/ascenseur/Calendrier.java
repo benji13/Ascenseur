@@ -9,9 +9,19 @@ public class Calendrier extends Thread{
 		// TODO Auto-generated constructor stub
 		this.chrono = new Chronometre(xtemps,sec);
 		this.dateDebutSimu = Calendar.getInstance();
-		this.dateDebutSimu.set(2012, 01, 15, 00, 00,00);
+		this.dateDebutSimu.set(2012, 01, 19, 6, 00,00);
 		this.dateActuelle = Calendar.getInstance();
-		this.dateActuelle.set(2012, 01, 15, 00, 00,00);
+		this.dateActuelle.set(2012, 01, 19, 6, 00,00);
+		this.xtemps = xtemps;
+		this.sec = sec;
+	}
+	
+	public Calendrier(int xtemps,Seconde sec, int jour, int mois, int annee, int heure) throws InterruptedException {
+		this.chrono = new Chronometre(xtemps,sec);
+		this.dateDebutSimu = Calendar.getInstance();
+		this.dateDebutSimu.set(annee, mois, jour, heure, 00,00);
+		this.dateActuelle = Calendar.getInstance();
+		this.dateActuelle.set(annee, mois,jour , heure, 00,00);
 		this.xtemps = xtemps;
 		this.sec = sec;
 	}
@@ -67,7 +77,7 @@ public class Calendrier extends Thread{
 	//FONCTIONS
 	public void determinerPlageHoraire(){
 		isWeek = true;
-		if(getDateActuelle().get(Calendar.HOUR) > 18 || getDateActuelle().get(Calendar.HOUR) < 7 ){
+		if(getDateActuelle().get(Calendar.HOUR) > 18 || getDateActuelle().get(Calendar.HOUR) < 7 || getDateActuelle().get(Calendar.DAY_OF_WEEK)== Calendar.SATURDAY || getDateActuelle().get(Calendar.DAY_OF_WEEK)== Calendar.SUNDAY){
 			isWeek = false;
 		}
 		Batterie.setSemaine(isWeek);
@@ -81,7 +91,7 @@ public class Calendrier extends Thread{
 			if(this.dateActuelle.get(Calendar.MINUTE) == 0 && this.dateActuelle.get(Calendar.SECOND) == 0){
 				determinerPlageHoraire();
 				Batterie.setSemaine(this.isWeek);
-				
+				Batterie.setChangement(true);
 			}
 
 		}

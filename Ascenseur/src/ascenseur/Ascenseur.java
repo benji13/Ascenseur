@@ -199,7 +199,10 @@ public class Ascenseur extends Observable implements Runnable{
 		for(;;){
 			while(!this.tabDestination.isEmpty()){
 				System.out.println("ascenseur N°: " + idAscenseur + "  tabDestination: " + tabDestination);
-				
+				//////////////////////////
+				setChanged();
+				notifyObservers("horloge");
+				//////////////////////////
 			      setChanged();
 			      notifyObservers("deplacement"+this.getIdAscenseur());
 				
@@ -361,13 +364,7 @@ public class Ascenseur extends Observable implements Runnable{
 		//Déplace les appels de Atraiter vers Traiter
 		tabAppelsTraites.addAll(tabAppelAsupprimer);
 		tabAppelAtraiter.removeAll(tabAppelAsupprimer);
-		this.tabDestination.removeAll(tabSourceAsupprimer);
-		
-		
-		
-		
-		
-		
+		this.tabDestination.removeAll(tabSourceAsupprimer);	
 	}
 	
 	/**

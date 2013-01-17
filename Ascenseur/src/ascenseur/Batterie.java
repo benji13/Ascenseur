@@ -22,6 +22,15 @@ public class Batterie{
     private ArrayList<Thread> tabThread ;
     private static Calendrier cal;
     private static boolean semaine; //true si en semaine, false si en week end 
+    private static boolean changement; // nous indique s'il y a un changement de mode ou pas
+    
+    public static void setChangement(boolean changement) {
+		Batterie.changement = changement;
+	}
+    
+    public static boolean isChangement() {
+		return changement;
+	}
     
     public static void setSemaine(boolean semaine) {
 		Batterie.semaine = semaine;
@@ -92,12 +101,21 @@ public class Batterie{
     	if(unAscenseur.getTabDestination().isEmpty() ){	
 	        int ecart = 400, i, id=-1;
 	        ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
-	        
-	        if(Batterie.semaine){
-	        	tabRepositionement = Batterie.tabPositionJournee;
-	        }
-	        else
-	        	tabRepositionement = Batterie.tabPositionWeekEnd;
+	        if(Batterie.changement){
+	        	System.out.println("Changement : "+Batterie.cal.getDateActuelle().getTime());
+	        	 for(int k=0;k<6;k++){
+	              	//Initialise le tableau de reservation de position repos à faux. (Aucune position n'a été réservée)
+	              	Boolean bool = new Boolean(false);
+	              	Batterie.tabResaPosition.set(k, bool);
+	              }
+	        	}
+		        if(Batterie.semaine){
+		        	tabRepositionement = Batterie.tabPositionJournee;
+		        }
+		        else
+		        	tabRepositionement = Batterie.tabPositionWeekEnd;
+		        Batterie.changement = false;
+	       
 	        
 	        System.out.println(unAscenseur.getIdAscenseur()+" : "+Batterie.tabResaPosition);
 	        for(i=0;i<6;i++){
@@ -196,14 +214,20 @@ public class Batterie{
 	    	}
         }
         ArrayList<Integer> tabRepositionement = new ArrayList<Integer>();
-        Batterie.cal.determinerPlageHoraire();
-        
-        if(Batterie.cal.isWeek()){
+
+        if(Batterie.changement){
+        	 for(int k=0;k<6;k++){
+             	//Initialise le tableau de reservation de position repos à faux. (Aucune position n'a été réservée)
+             	Boolean bool = new Boolean(false);
+             	Batterie.tabResaPosition.set(k, bool);
+             }
+        }
+        if(Batterie.semaine){
         	tabRepositionement = Batterie.tabPositionJournee;
         }
         else
         	tabRepositionement = Batterie.tabPositionWeekEnd;
-        
+       
         if(affected){
         	libererReservation(tabRepositionement,this.tabAscenseur.get(id).getPositionRepo());
         	System.out.println("Liberation de la reservation de l'ascenseur "+ this.tabAscenseur.get(id).getIdAscenseur() +" " +Batterie.tabResaPosition);
@@ -340,7 +364,7 @@ public class Batterie{
         
         
         
-        if(Batterie.cal.isWeek()){
+        if(Batterie.semaine){
         	ascenseur0 = new Ascenseur(0,tabPositionJournee.get(0),xtemps,sec);
     		ascenseur1 = new Ascenseur(1,tabPositionJournee.get(1),xtemps,sec);
     		ascenseur2 = new Ascenseur(2,tabPositionJournee.get(2),xtemps,sec);
@@ -387,8 +411,120 @@ public class Batterie{
     	this.tabAscenseur.add(ascenseur4);
     	this.tabAscenseur.add(ascenseur5);   	
    
+    	Batterie.changement = false;
     }
 
+    
+    public Batterie(int xtemps,Seconde sec,int jour, int mois, int annee, int heure) {
+        this.tabAscenseur = new ArrayList<Ascenseur>();
+        this.tabTousLesAppels = new ArrayList<Appel>();
+        Batterie.tabResaPosition = new ArrayList<Boolean>();
+        tabThread = new ArrayList<Thread>();
+       
+        for(int i=0;i<6;i++){
+        	//Initialise le tableau de reservation de position repos à faux. (Aucune position n'a été réservée)
+        	Boolean bool = new Boolean(true);
+        	Batterie.tabResaPosition.add(bool);
+        }
+        
+        try
+        {
+        	Batterie.cal = new Calendrier(xtemps,sec);
+        	Batterie.cal.start();
+        	Batterie.cal.getChrono().start();
+        }
+        catch (InterruptedException e)
+        {
+        	System.out.println("Erreur construction");
+        }
+        
+        ArrayList<Integer> tabPositionJournee = new ArrayList<Integer>();
+        
+        tabPositionJournee.add(0);
+        tabPositionJournee.add(0);
+        tabPositionJournee.add(0);
+        tabPositionJournee.add(10);
+        tabPositionJournee.add(25);
+        tabPositionJournee.add(35);
+        
+        ArrayList<Integer> tabPositionWeekEnd = new ArrayList<Integer>();
+        tabPositionWeekEnd.add(38);
+        tabPositionWeekEnd.add(38);
+        tabPositionWeekEnd.add(38);
+        tabPositionWeekEnd.add(0);
+        tabPositionWeekEnd.add(0);
+        tabPositionWeekEnd.add(-2);
+        
+        
+        Batterie.tabPositionJournee = tabPositionJournee;
+        Batterie.tabPositionWeekEnd = tabPositionWeekEnd;
+        this.getCal().determinerPlageHoraire();
+        
+        Ascenseur ascenseur0;
+        Ascenseur ascenseur1;
+        Ascenseur ascenseur2;
+        Ascenseur ascenseur3;
+        Ascenseur ascenseur4;
+        Ascenseur ascenseur5;
+        
+        Thread t0;
+        Thread t1;
+        Thread t2;
+        Thread t3;
+        Thread t4;
+        Thread t5;
+        
+        
+        
+        if(Batterie.semaine){
+        	ascenseur0 = new Ascenseur(0,tabPositionJournee.get(0),xtemps,sec);
+    		ascenseur1 = new Ascenseur(1,tabPositionJournee.get(1),xtemps,sec);
+    		ascenseur2 = new Ascenseur(2,tabPositionJournee.get(2),xtemps,sec);
+    		ascenseur3 = new Ascenseur(3,tabPositionJournee.get(3),xtemps,sec);
+    		ascenseur4 = new Ascenseur(4,tabPositionJournee.get(4),xtemps,sec);
+    		ascenseur5 = new Ascenseur(5,tabPositionJournee.get(5),xtemps,sec);
+        }
+        else {
+        	ascenseur0 = new Ascenseur(0,tabPositionWeekEnd.get(0),xtemps,sec);
+			ascenseur1 = new Ascenseur(1,tabPositionWeekEnd.get(1),xtemps,sec);
+			ascenseur2 = new Ascenseur(2,tabPositionWeekEnd.get(2),xtemps,sec);
+			ascenseur3 = new Ascenseur(3,tabPositionWeekEnd.get(3),xtemps,sec);
+			ascenseur4 = new Ascenseur(4,tabPositionWeekEnd.get(4),xtemps,sec);
+			ascenseur5 = new Ascenseur(5,tabPositionWeekEnd.get(5),xtemps,sec);
+        }
+        
+   
+        
+        t0 = new Thread(ascenseur0);
+        t1 = new Thread(ascenseur1);
+        t2 = new Thread(ascenseur2);
+        t3 = new Thread(ascenseur3);
+        t4 = new Thread(ascenseur4);
+        t5 = new Thread(ascenseur5);
+        
+        t0.start();
+        t1.start();
+        t2.start();
+        t3.start();
+        t4.start();
+        t5.start();
+        
+        this.tabThread.add(t0);
+        this.tabThread.add(t1);
+        this.tabThread.add(t2);
+        this.tabThread.add(t3);
+        this.tabThread.add(t4);
+        this.tabThread.add(t5);
+        
+		this.tabAscenseur.add(ascenseur0);
+    	this.tabAscenseur.add(ascenseur1);
+    	this.tabAscenseur.add(ascenseur2);
+    	this.tabAscenseur.add(ascenseur3);
+    	this.tabAscenseur.add(ascenseur4);
+    	this.tabAscenseur.add(ascenseur5);   	
+   
+    	Batterie.changement = false;
+    }
     /**
      * Methode toString pour l'affichage en console du status de la Batterie (peut Ãªtre modifie en fct des besoins)
      * @return 

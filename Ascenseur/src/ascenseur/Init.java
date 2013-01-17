@@ -25,7 +25,7 @@ public class Init {
 //		Thread.sleep(1000);
 //		cal.getChrono().start();
 //		
-//		
+		
 		
 		Gui fen = new Gui(sec);
 		fen.Init();
