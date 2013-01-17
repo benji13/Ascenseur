@@ -3,6 +3,8 @@ package ascenseur;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -29,7 +31,7 @@ import java.util.Observer;
  *fen.fenetreManu();
  *
   */
-public class Gui  implements ActionListener, Observer {
+public class Gui  implements ActionListener, Observer, ChangeListener {
 	
 	JFrame fenetreChoix;
 	JPanel panelAutomatique, panelManuelle;
@@ -62,7 +64,7 @@ public class Gui  implements ActionListener, Observer {
 	
 	DefaultTableModel model = new DefaultTableModel();
 
-	JSlider slider0, slider1, slider2, slider3, slider4, slider5;
+	JSlider slider0, slider1, slider2, slider3, slider4, slider5, sliderAcc;
 	static final int RDC= 0;
 	static final int SOMMET = 44;
 	
@@ -126,7 +128,7 @@ public class Gui  implements ActionListener, Observer {
 	public void Init() throws InterruptedException{
 		Calendar cal1 = Calendar.getInstance(); cal1.set(2012, 01, 15, 15, 00, 00);
 		
-		xtemps = 1;	
+		xtemps = 1000;	
 	}
 	
 	
@@ -224,7 +226,6 @@ public class Gui  implements ActionListener, Observer {
 		bouttonDescendre = new JButton("vv Descendre");
 		bouttonDescendre.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bouttonDescendre.addActionListener(this);
-		bouttonDescendre.addActionListener(this);
 		choix = new JTextField("");
 		choix.setEditable(false);
 		
@@ -250,7 +251,7 @@ public class Gui  implements ActionListener, Observer {
 		buttonValider.setEnabled(false);
 		//panelAppel.add(labelUtilisateur);
 		panelUtilisateur.add(jeVais);
-		panelUtilisateur.add(nbrPersonne);
+		//panelUtilisateur.add(nbrPersonne);
 		panelUtilisateur.add(buttonValider);
 		panelGauche.add(panelUtilisateur);
 		
@@ -311,9 +312,22 @@ public class Gui  implements ActionListener, Observer {
 		
 		
 		/**
-		 * Panel de droite contenant le l'horloge 
+		 * Panel de droite contenant le l'horloge et l'acceleration
 		 */
 		
+		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
+		labelTable.put( new Integer( 0 ), new JLabel("Min") );
+		labelTable.put( new Integer( 10 ), new JLabel("Max") );
+		labelTable.put( new Integer( 5 ), new JLabel("5") );
+		
+		sliderAcc = new JSlider(JSlider.VERTICAL, 0, 10, 0);
+		sliderAcc.setMajorTickSpacing(1);
+		sliderAcc.setPaintTicks(true);
+		sliderAcc.setLabelTable( labelTable );
+		sliderAcc.setPaintLabels(true);
+		sliderAcc.addChangeListener(this);
+		panelDroit.add(sliderAcc);
+		panelDroit.setBorder(new TitledBorder(blackline, "Accélération", TitledBorder.CENTER, 0, null));
 		
 		
 		/**
@@ -321,10 +335,10 @@ public class Gui  implements ActionListener, Observer {
 		 */
 		
 		panelStats = new JPanel();
-		buttonStats = new JButton("Acceder aux statistiques");
+		buttonStats = new JButton("Statistiques");
 		buttonStats.addActionListener(this);
 		
-		bouttonVisu = new JButton("Surprise !!!");
+		bouttonVisu = new JButton("Visualisation");
 		bouttonVisu.addActionListener(this);
 		
 		labelHorloge = new JLabel();
@@ -341,10 +355,17 @@ public class Gui  implements ActionListener, Observer {
 		 */
 		fenetreManu.add(panelGauche, BorderLayout.LINE_START);
 		fenetreManu.add(panelMilieu, BorderLayout.CENTER);
+		fenetreManu.add(panelDroit, BorderLayout.LINE_END);
 		
 		fenetreManu.pack();				
 
 	}
+	
+	
+	
+	
+	
+	
 	
 	 public void ouvertureFichier() {
          JFileChooser ouverture = new JFileChooser(".simu");
@@ -357,6 +378,13 @@ public class Gui  implements ActionListener, Observer {
          String fichier = f.getName();
          System.out.println("Choix : " + fichier);
  }
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 	
 	/**
 	 * 
@@ -365,7 +393,7 @@ public class Gui  implements ActionListener, Observer {
 	 */
 	public void fenetreStats(){
 		
-		fenetreStats = new JFrame("MÂ²BÂ²T - Statistiques");
+		fenetreStats = new JFrame("M²B²T - Statistiques");
 		fenetreStats.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		/**
@@ -502,11 +530,15 @@ public class Gui  implements ActionListener, Observer {
 		 fenetreStats.addWindowListener(new WindowAdapter() {
 		      public void windowClosing(WindowEvent e) {
 		    	  fenetreStats.setVisible(false);
-		    	  fenetreManu.setVisible(true);
+		    	  //fenetreManu.setVisible(true);
 		      }
 		    });
 		
 	}
+	
+	
+	
+	
 	
 	
 	/**
@@ -523,7 +555,7 @@ public void fenetreVisu(){
 		JPanel panelSlider = new JPanel();
 		panelSlider.setLayout(new GridLayout(1,6));
 		
-		Hashtable labelTable = new Hashtable();
+		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
 		labelTable.put( new Integer( 0 ), new JLabel("Sous-Sol") );
 		labelTable.put( new Integer( 4 ), new JLabel("RDC") );
 		labelTable.put( new Integer( SOMMET ), new JLabel("Sommet") );
@@ -533,6 +565,7 @@ public void fenetreVisu(){
 		slider0.setPaintTicks(true);
 		slider0.setLabelTable( labelTable );
 		slider0.setPaintLabels(true);
+		slider0.setBorder(new TitledBorder("Ascenseur A"));
 		
 		
 		slider1 = new JSlider(JSlider.VERTICAL, RDC, SOMMET, 0);
@@ -540,24 +573,29 @@ public void fenetreVisu(){
 		slider1.setPaintTicks(true);
 		slider1.setLabelTable( labelTable );
 		slider1.setPaintLabels(true);
+		slider1.setBorder(new TitledBorder("Ascenseur B"));
+		
 
 		slider2 = new JSlider(JSlider.VERTICAL, RDC, SOMMET, 0);
 		slider2.setMajorTickSpacing(1);
 		slider2.setPaintTicks(true);
 		slider2.setLabelTable( labelTable );
 		slider2.setPaintLabels(true);
+		slider2.setBorder(new TitledBorder("Ascenseur C"));
 		
 		slider3 = new JSlider(JSlider.VERTICAL, RDC, SOMMET, 0);
 		slider3.setMajorTickSpacing(1);
 		slider3.setPaintTicks(true);
 		slider3.setLabelTable( labelTable );
 		slider3.setPaintLabels(true);
+		slider3.setBorder(new TitledBorder("Ascenseur D"));
 		
 		slider4 = new JSlider(JSlider.VERTICAL, RDC, SOMMET, 0);
 		slider4.setMajorTickSpacing(1);
 		slider4.setPaintTicks(true);
 		slider4.setLabelTable( labelTable );
 		slider4.setPaintLabels(true);
+		slider4.setBorder(new TitledBorder("Ascenseur E"));
 
 		
 		slider5 = new JSlider(JSlider.VERTICAL, RDC, SOMMET, 0);
@@ -565,6 +603,7 @@ public void fenetreVisu(){
 		slider5.setPaintTicks(true);
 		slider5.setLabelTable( labelTable );
 		slider5.setPaintLabels(true);
+		slider5.setBorder(new TitledBorder("Ascenseur F"));
 		
 		panelSlider.add(slider0);
 		panelSlider.add(slider1);
@@ -651,7 +690,7 @@ public void fenetreVisu(){
 		  }
 		
 		  if(arg0.getSource() == buttonStats){
-			  fenetreManu.setVisible(false);
+			  //fenetreManu.setVisible(false);
 			  fenetreStats.setVisible(true);
 		  }
 		  
@@ -693,39 +732,57 @@ public void fenetreVisu(){
 		
 		if(arg0.getSource() == bouttonDescendre){
 			int i;
-			jeSuis.setEnabled(false);
-			jeVais.setEnabled(true);
-			buttonValider.setEnabled(true);
-			buttonMonter.setEnabled(false);
-			bouttonDescendre.setEnabled(false);
 			
-			for(i=0;i<jeSuis.getSelectedIndex();i++){
-				listEtagesDyna[i]= (i-4) ;
+			if((Integer)jeSuis.getSelectedItem()==-4){
+				JOptionPane.showMessageDialog(fenetreManu,
+					    "Impossible de descendre en dessous de -4",
+					    "Inane warning",
+					    JOptionPane.WARNING_MESSAGE);
 			}
-			jeVais.removeAllItems();
-			
-			for(i=0;i<jeSuis.getSelectedIndex();i++){
-				jeVais.addItem(listEtagesDyna[i]);
+			else{
+				jeSuis.setEnabled(false);
+				jeVais.setEnabled(true);
+				buttonValider.setEnabled(true);
+				buttonMonter.setEnabled(false);
+				bouttonDescendre.setEnabled(false);
+				
+				for(i=0;i<jeSuis.getSelectedIndex();i++){
+					listEtagesDyna[i]= (i-4) ;
+				}
+				jeVais.removeAllItems();
+				
+				for(i=0;i<jeSuis.getSelectedIndex();i++){
+					jeVais.addItem(listEtagesDyna[i]);
+				}
 			}
 			
 		  }
 		
 		if(arg0.getSource() == buttonMonter){
 			int i;
-			jeSuis.setEnabled(false);
-			jeVais.setEnabled(true);
-			buttonValider.setEnabled(true);
-			buttonMonter.setEnabled(false);
-			bouttonDescendre.setEnabled(false);
 			
-			for(i=jeSuis.getSelectedIndex()+1;i<=44;i++){
-				listEtagesDyna[i]= (i-4) ;
+			if((Integer)jeSuis.getSelectedItem()==40){
+				JOptionPane.showMessageDialog(fenetreManu,
+					    "Impossible de monter au dessus de 40",
+					    "Inane warning",
+					    JOptionPane.WARNING_MESSAGE);
 			}
-			
-			jeVais.removeAllItems();
-			
-			for(i=jeSuis.getSelectedIndex()+1;i<=44;i++){
-				jeVais.addItem(listEtagesDyna[i]);
+			else{
+				jeSuis.setEnabled(false);
+				jeVais.setEnabled(true);
+				buttonValider.setEnabled(true);
+				buttonMonter.setEnabled(false);
+				bouttonDescendre.setEnabled(false);
+				
+				for(i=jeSuis.getSelectedIndex()+1;i<=44;i++){
+					listEtagesDyna[i]= (i-4) ;
+				}
+				
+				jeVais.removeAllItems();
+				
+				for(i=jeSuis.getSelectedIndex()+1;i<=44;i++){
+					jeVais.addItem(listEtagesDyna[i]);
+				}
 			}
 			
 		  }
@@ -733,7 +790,6 @@ public void fenetreVisu(){
 		
 		  if(arg0.getSource() == buttonValider){
 			  int js, jv;
-			  Date appelDate = new Date();
 			  
 			  js = (Integer) jeSuis.getSelectedItem();
 			  jv = (Integer) jeVais.getSelectedItem();
@@ -762,24 +818,16 @@ public void fenetreVisu(){
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		
-//		if(arg1.equals("repo0")){
-//			ascA.setText(""+laBatterie.getTabAscenseur().get(0).getPositionActuelle());
-//		}
-//		if(arg1.equals("repo1")){
-//			ascB.setText(""+laBatterie.getTabAscenseur().get(1).getPositionActuelle());
-//		}
-//		if(arg1.equals("repo2")){
-//			ascC.setText(""+laBatterie.getTabAscenseur().get(2).getPositionActuelle());
-//		}
-//		if(arg1.equals("repo3")){
-//			ascD.setText(""+laBatterie.getTabAscenseur().get(3).getPositionActuelle());
-//		}
-//		if(arg1.equals("repo4")){
-//			ascE.setText(""+laBatterie.getTabAscenseur().get(4).getPositionActuelle());
-//		}
-//		if(arg1.equals("repo5")){
-//			ascF.setText(""+laBatterie.getTabAscenseur().get(5).getPositionActuelle());
-//		}
+		if(arg1.equals("horloge")){
+//			Calendrier calTemp = new Calendrier();
+//			Date dateTemp = new Date();
+//			calTemp = laBatterie.getCal();
+//			dateTemp = laBatterie.getCal().getDateActuelle().getTime();
+//			labelHorloge.setText(""+calTemp.getDateActuelle().getTime());
+//			
+//			Batterie.
+		}
+		
 		
 		if(arg1.equals("deplacement0") || arg1.equals("repo0")){
 			ascA.setText(""+laBatterie.getTabAscenseur().get(0).getPositionActuelle());
@@ -830,6 +878,16 @@ public void fenetreVisu(){
 					model.addRow(fileAppel);
 				}
 			}
+		}
+		
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		
+		if(arg0.getSource() == sliderAcc){
+			System.out.println(""+sliderAcc.getValue());
 		}
 		
 	}
