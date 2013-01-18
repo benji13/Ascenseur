@@ -15,7 +15,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
@@ -42,7 +41,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 	int[] tableDateSim = {0,0,0,0};
 	
 	JFrame fenetreManu, fenetreStats, fenetreVisu;
-	JPanel panelMenu, panelGauche, panelMilieu, panelDroit, panelAppel, panelUtilisateur, panelAscenseur, panelTableau, panelStats, panelHaut, panelBas, panelRefresh, panel1, panel2, panel3;
+	JPanel panelMenu, panelGauche, panelMilieu, panelDroit, panelAppel, panelUtilisateur, panelAscenseur, panelTableau, panelStats, panelHaut, panelBas, panelTitre, panelCont, panelRefresh, panel1, panel2, panel3;
 	JMenuBar menuBar;
 	JMenu menu, sousMenu;
 	JMenuItem menuItem, menuResetJ, menuApropos, menuQuitter;
@@ -53,7 +52,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 	Integer[] listEtagesDyna;
 	Integer[] listPersonne;
 	JTable tableauFile;
-	JLabel a, b, c, d, e, f, labelAppel, labelUtilisateur, labelAscenseurs, labelStats, labelNbre, labelConso, labelVide, labelConsoMoy, labelConsoTot, labelAttMoy, labelConsoTotAsc, labelNbrAppTot, labelDureeSimu, labelHorloge; 
+	JLabel a, b, c, d, e, f, labelAppel, labelUtilisateur, labelAscenseurs, labelStats, labelNbre, labelConso, labelVide, labelConsoMoy, labelConsoTot, labelAttMoy, labelConsoTotAsc, labelNbrAppTot, labelDureeSimu, labelHorloge, img0, img1, img2, img3, img4, img5; 
 	String[] ascenseurString = {"A","B","C","D","E","F"};
 	Border  blackline = BorderFactory.createLineBorder(Color.black);
 	
@@ -64,6 +63,8 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 	Object[] fileAppel = {"null", "null","null", "null"};
 	
 	DefaultTableModel model = new DefaultTableModel();
+	
+	ImageIcon imgStop, imgMonte, imgDescend;
 
 	JSlider slider0, slider1, slider2, slider3, slider4, slider5, sliderAcc;
 	
@@ -93,6 +94,8 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 	 */
 	public Gui(Seconde sec){
 
+		int i;
+		
 		fenetreChoix = new JFrame("M²B²T - Choix du Mode");
 		fenetreChoix.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		fenetreChoix.setResizable(false);
@@ -102,15 +105,9 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		buttonAuto = new JButton("Automatique");
 		buttonAuto.addActionListener(this);
 		buttonManu = new JButton("Manuelle");
+		buttonManu.setEnabled(false);
 		buttonManu.addActionListener(this);
-		//radioJour = new JRadioButton("Semaine");
-//		radioSoir = new JRadioButton("Week-end");
-//		groupChoix = new ButtonGroup();
-//		
-//		groupChoix.add(radioJour);
-//		groupChoix.add(radioSoir);
-//		radioJour.setSelected(true);
-		
+
 		fenetreChoix.setLayout(new GridLayout(1,2));
 		panelManuelle.setLayout(new BoxLayout(panelManuelle,BoxLayout.Y_AXIS));
 		
@@ -122,23 +119,32 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		panelManuelle.setBorder(new TitledBorder("Mode Manuelle"));
 		
 		panelManuelle.add(buttonManu);
-		//panelManuelle.add(radioJour);
-		//panelManuelle.add(radioSoir);
+
 		
-		label = new JLabel("Date:");
-        text = new JTextField(8);
+		label = new JLabel("Démarrer le :");
+        text = new JTextField(6);
         text.setEditable(false);
         bu = new JButton("choisir");
-        p = new JPanel();
-        pickDate = new JFrame();
         
+        
+        
+        Integer[] choixHheures = new Integer[24];
+		for(i=0;i<24;i++){
+			choixHheures[i]= i;
+		}
+		listeHeures = new JComboBox(choixHheures);
+		listeHeures.setSelectedIndex(12);
+		
+		p = new JPanel();
         p.add(label);
         p.add(text);
         p.add(bu);
+        p.add(new JLabel("à"));
+        p.add(listeHeures);
+        p.add(new JLabel("H"));
         bu.addActionListener(this);
         
-        listeHeures = new JComboBox();
-        
+        pickDate = new JFrame();
         
         panelManuelle.add(p);
 		
@@ -248,6 +254,10 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		bouttonDescendre.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bouttonDescendre.addActionListener(this);
 		choix = new JTextField("");
+		Font newTextFieldFont=new Font(choix.getFont().getName(),Font.BOLD,40);
+		choix.setForeground(new Color(255,0,0));
+		choix.setFont(newTextFieldFont);
+		choix.setHorizontalAlignment(JTextField.CENTER);
 		choix.setEditable(false);
 		
 		//panelAppel.add(labelAppel);
@@ -282,14 +292,25 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		/**
 		 * Panel du haut avec l'etat des ascenseurs
 		 */
+		 imgStop = new ImageIcon("images/pause.png");
+		 imgMonte = new ImageIcon("images/fleche_up.png");
+		 imgDescend = new ImageIcon("images/fleche_down.png");
 		
-		panelAscenseur = new JPanel(new GridLayout(2,6));	
+
+		
+		panelAscenseur = new JPanel(new GridLayout(3,6));	
 		ascA = new JTextField();
+		ascA.setHorizontalAlignment(JTextField.CENTER);
 		ascB = new JTextField();
+		ascB.setHorizontalAlignment(JTextField.CENTER);
 		ascC = new JTextField();
+		ascC.setHorizontalAlignment(JTextField.CENTER);
 		ascD = new JTextField();
+		ascD.setHorizontalAlignment(JTextField.CENTER);
 		ascE = new JTextField();
+		ascE.setHorizontalAlignment(JTextField.CENTER);
 		ascF = new JTextField();
+		ascF.setHorizontalAlignment(JTextField.CENTER);
 		
 		ascA.setEditable(false);
 		ascB.setEditable(false);
@@ -298,7 +319,6 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		ascE.setEditable(false);
 		ascF.setEditable(false);
 		
-		//panelAscenseur.add(labelAscenseurs);
 		panelAscenseur.add(a);
 		panelAscenseur.add(b);
 		panelAscenseur.add(c);
@@ -311,6 +331,34 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		panelAscenseur.add(ascD);
 		panelAscenseur.add(ascE);
 		panelAscenseur.add(ascF);
+		
+		img0 = new JLabel();
+		img0.setHorizontalAlignment(JLabel.CENTER);
+		img1 = new JLabel();
+		img1.setHorizontalAlignment(JLabel.CENTER);
+		img2 = new JLabel();
+		img2.setHorizontalAlignment(JLabel.CENTER);
+		img3 = new JLabel();
+		img3.setHorizontalAlignment(JLabel.CENTER);
+		img4 = new JLabel();
+		img4.setHorizontalAlignment(JLabel.CENTER);
+		img5 = new JLabel();
+		img5.setHorizontalAlignment(JLabel.CENTER);
+		
+		//img0.setAlignmentX(Component.CENTER_ALIGNMENT);
+		img0.setIcon(imgStop);
+		img1.setIcon(imgStop);
+		img2.setIcon(imgStop);
+		img3.setIcon(imgStop);
+		img4.setIcon(imgStop);
+		img5.setIcon(imgStop);
+		
+		panelAscenseur.add(img0);
+		panelAscenseur.add(img1);
+		panelAscenseur.add(img2);
+		panelAscenseur.add(img3);
+		panelAscenseur.add(img4);
+		panelAscenseur.add(img5);
 		
 		panelAscenseur.setBorder(new TitledBorder(blackline, "Ascenseurs", TitledBorder.CENTER, 0, null));
 
@@ -327,7 +375,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		model.insertRow(0, fileAppel);
 		tableauFile = new JTable(model);
 		tableauFile.setEnabled(false);
-		tableauFile.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		tableauFile.setPreferredScrollableViewportSize(new Dimension(500, 100));
 		JScrollPane scrollPane = new JScrollPane(tableauFile);
 		panelTableau.add(scrollPane);
 		panelMilieu.add(panelTableau);
@@ -363,7 +411,8 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		bouttonVisu = new JButton("Visualisation");
 		bouttonVisu.addActionListener(this);
 		
-		labelHorloge = new JLabel();
+		labelHorloge = new JLabel("M");
+		labelHorloge.setBorder(new TitledBorder("Date actuelle"));
 		//panelStats.add(labelStats);
 		panelStats.add(buttonStats);
 		panelStats.add(bouttonVisu);
@@ -396,18 +445,20 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		
 		fenetreStats = new JFrame("M²B²T - Statistiques");
 		fenetreStats.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		
+		fenetreStats.setLayout(new BorderLayout());
 		objStats = new Statistiques();
 		
 		/**
 		 * Declaration des panels
 		 */
 		panelHaut = new JPanel();
-		panelHaut.setBorder(new TitledBorder("Ascenseurs" ));
+		panelHaut.setBorder(new TitledBorder(blackline, "Ascenseurs", TitledBorder.CENTER, 0, null));
+		panelTitre = new JPanel();
+		panelCont = new JPanel();
 		panelBas = new JPanel();
-		panelBas.setBorder(new TitledBorder("Statistiques Globales"));
+		panelBas.setBorder(new TitledBorder(blackline, "Statistiques Globales", TitledBorder.CENTER, 0, null));
 		panelRefresh = new JPanel();
-		panelRefresh.setBorder(new TitledBorder("Refresh" ));
+		panelRefresh.setBorder(new TitledBorder(blackline, "Rafraichissement", TitledBorder.CENTER, 0, null));
 		panel1 = new JPanel();
 		panel2 = new JPanel();
 		panel3 = new JPanel();
@@ -417,9 +468,9 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		 */
 		labelAscenseurs = new JLabel("Ascenseurs");
 		labelStats = new JLabel("Statistiques Globales");
-		labelNbre = new JLabel("Nombre d'appels total",SwingConstants.CENTER);
-		labelConsoTotAsc = new JLabel("Consommation totale",SwingConstants.CENTER);
-		labelConso = new JLabel("Consommation moyenne",SwingConstants.CENTER);
+		labelNbre = new JLabel("Nombre d'appels total");
+		labelConsoTotAsc = new JLabel("Consommation totale (W)");
+		labelConso = new JLabel("Consommation moyenne (W/Appel)");
 		labelVide = new JLabel("");
 		a = new JLabel("A",SwingConstants.CENTER);
 		b = new JLabel("B",SwingConstants.CENTER);
@@ -427,104 +478,108 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		d = new JLabel("D",SwingConstants.CENTER);
 		e = new JLabel("E",SwingConstants.CENTER);
 		f = new JLabel("F",SwingConstants.CENTER);
-		labelConsoMoy = new JLabel("Consommation Moyenne",SwingConstants.CENTER);
-		labelConsoTot = new JLabel("Consommation Totale",SwingConstants.CENTER);
-		labelAttMoy = new JLabel("Attente Moyenne",SwingConstants.CENTER);
+		labelConsoMoy = new JLabel("Consommation Moyenne (W/H)",SwingConstants.CENTER);
+		labelConsoTot = new JLabel("Consommation Totale (W)",SwingConstants.CENTER);
+		labelAttMoy = new JLabel("Attente Moyenne (Sec)",SwingConstants.CENTER);
 		labelNbrAppTot = new JLabel("Nombre d'appels Total",SwingConstants.CENTER);
-		labelDureeSimu = new JLabel("Dur e simulation",SwingConstants.CENTER);
-		bouttonRefreshStat = new JButton("Resfresh");
+		labelDureeSimu = new JLabel("Durée simulation (Sec)",SwingConstants.CENTER);
+		bouttonRefreshStat = new JButton("Rafraichir");
 		bouttonRefreshStat.addActionListener(this);
 		
 		/**
 		 * Declaration des TextFiels
 		 */
-		nbr1 = new JTextField();
-		nbr1.setEnabled(false);
-		nbr2 = new JTextField();
-		nbr2.setEnabled(false);
-		nbr3 = new JTextField();
-		nbr3.setEnabled(false);
-		nbr4 = new JTextField();
-		nbr4.setEnabled(false);
-		nbr5 = new JTextField();
-		nbr5.setEnabled(false);
-		nbr6 = new JTextField();
-		nbr6.setEnabled(false);
+		nbr1 = new JTextField(6);
+		nbr1.setEditable(false);
+		nbr2 = new JTextField(6);
+		nbr2.setEditable(false);
+		nbr3 = new JTextField(6);
+		nbr3.setEditable(false);
+		nbr4 = new JTextField(6);
+		nbr4.setEditable(false);
+		nbr5 = new JTextField(6);
+		nbr5.setEditable(false);
+		nbr6 = new JTextField(6);
+		nbr6.setEditable(false);
 		
-		consoTotAsc1 = new JTextField();
-		consoTotAsc1.setEnabled(false);
-		consoTotAsc2= new JTextField();
-		consoTotAsc2.setEnabled(false);
-		consoTotAsc3 = new JTextField();
-		consoTotAsc3.setEnabled(false);
-		consoTotAsc4 = new JTextField();
-		consoTotAsc4.setEnabled(false);
-		consoTotAsc5 = new JTextField();
-		consoTotAsc5.setEnabled(false);
-		consoTotAsc6 = new JTextField();
-		consoTotAsc6.setEnabled(false);
+		consoTotAsc1 = new JTextField(6);
+		consoTotAsc1.setEditable(false);
+		consoTotAsc2= new JTextField(6);
+		consoTotAsc2.setEditable(false);
+		consoTotAsc3 = new JTextField(6);
+		consoTotAsc3.setEditable(false);
+		consoTotAsc4 = new JTextField(6);
+		consoTotAsc4.setEditable(false);
+		consoTotAsc5 = new JTextField(6);
+		consoTotAsc5.setEditable(false);
+		consoTotAsc6 = new JTextField(6);
+		consoTotAsc6.setEditable(false);
 		
-		conso1 = new JTextField();
-		conso1.setEnabled(false);
-		conso2 = new JTextField();
-		conso2.setEnabled(false);
-		conso3 = new JTextField();
-		conso3.setEnabled(false);
-		conso4 = new JTextField();
-		conso4.setEnabled(false);
-		conso5 = new JTextField();
-		conso5.setEnabled(false);
-		conso6 = new JTextField();
-		conso6.setEnabled(false);
+		conso1 = new JTextField(6);
+		conso1.setEditable(false);
+		conso2 = new JTextField(6);
+		conso2.setEditable(false);
+		conso3 = new JTextField(6);
+		conso3.setEditable(false);
+		conso4 = new JTextField(6);
+		conso4.setEditable(false);
+		conso5 = new JTextField(6);
+		conso5.setEditable(false);
+		conso6 = new JTextField(6);
+		conso6.setEditable(false);
 		ConsoMoy = new JTextField();
-		ConsoMoy.setEnabled(false);
+		ConsoMoy.setEditable(false);
 		ConsoTot = new JTextField();
-		ConsoTot.setEnabled(false);
+		ConsoTot.setEditable(false);
 		AttMoy = new JTextField();
-		AttMoy.setEnabled(false);
+		AttMoy.setEditable(false);
 		NbrAppTot = new JTextField();
-		NbrAppTot.setEnabled(false);
+		NbrAppTot.setEditable(false);
 		DureeSimu = new JTextField();
-		DureeSimu.setEnabled(false);
+		DureeSimu.setEditable(false);
 
 		
 		/**
 		 * Panel Ascenseurs contenant un tableau
 		 */
-		panelHaut.setLayout(new GridLayout(4,7,20,10));
-		panelHaut.add(labelVide);
-		panelHaut.add(a);
-		panelHaut.add(b);
-		panelHaut.add(c);
-		panelHaut.add(d);
-		panelHaut.add(e);
-		panelHaut.add(f);
-		panelHaut.add(labelNbre);
-		panelHaut.add(nbr1);
-		panelHaut.add(nbr2);
-		panelHaut.add(nbr3);
-		panelHaut.add(nbr4);
-		panelHaut.add(nbr5);
-		panelHaut.add(nbr6);
-		panelHaut.add(labelConsoTotAsc);
-		panelHaut.add(consoTotAsc1);
-		panelHaut.add(consoTotAsc2);
-		panelHaut.add(consoTotAsc3);
-		panelHaut.add(consoTotAsc4);
-		panelHaut.add(consoTotAsc5);
-		panelHaut.add(consoTotAsc6);
-		panelHaut.add(labelConso);
-		panelHaut.add(conso1);
-		panelHaut.add(conso2);
-		panelHaut.add(conso3);
-		panelHaut.add(conso4);
-		panelHaut.add(conso5);
-		panelHaut.add(conso6);
+		panelHaut.setLayout(new FlowLayout());
+		panelTitre.setLayout(new GridLayout(4,1,5,2));
+		panelCont.setLayout(new GridLayout(4,6,5,2));
+		panelTitre.add(labelVide);
+		panelCont.add(a);
+		panelCont.add(b);
+		panelCont.add(c);
+		panelCont.add(d);
+		panelCont.add(e);
+		panelCont.add(f);
+		panelTitre.add(labelNbre);
+		panelCont.add(nbr1);
+		panelCont.add(nbr2);
+		panelCont.add(nbr3);
+		panelCont.add(nbr4);
+		panelCont.add(nbr5);
+		panelCont.add(nbr6);
+		panelTitre.add(labelConsoTotAsc);
+		panelCont.add(consoTotAsc1);
+		panelCont.add(consoTotAsc2);
+		panelCont.add(consoTotAsc3);
+		panelCont.add(consoTotAsc4);
+		panelCont.add(consoTotAsc5);
+		panelCont.add(consoTotAsc6);
+		panelTitre.add(labelConso);
+		panelCont.add(conso1);
+		panelCont.add(conso2);
+		panelCont.add(conso3);
+		panelCont.add(conso4);
+		panelCont.add(conso5);
+		panelCont.add(conso6);
+		panelHaut.add(panelTitre);
+		panelHaut.add(panelCont);
 		
 		/**
 		 * Panel Staistiques globales contenant un tableau
 		 */
-		panelBas.setLayout(new GridLayout(1,3,200,0));
+		panelBas.setLayout(new GridLayout(1,3,5,2));
 		panel1.setLayout(new GridLayout(4,1));
 		panel2.setLayout(new GridLayout(4,1));
 		panel3.setLayout(new GridLayout(4,1));
@@ -563,8 +618,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		    	  fenetreStats.setVisible(false);
 		    	  //fenetreManu.setVisible(true);
 		      }
-		    });
-		
+		    });	
 	}
 	
 	
@@ -684,10 +738,53 @@ public void ouvertureFichier() {
 		xtemps = 1;	
 	}
 	
+	public void refreshStats(){
+		int i;
+		  objStats.calculStatistique(laBatterie);
+		  
+		  for(i=0;i<6;i++){  
+				nbr1.setText(""+objStats.getTabnbAppel()[0]);
+				nbr2.setText(""+objStats.getTabnbAppel()[1]);
+				nbr3.setText(""+objStats.getTabnbAppel()[2]);
+				nbr4.setText(""+objStats.getTabnbAppel()[3]);
+				nbr5.setText(""+objStats.getTabnbAppel()[4]);
+				nbr6.setText(""+objStats.getTabnbAppel()[5]);
+				
+				consoTotAsc1.setText(""+objStats.getTabConsoMoyenne()[0]);
+				consoTotAsc2.setText(""+objStats.getTabConsoMoyenne()[1]);
+				consoTotAsc3.setText(""+objStats.getTabConsoMoyenne()[2]);
+				consoTotAsc4.setText(""+objStats.getTabConsoMoyenne()[3]);
+				consoTotAsc5.setText(""+objStats.getTabConsoMoyenne()[4]);
+				consoTotAsc6.setText(""+objStats.getTabConsoMoyenne()[5]);
+				
+				conso1.setText(""+objStats.getTabConsoMoyenne()[0]);
+				conso2.setText(""+objStats.getTabConsoMoyenne()[1]);
+				conso3.setText(""+objStats.getTabConsoMoyenne()[2]);
+				conso4.setText(""+objStats.getTabConsoMoyenne()[3]);
+				conso5.setText(""+objStats.getTabConsoMoyenne()[4]);
+				conso6.setText(""+objStats.getTabConsoMoyenne()[5]);
+				
+				ConsoMoy.setText(""+objStats.getConsoMoyenneTotale());
+				ConsoTot.setText(""+objStats.getConsoTotal());
+				AttMoy.setText(""+objStats.getAttenteMoyenne());
+				NbrAppTot.setText(""+objStats.getNbAppelTotal());
+				DureeSimu.setText(""+objStats.getTotalDuree());
+		  }
+	}
 	
-	public void refreshPositions(String nomAsc){
-		
-		
+	
+	public ImageIcon refreshImg(Ascenseur asc){
+		if(asc.isArret()){
+			return imgStop;
+		}
+		else{
+			if(asc.isMonte()){
+				return imgMonte;
+			}
+			else{
+				return imgDescend;
+			}
+		}
 	}
 	
 
@@ -701,11 +798,13 @@ public void ouvertureFichier() {
 			DatePicker D = new DatePicker(pickDate);
 			for(i=0;i<3;i++){
 				tableDateSim[i] = D.setPickedDateTable()[i];
-				ddate = ddate+tableDateSim[i]+" ";
-				System.out.println(""+tableDateSim[i]);
 			}
+			ddate = ddate+tableDateSim[0]+"/";
+			ddate = ddate+(tableDateSim[1]+1)+"/";
+			ddate = ddate+tableDateSim[2]+"";
 			text.setText(ddate);
-			System.out.println(ddate);
+			
+			buttonManu.setEnabled(true);
 		  }
 			
 		if(arg0.getSource() == buttonManu){
@@ -713,9 +812,7 @@ public void ouvertureFichier() {
 			  fenetreManu.setVisible(true);
 			  fenetreChoix.setVisible(false);
 			  
-					//laBatterie = new Batterie(xtemps,sec);
-				  laBatterie = new Batterie(xtemps, sec, tableDateSim[0], tableDateSim[1], tableDateSim[2], 10);
-				  
+				  laBatterie = new Batterie(xtemps, sec, tableDateSim[0], tableDateSim[1], tableDateSim[2], listeHeures.getSelectedIndex());
 				for (i=0;i<6;i++){
 					laBatterie.getTabAscenseur().get(i).addObserver(this);
 				}
@@ -733,6 +830,10 @@ public void ouvertureFichier() {
 				slider4.setValue(laBatterie.getTabAscenseur().get(4).getPositionActuelle()+4);
 				slider5.setValue(laBatterie.getTabAscenseur().get(5).getPositionActuelle()+4);
 		  
+				labelHorloge.setText(""+laBatterie.getCal().getDateActuelle().getTime());
+				refreshStats();
+				
+				
 				for(i=0;i<model.getRowCount();i++){
 					model.removeRow(i);
 				}
@@ -745,7 +846,7 @@ public void ouvertureFichier() {
 		  }
 		
 		  if(arg0.getSource() == buttonStats){
-			  //fenetreManu.setVisible(false);
+			  refreshStats();
 			  fenetreStats.setVisible(true);
 		  }
 		  
@@ -760,12 +861,13 @@ public void ouvertureFichier() {
 			laBatterie.stopSimuBrute();
 			fenetreManu.dispose();
 		  }
+		
 		if(arg0.getSource() == menuApropos){
 			JDialog aPropos = new JDialog(fenetreManu,"A propos",true);
 			JPanel aProposg = new JPanel();
 			JPanel aProposd = new JPanel();
 			aProposd.setLayout(new GridLayout(4,1));
-			ImageIcon antIcon = new ImageIcon("ascenseur.gif");
+			ImageIcon antIcon = new ImageIcon("images/ascenseur.gif");
 			JLabel LImage = new JLabel(antIcon);
 			aProposg.add(LImage);
 			aProposd.add(new JLabel("Groupe I - M²B²T"));
@@ -865,40 +967,7 @@ public void ouvertureFichier() {
 		  }
 		  
 		  if(arg0.getSource() == bouttonRefreshStat){
-			  int i;
-			  objStats.calculStatistique(laBatterie);
-			  
-			  for(i=0;i<6;i++){
-				  System.out.println(objStats.getConsoMoyenneTotale());
-				  
-					nbr1.setText(""+objStats.getTabnbAppel()[0]);
-					nbr2.setText(""+objStats.getTabnbAppel()[1]);
-					nbr3.setText(""+objStats.getTabnbAppel()[2]);
-					nbr4.setText(""+objStats.getTabnbAppel()[3]);
-					nbr5.setText(""+objStats.getTabnbAppel()[4]);
-					nbr6.setText(""+objStats.getTabnbAppel()[5]);
-					
-					consoTotAsc1.setText(""+objStats.getTabConsoMoyenne()[0]);
-					consoTotAsc2.setText(""+objStats.getTabConsoMoyenne()[1]);
-					consoTotAsc3.setText(""+objStats.getTabConsoMoyenne()[2]);
-					consoTotAsc4.setText(""+objStats.getTabConsoMoyenne()[3]);
-					consoTotAsc5.setText(""+objStats.getTabConsoMoyenne()[4]);
-					consoTotAsc6.setText(""+objStats.getTabConsoMoyenne()[5]);
-					
-					conso1.setText(""+objStats.getTabConsoMoyenne()[0]);
-					conso2.setText(""+objStats.getTabConsoMoyenne()[1]);
-					conso3.setText(""+objStats.getTabConsoMoyenne()[2]);
-					conso4.setText(""+objStats.getTabConsoMoyenne()[3]);
-					conso5.setText(""+objStats.getTabConsoMoyenne()[4]);
-					conso6.setText(""+objStats.getTabConsoMoyenne()[5]);
-					
-					ConsoMoy.setText(""+objStats.getConsoMoyenneTotale());
-					ConsoTot.setText(""+objStats.getConsoTotal());
-					AttMoy.setText(""+objStats.getAttenteMoyenne());
-					NbrAppTot.setText(""+objStats.getNbAppelTotal());
-					DureeSimu.setText(""+objStats.getTotalDuree());
-				  
-			  }
+			  refreshStats();
 		  }
 	}
 
@@ -907,11 +976,11 @@ public void ouvertureFichier() {
 	public void update(Observable arg0, Object arg1) {
 		
 		if(arg1.equals("horloge")){
-//			Calendrier calTemp = new Calendrier();
+			//Calendrier calTemp = new Calendrier(xtemps, sec);
 //			Date dateTemp = new Date();
 //			calTemp = laBatterie.getCal();
 //			dateTemp = laBatterie.getCal().getDateActuelle().getTime();
-//			labelHorloge.setText(""+laBatterie.cal.getXtemps());
+			labelHorloge.setText(""+laBatterie.getCal().getDateActuelle().getTime());
 			
 
 		}
@@ -920,26 +989,32 @@ public void ouvertureFichier() {
 		if(arg1.equals("deplacement0") || arg1.equals("repo0")){
 			ascA.setText(""+laBatterie.getTabAscenseur().get(0).getPositionActuelle());
 			slider0.setValue(laBatterie.getTabAscenseur().get(0).getPositionActuelle()+4);
+			img0.setIcon(refreshImg(laBatterie.getTabAscenseur().get(0)));
 		}
 		if(arg1.equals("deplacement1") || arg1.equals("repo1")){
 			ascB.setText(""+laBatterie.getTabAscenseur().get(1).getPositionActuelle());
 			slider1.setValue(laBatterie.getTabAscenseur().get(1).getPositionActuelle()+4);
+			img1.setIcon(refreshImg(laBatterie.getTabAscenseur().get(1)));
 		}
 		if(arg1.equals("deplacement2") || arg1.equals("repo2")){
 			ascC.setText(""+laBatterie.getTabAscenseur().get(2).getPositionActuelle());
 			slider2.setValue(laBatterie.getTabAscenseur().get(2).getPositionActuelle()+4);
+			img2.setIcon(refreshImg(laBatterie.getTabAscenseur().get(2)));
 		}
 		if(arg1.equals("deplacement3") || arg1.equals("repo3")){
 			ascD.setText(""+laBatterie.getTabAscenseur().get(3).getPositionActuelle());
 			slider3.setValue(laBatterie.getTabAscenseur().get(3).getPositionActuelle()+4);
+			img3.setIcon(refreshImg(laBatterie.getTabAscenseur().get(3)));
 		}
 		if(arg1.equals("deplacement4") || arg1.equals("repo4")){
 			ascE.setText(""+laBatterie.getTabAscenseur().get(4).getPositionActuelle());
 			slider4.setValue(laBatterie.getTabAscenseur().get(4).getPositionActuelle()+4);
+			img4.setIcon(refreshImg(laBatterie.getTabAscenseur().get(4)));
 		}
 		if(arg1.equals("deplacement5") || arg1.equals("repo5")){
 			ascF.setText(""+laBatterie.getTabAscenseur().get(5).getPositionActuelle());
 			slider5.setValue(laBatterie.getTabAscenseur().get(5).getPositionActuelle()+4);
+			img5.setIcon(refreshImg(laBatterie.getTabAscenseur().get(5)));
 		}
 		
 		if(arg1.equals("tabAppel")){
@@ -967,7 +1042,6 @@ public void ouvertureFichier() {
 		// TODO Auto-generated method stub
 		
 		if(arg0.getSource() == sliderAcc){
-			System.out.println(""+sliderAcc.getValue());
 			laBatterie.setXTempx(sliderAcc.getValue());
 		}
 		

@@ -293,6 +293,10 @@ public class Ascenseur extends Observable implements Runnable{
 		//On est repositionné
 		//ascenseur passe à l'arret
 		arret=true;
+		//////////////////////////
+		setChanged();
+		notifyObservers("repo"+this.getIdAscenseur());
+		//////////////////////////
 		this.enRepositionnement = false;
 		enAcceleration=0;
 	}

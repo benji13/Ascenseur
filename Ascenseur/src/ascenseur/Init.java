@@ -26,7 +26,7 @@ public class Init {
 //		cal.getChrono().start();
 //		
 		
-		
+		new SplashInitial();
 		Gui fen = new Gui(sec);
 		fen.Init();
 		fen.fenetreManu();

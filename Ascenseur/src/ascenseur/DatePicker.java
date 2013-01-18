@@ -1,5 +1,7 @@
 package ascenseur;
 
+// Source du code "DatePicker" : http://www.roseindia.net/tutorial/java/swing/datePicker.html
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Calendar;
@@ -17,7 +19,7 @@ class DatePicker {
         public DatePicker(JFrame parent) {
                 d = new JDialog();
                 d.setModal(true);
-                String[] header = { "Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat" };
+                String[] header = { "Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam" };
                 JPanel p1 = new JPanel(new GridLayout(7, 7));
                 p1.setPreferredSize(new Dimension(430, 120));
 
@@ -40,7 +42,7 @@ class DatePicker {
                         p1.add(button[x]);
                 }
                 JPanel p2 = new JPanel(new GridLayout(1, 3));
-                JButton previous = new JButton("<< Previous");
+                JButton previous = new JButton("<< Precedent");
                 previous.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
                                 month--;
@@ -49,7 +51,7 @@ class DatePicker {
                 });
                 p2.add(previous);
                 p2.add(l);
-                JButton next = new JButton("Next >>");
+                JButton next = new JButton("Suivant >>");
                 next.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
                                 month++;
@@ -77,7 +79,7 @@ class DatePicker {
                 for (int x = 6 + dayOfWeek, day = 1; day <= daysInMonth; x++, day++)
                         button[x].setText("" + day);
                 l.setText(sdf.format(cal.getTime()));
-                d.setTitle("Date Picker");
+                d.setTitle("M²B²T - Choix de la Date");
         }
 
         public String setPickedDate() {
@@ -94,9 +96,7 @@ class DatePicker {
         	int tablePicked[] = {0,0,0};
             if (day.equals(""))
                     return tablePicked;
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
-                            "dd-MM-yyyy");
-            java.util.Calendar cal = java.util.Calendar.getInstance();
+            Calendar cal = Calendar.getInstance();
             cal.set(year, month, Integer.parseInt(day));
             tablePicked[0] = cal.get(Calendar.DAY_OF_MONTH);
             tablePicked[1] = cal.get(Calendar.MONTH);
