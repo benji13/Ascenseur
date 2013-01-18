@@ -9,9 +9,9 @@ public class Calendrier extends Thread{
 		// TODO Auto-generated constructor stub
 		this.chrono = new Chronometre(xtemps,sec);
 		this.dateDebutSimu = Calendar.getInstance();
-		this.dateDebutSimu.set(2012, 01, 19, 6, 00,00);
+		this.dateDebutSimu.set(1970, 0, 1, 3, 59,00);
 		this.dateActuelle = Calendar.getInstance();
-		this.dateActuelle.set(2012, 01, 19, 6, 00,00);
+		this.dateActuelle.set(1970, 0, 1, 3, 59,00);
 		this.xtemps = xtemps;
 		this.sec = sec;
 	}

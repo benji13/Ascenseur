@@ -103,7 +103,7 @@ public class ParseurDom {
 			Calendar date;
 			date = Calendar.getInstance();
 			//On precise le format de la date
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 			//On récupère dans le fichier XML le champ heure_appel
 			String dateXML = lesHeureAppel.item(i).getTextContent();
 
@@ -134,7 +134,7 @@ public class ParseurDom {
 
 	public static void main(String[] args) throws IOException {
 
-		Document arbre = ParseurDom.chargerDocument("../Ascenseur//xml//XMLFile1.xml");
+		Document arbre = ParseurDom.chargerDocument("../Ascenseur//xml//XMLFile1.simu");
 		ArrayList<Appel> liste = ParseurDom.extraireAppels(arbre);
 
 		System.out.println("ID Appel :");

@@ -253,18 +253,30 @@ public class Batterie extends Thread{
 
     public void assignerAppelAuto(){
     	int i = 0;
+    	long ecart;
+    	try {
+			Thread.sleep(100);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
     	while(i<this.tabTousLesAppels.size()){
-	    	try {
-				sec.attenteSeconde(1);
-				if(Batterie.cal.getDateActuelle().getTime().compareTo(this.tabTousLesAppels.get(i).getDateDebut().getTime())==0){
+//    		System.out.println("Simu "+this.tabTousLesAppels.get(i).getDateDebut().getTime()+"\\\\\\"+Batterie.cal.getDateActuelle().getTime());
+//    		System.out.println(Batterie.cal.getDateActuelle().getTime().compareTo(this.tabTousLesAppels.get(i).getDateDebut().getTime()));
+    		System.out.println(this.tabTousLesAppels.get(i).getDateDebut().getTime()+"///"+Batterie.cal.getDateActuelle().getTimeInMillis()/1000+"\\\\"+this.tabTousLesAppels.get(i).getDateDebut().getTimeInMillis()/1000);
+    		ecart = Batterie.cal.getDateActuelle().getTimeInMillis()/1000 - this.tabTousLesAppels.get(i).getDateDebut().getTimeInMillis()/1000;
+    		try {	
+				if(Batterie.cal.getDateActuelle().getTimeInMillis()/1000 == this.tabTousLesAppels.get(i).getDateDebut().getTimeInMillis()/1000 ||(ecart<2 && Batterie.cal.getDateActuelle().getTimeInMillis()/1000 > this.tabTousLesAppels.get(i).getDateDebut().getTimeInMillis()/1000)){
 					assignerAppel(this.tabTousLesAppels.get(i));
-				}				
+					//System.out.println("Lancement appel");
+					i++;
+				}	
+				sec.attenteSeconde(1);
 	    	} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	    	i++;
-    	}
+	    }
     	
     }
   //Revoir la partie commentaire, je ne sais pas faire.....  
@@ -561,11 +573,14 @@ public class Batterie extends Thread{
     	Batterie.changement = false;
     	this.tabTousLesAppels = ParseurDom.extraireAppels(ParseurDom.chargerDocument("../Ascenseur//xml//XMLFile1.simu"));
     	
+    	
     	try
         {
         	Batterie.cal = new Calendrier(xtemps,sec);
-        	Batterie.cal.setDateDebutSimu(this.tabTousLesAppels.get(0).getDateDebut());
-        	Batterie.cal.setDateActuelle(this.tabTousLesAppels.get(0).getDateDebut());
+//        	Batterie.cal.setDateDebutSimu(this.tabTousLesAppels.get(0).getDateDebut());
+//        	Batterie.cal.setDateActuelle(this.tabTousLesAppels.get(0).getDateDebut());
+        	
+        	
         	Batterie.cal.start();
         	Batterie.cal.getChrono().start();
         }
