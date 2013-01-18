@@ -608,7 +608,7 @@ public class Batterie extends Thread{
         
         try
         {
-        	Batterie.cal = new Calendrier(xtemps,sec);
+        	Batterie.cal = new Calendrier(xtemps, sec, jour, mois, annee, heure);
         	Batterie.cal.start();
         	Batterie.cal.getChrono().start();
         }
