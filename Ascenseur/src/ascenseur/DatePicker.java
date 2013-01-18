@@ -99,7 +99,7 @@ class DatePicker {
             java.util.Calendar cal = java.util.Calendar.getInstance();
             cal.set(year, month, Integer.parseInt(day));
             tablePicked[0] = cal.get(Calendar.DAY_OF_MONTH);
-            tablePicked[1] = cal.get(Calendar.MONTH);
+            tablePicked[1] = cal.get(Calendar.MONTH)+1;
             tablePicked[2] = cal.get(Calendar.YEAR);
             return tablePicked;
     }

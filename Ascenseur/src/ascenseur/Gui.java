@@ -48,7 +48,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 	JMenuItem menuItem, menuResetJ, menuApropos, menuQuitter;
 	JButton buttonValider, buttonStats, buttonMonter, bouttonDescendre, bouttonVisu, bouttonRefreshStat;
 	JTextField ascA, ascB, ascC, ascD, ascE, ascF, choix, nbr1, nbr2, nbr3, nbr4, nbr5, nbr6, consoTotAsc1, consoTotAsc2, consoTotAsc3, consoTotAsc4, consoTotAsc5, consoTotAsc6, conso1, conso2, conso3, conso4, conso5, conso6, ConsoMoy, ConsoTot, AttMoy, NbrAppTot, DureeSimu;
-	JComboBox jeSuis, jeVais, nbrPersonne;
+	JComboBox jeSuis, jeVais, nbrPersonne, listeHeures;
 	Integer[] listEtages;
 	Integer[] listEtagesDyna;
 	Integer[] listPersonne;
@@ -103,16 +103,16 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		buttonAuto.addActionListener(this);
 		buttonManu = new JButton("Manuelle");
 		buttonManu.addActionListener(this);
-		radioJour = new JRadioButton("Semaine");
-		radioSoir = new JRadioButton("Week-end");
-		groupChoix = new ButtonGroup();
-		
-		groupChoix.add(radioJour);
-		groupChoix.add(radioSoir);
-		radioJour.setSelected(true);
+		//radioJour = new JRadioButton("Semaine");
+//		radioSoir = new JRadioButton("Week-end");
+//		groupChoix = new ButtonGroup();
+//		
+//		groupChoix.add(radioJour);
+//		groupChoix.add(radioSoir);
+//		radioJour.setSelected(true);
 		
 		fenetreChoix.setLayout(new GridLayout(1,2));
-		panelManuelle.setLayout(new GridLayout(3,1));
+		panelManuelle.setLayout(new BoxLayout(panelManuelle,BoxLayout.Y_AXIS));
 		
 		panelAutomatique.add(buttonAuto);
 		
@@ -125,9 +125,10 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		//panelManuelle.add(radioJour);
 		//panelManuelle.add(radioSoir);
 		
-		label = new JLabel("Selected Date:");
-        text = new JTextField(20);
-        bu = new JButton("popup");
+		label = new JLabel("Date:");
+        text = new JTextField(8);
+        text.setEditable(false);
+        bu = new JButton("choisir");
         p = new JPanel();
         pickDate = new JFrame();
         
@@ -135,6 +136,9 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
         p.add(text);
         p.add(bu);
         bu.addActionListener(this);
+        
+        listeHeures = new JComboBox();
+        
         
         panelManuelle.add(p);
 		
@@ -693,14 +697,15 @@ public void ouvertureFichier() {
 		
 		if(arg0.getSource() == bu){
 			int i;
-			String ddate;
+			String ddate = "";
 			DatePicker D = new DatePicker(pickDate);
 			for(i=0;i<3;i++){
 				tableDateSim[i] = D.setPickedDateTable()[i];
+				ddate = ddate+tableDateSim[i]+" ";
 				System.out.println(""+tableDateSim[i]);
 			}
-			
-			tableDateSim.toString();
+			text.setText(ddate);
+			System.out.println(ddate);
 		  }
 			
 		if(arg0.getSource() == buttonManu){
@@ -708,12 +713,9 @@ public void ouvertureFichier() {
 			  fenetreManu.setVisible(true);
 			  fenetreChoix.setVisible(false);
 			  
-			  if(radioJour.isSelected()){
-					laBatterie = new Batterie(xtemps,sec);
-				}
-				else if(radioSoir.isSelected()){
-					laBatterie = new Batterie(xtemps,sec);
-				}
+					//laBatterie = new Batterie(xtemps,sec);
+				  laBatterie = new Batterie(xtemps, sec, tableDateSim[0], tableDateSim[1], tableDateSim[2], 10);
+				  
 				for (i=0;i<6;i++){
 					laBatterie.getTabAscenseur().get(i).addObserver(this);
 				}
@@ -909,7 +911,7 @@ public void ouvertureFichier() {
 //			Date dateTemp = new Date();
 //			calTemp = laBatterie.getCal();
 //			dateTemp = laBatterie.getCal().getDateActuelle().getTime();
-//			labelHorloge.setText(""+calTemp.getDateActuelle().getTime());
+//			labelHorloge.setText(""+laBatterie.cal.getXtemps());
 			
 
 		}
