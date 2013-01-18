@@ -693,11 +693,14 @@ public void ouvertureFichier() {
 		
 		if(arg0.getSource() == bu){
 			int i;
+			String ddate;
 			DatePicker D = new DatePicker(pickDate);
 			for(i=0;i<3;i++){
 				tableDateSim[i] = D.setPickedDateTable()[i];
 				System.out.println(""+tableDateSim[i]);
 			}
+			
+			tableDateSim.toString();
 		  }
 			
 		if(arg0.getSource() == buttonManu){
@@ -849,9 +852,9 @@ public void ouvertureFichier() {
 			  buttonValider.setEnabled(false);
 			  buttonMonter.setEnabled(true);
 			  bouttonDescendre.setEnabled(true);
-			  laBatterie.creationAppelManu(js, jv);
+
 			try {
-				unAscenseur = laBatterie.assignerAppel();
+				unAscenseur = laBatterie.assignerAppel(laBatterie.creationAppelManu(js, jv));
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -860,10 +863,39 @@ public void ouvertureFichier() {
 		  }
 		  
 		  if(arg0.getSource() == bouttonRefreshStat){
+			  int i;
 			  objStats.calculStatistique(laBatterie);
 			  
-			  for(Integer nbrApp : objStats.getTabnbAppel()){
-				  System.out.println(""+nbrApp);
+			  for(i=0;i<6;i++){
+				  System.out.println(objStats.getConsoMoyenneTotale());
+				  
+					nbr1.setText(""+objStats.getTabnbAppel()[0]);
+					nbr2.setText(""+objStats.getTabnbAppel()[1]);
+					nbr3.setText(""+objStats.getTabnbAppel()[2]);
+					nbr4.setText(""+objStats.getTabnbAppel()[3]);
+					nbr5.setText(""+objStats.getTabnbAppel()[4]);
+					nbr6.setText(""+objStats.getTabnbAppel()[5]);
+					
+					consoTotAsc1.setText(""+objStats.getTabConsoMoyenne()[0]);
+					consoTotAsc2.setText(""+objStats.getTabConsoMoyenne()[1]);
+					consoTotAsc3.setText(""+objStats.getTabConsoMoyenne()[2]);
+					consoTotAsc4.setText(""+objStats.getTabConsoMoyenne()[3]);
+					consoTotAsc5.setText(""+objStats.getTabConsoMoyenne()[4]);
+					consoTotAsc6.setText(""+objStats.getTabConsoMoyenne()[5]);
+					
+					conso1.setText(""+objStats.getTabConsoMoyenne()[0]);
+					conso2.setText(""+objStats.getTabConsoMoyenne()[1]);
+					conso3.setText(""+objStats.getTabConsoMoyenne()[2]);
+					conso4.setText(""+objStats.getTabConsoMoyenne()[3]);
+					conso5.setText(""+objStats.getTabConsoMoyenne()[4]);
+					conso6.setText(""+objStats.getTabConsoMoyenne()[5]);
+					
+					ConsoMoy.setText(""+objStats.getConsoMoyenneTotale());
+					ConsoTot.setText(""+objStats.getConsoTotal());
+					AttMoy.setText(""+objStats.getAttenteMoyenne());
+					NbrAppTot.setText(""+objStats.getNbAppelTotal());
+					DureeSimu.setText(""+objStats.getTotalDuree());
+				  
 			  }
 		  }
 	}

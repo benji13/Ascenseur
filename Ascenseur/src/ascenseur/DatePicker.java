@@ -2,6 +2,8 @@ package ascenseur;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Calendar;
+
 import javax.swing.*;
 
 class DatePicker {
@@ -95,10 +97,10 @@ class DatePicker {
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
                             "dd-MM-yyyy");
             java.util.Calendar cal = java.util.Calendar.getInstance();
-            //cal.set(year, month, Integer.parseInt(day));
-            tablePicked[0] = cal.get(Integer.parseInt(day));
-            tablePicked[1] = cal.get(month);
-            tablePicked[2] = cal.get(year);
+            cal.set(year, month, Integer.parseInt(day));
+            tablePicked[0] = cal.get(Calendar.DAY_OF_MONTH);
+            tablePicked[1] = cal.get(Calendar.MONTH);
+            tablePicked[2] = cal.get(Calendar.YEAR);
             return tablePicked;
     }
 }
