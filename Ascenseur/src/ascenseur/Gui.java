@@ -98,13 +98,14 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		
 		fenetreChoix = new JFrame("M²B²T - Choix du Mode");
 		fenetreChoix.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fenetreChoix.setIconImage(Toolkit.getDefaultToolkit().getImage("images/myIcon.png"));
 		fenetreChoix.setResizable(false);
 		
 		panelAutomatique = new JPanel();
 		panelManuelle = new JPanel();
 		buttonAuto = new JButton("Automatique");
 		buttonAuto.addActionListener(this);
-		buttonManu = new JButton("Manuelle");
+		buttonManu = new JButton("Manuel");
 		buttonManu.setEnabled(false);
 		buttonManu.addActionListener(this);
 
@@ -175,6 +176,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		
 		fenetreManu = new JFrame("M²B²T - Gestion d'ascenseurs");
 		fenetreManu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fenetreManu.setIconImage(Toolkit.getDefaultToolkit().getImage("images/myIcon.png"));
 		fenetreManu.setResizable(false);
 		fenetreChoix.setLayout(new BorderLayout());
 		
@@ -445,6 +447,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		
 		fenetreStats = new JFrame("M²B²T - Statistiques");
 		fenetreStats.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		fenetreStats.setIconImage(Toolkit.getDefaultToolkit().getImage("images/myIcon.png"));
 		fenetreStats.setLayout(new BorderLayout());
 		objStats = new Statistiques();
 		
@@ -635,6 +638,7 @@ public void fenetreVisu(){
 		
 		fenetreVisu = new JFrame("M²B²T - Visualisation");
 		fenetreVisu.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		fenetreVisu.setIconImage(Toolkit.getDefaultToolkit().getImage("images/myIcon.png"));
 		fenetreVisu.setResizable(false);
 		
 		JPanel panelSlider = new JPanel();
@@ -750,12 +754,12 @@ public void ouvertureFichier() {
 				nbr5.setText(""+objStats.getTabnbAppel()[4]);
 				nbr6.setText(""+objStats.getTabnbAppel()[5]);
 				
-				consoTotAsc1.setText(""+objStats.getTabConsoMoyenne()[0]);
-				consoTotAsc2.setText(""+objStats.getTabConsoMoyenne()[1]);
-				consoTotAsc3.setText(""+objStats.getTabConsoMoyenne()[2]);
-				consoTotAsc4.setText(""+objStats.getTabConsoMoyenne()[3]);
-				consoTotAsc5.setText(""+objStats.getTabConsoMoyenne()[4]);
-				consoTotAsc6.setText(""+objStats.getTabConsoMoyenne()[5]);
+				consoTotAsc1.setText(""+objStats.getTabConso()[0]);
+				consoTotAsc2.setText(""+objStats.getTabConso()[1]);
+				consoTotAsc3.setText(""+objStats.getTabConso()[2]);
+				consoTotAsc4.setText(""+objStats.getTabConso()[3]);
+				consoTotAsc5.setText(""+objStats.getTabConso()[4]);
+				consoTotAsc6.setText(""+objStats.getTabConso()[5]);
 				
 				conso1.setText(""+objStats.getTabConsoMoyenne()[0]);
 				conso2.setText(""+objStats.getTabConsoMoyenne()[1]);

@@ -531,15 +531,17 @@ public class Ascenseur extends Observable implements Runnable{
 				this.sec.attenteSeconde(3);
 			}	
 		}
-		if(monte==true)
-			positionActuelle++;
-			//Consommation
-			this.consommation += 1500;
-		if(monte==false)
-			positionActuelle--;
-			//Consommation
-			this.consommation += 1500;
-		System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
+		if(monte==true){
+            positionActuelle++;
+            //Consommation
+            this.consommation += 1500;
+        }
+        if(monte==false){
+            positionActuelle--;
+            //Consommation
+            this.consommation += 750;
+        }
+        System.out.println("Ascenseur "+ idAscenseur +" :Etage " + positionActuelle);
 	}
 	
 	

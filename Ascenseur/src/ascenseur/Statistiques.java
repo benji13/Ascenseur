@@ -86,8 +86,8 @@ public class Statistiques {
 		calculAttenteMoyenne(laBatterie.getTabAscenseur());
 		
 		calculConso(laBatterie.getTabAscenseur());
-		calculConsoMoyenneTotale(laBatterie.getTabAscenseur());
 		calculConsoMoyenne(laBatterie.getTabAscenseur());
+		calculConsoMoyenneTotale(laBatterie.getTabAscenseur());
 		calculTotalConso(laBatterie.getTabAscenseur());
 	}
 	
