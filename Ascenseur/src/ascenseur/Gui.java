@@ -56,6 +56,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 	String[] ascenseurString = {"A","B","C","D","E","F"};
 	Border  blackline = BorderFactory.createLineBorder(Color.black);
 	
+	String fichier;
 	Object[] colonnesAppel = {"Origine",
             "Destination",
             "Ascenseur",
@@ -723,10 +724,15 @@ public void ouvertureFichier() {
     ouverture.setFileSelectionMode(JFileChooser.FILES_ONLY );
     ouverture.setFileFilter(filtre);
     ouverture.setAcceptAllFileFilterUsed(false);
-    ouverture.showOpenDialog(null);
-    File f = ouverture.getSelectedFile();
-    String fichier = f.getName();
-    System.out.println("Choix : " + fichier);
+    int returnVal = ouverture.showOpenDialog(null);
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
+    	File f = ouverture.getSelectedFile();
+    	fichier = f.getAbsolutePath();
+    	System.out.println("Choix : " + fichier);
+    }
+    else {
+    	System.out.println("Pas de ficchier ouvert");
+    }
 }
 	
 	public void fenetreAuto(){
@@ -845,8 +851,10 @@ public void ouvertureFichier() {
 		
 		if(arg0.getSource() == buttonAuto){
 			  ouvertureFichier();
-			  fenetreManu.setVisible(true);
-			  fenetreChoix.setVisible(false);
+			  ParseurDom p = new ParseurDom();
+			  p.traitement(fichier);
+			  //fenetreManu.setVisible(true);
+			  fenetreChoix.setVisible(true);
 		  }
 		
 		  if(arg0.getSource() == buttonStats){

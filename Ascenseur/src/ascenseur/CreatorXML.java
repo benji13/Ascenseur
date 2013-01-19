@@ -286,7 +286,7 @@ public class CreatorXML {
 		DOMSource sourceDom = new DOMSource(doc);
 
 		//On cree le fichier xml depuis l'arbre cree
-		FileWriter fw = new FileWriter("../Ascenseur//xml//XMLFile1.simu");
+		FileWriter fw = new FileWriter("../Ascenseur//xml//XMLFile3.simu");
 		StreamResult result = new StreamResult(fw);
 		transformer.transform(sourceDom, result);
 	}
