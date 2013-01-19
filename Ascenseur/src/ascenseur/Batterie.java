@@ -28,7 +28,10 @@ public class Batterie extends Thread{
     private static boolean semaine; //true si en semaine, false si en week end 
     private static boolean changement; // nous indique s'il y a un changement de mode ou pas
 	private Seconde sec;
-    
+	
+    public static boolean isSemaine() {
+		return semaine;
+	}
     
     public void setXTempx(int xtemps){
     	Batterie.cal.getChrono().setXtemps(xtemps);   	
@@ -170,8 +173,9 @@ public class Batterie extends Thread{
      * @param unAppel 
      */
     public static void majDateFinAppel(Appel unAppel){
-        unAppel.setDateFin(Batterie.cal.getDateActuelle());
-        
+    	Calendar uneDate = Calendar.getInstance() ;
+    	uneDate.setTime(Batterie.cal.getDateActuelle().getTime());
+        unAppel.setDateFin(uneDate);        
     }//Fin majDateFinAppel
     
     
@@ -292,7 +296,9 @@ public class Batterie extends Thread{
     }//Fin creationAppel
     
     public Appel creationAppelManu(int sourceAppel, int destAppel){
-        Appel unAppel = new Appel(sourceAppel, destAppel, Batterie.cal.getDateActuelle());
+    	Calendar uneDate = Calendar.getInstance() ;
+    	uneDate.setTime(Batterie.cal.getDateActuelle().getTime());
+        Appel unAppel = new Appel(sourceAppel, destAppel, uneDate);
         tabTousLesAppels.add(unAppel);
         return unAppel;
     }//Fin creationAppel
@@ -638,7 +644,7 @@ public class Batterie extends Thread{
         Batterie.tabPositionJournee = tabPositionJournee;
         Batterie.tabPositionWeekEnd = tabPositionWeekEnd;
         this.getCal().determinerPlageHoraire();
-        
+        System.out.println("debug "+Batterie.semaine);
         Ascenseur ascenseur0;
         Ascenseur ascenseur1;
         Ascenseur ascenseur2;
