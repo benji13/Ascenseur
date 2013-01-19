@@ -77,7 +77,8 @@ public class Calendrier extends Thread{
 	//FONCTIONS
 	public void determinerPlageHoraire(){
 		isWeek = true;
-		if(getDateActuelle().get(Calendar.HOUR) > 18 || getDateActuelle().get(Calendar.HOUR) < 7 || getDateActuelle().get(Calendar.DAY_OF_WEEK)== Calendar.SATURDAY || getDateActuelle().get(Calendar.DAY_OF_WEEK)== Calendar.SUNDAY){
+        System.out.println(getDateActuelle().getTime()+"////"+getDateActuelle().get(Calendar.HOUR_OF_DAY)+" ///// "+getDateActuelle().get(Calendar.DAY_OF_WEEK));
+		if(getDateActuelle().get(Calendar.HOUR_OF_DAY) > 18 || getDateActuelle().get(Calendar.HOUR_OF_DAY) < 7 || getDateActuelle().get(Calendar.DAY_OF_WEEK)== Calendar.SATURDAY || getDateActuelle().get(Calendar.DAY_OF_WEEK)== Calendar.SUNDAY){
 			isWeek = false;
 		}
 		Batterie.setSemaine(isWeek);
