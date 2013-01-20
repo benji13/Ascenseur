@@ -15,6 +15,7 @@ public class Statistiques {
 	 private Seconde sec;
 	 private Integer ConsoMoyenneTotale = 0;
 	 private long attenteMoyenne;
+	 private String totalDureeString;
 	
 	public Statistiques() {
 		int i;
@@ -62,8 +63,8 @@ public class Statistiques {
 	}
 	
 	
-	public long getTotalDuree() {
-		return totalDuree;
+	public String getTotalDuree() {
+		return totalDureeString;
 	}
 	public void setConsoTotal(Integer consoTotal) {
 		this.consoTotal = consoTotal;
@@ -96,7 +97,23 @@ public class Statistiques {
 	 * @param unBatterie
 	 */
 	 void calculTotalDuree(Batterie laBatterie){
+		 
+		 int jour = 0;
+		 int heure = 0;
+		 int min = 0;
+		 int sec = 0;
+		 
 		 totalDuree = laBatterie.getCal().getChrono().getActuTime();
+		 
+		 jour = (int) Math.rint(totalDuree/86400);
+	        heure = (int) (totalDuree - (jour*86400));
+	        heure = (int) Math.rint(heure/3600);
+	        min = (int) (totalDuree - (jour*86400) - (heure*3600));
+	        min = (int) Math.rint(min/60);
+	        sec = (int) (totalDuree - (jour*86400) - (heure*3600) - (min*60));
+
+	        
+	        totalDureeString = jour+":"+heure+":"+min+":"+sec;
 	 }
 	 
 	 void calculTotalConso(ArrayList <Ascenseur> tabAscenseur){
@@ -169,7 +186,8 @@ public class Statistiques {
 	 
 	 void calculAttenteMoyenne(ArrayList <Ascenseur> tabAscenseur){
 		 long dureeUnAppel=0;
-		 attenteMoyenne = 0;
+		 attenteMoyenne = 0;		 
+		 
 		 for(Ascenseur asc : tabAscenseur)
 		 {
 			 for (Appel unAppel : asc.getTabAppelsTraites()) {

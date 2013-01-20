@@ -796,7 +796,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 			ConsoTot.setText(""+objStats.getConsoTotal());
 			AttMoy.setText(""+objStats.getAttenteMoyenne());
 			NbrAppTot.setText(""+objStats.getNbAppelTotal());
-			DureeSimu.setText(""+objStats.getTotalDuree());
+			DureeSimu.setText(objStats.getTotalDuree());
 		}
 	}
 
@@ -889,7 +889,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 			ouvertureFichier();
 //			ParseurDom p = new ParseurDom();
 //			p.traitement(fichier);
-			new Batterie(xtemps, sec, fichier);
+			new Batterie(10000, sec, fichier);
 			fenetreChoix.setVisible(true);
 		}
 
