@@ -28,7 +28,6 @@ public class Init {
 		
 		new SplashInitial();
 		Gui fen = new Gui(sec);
-		fen.Init();
 		fen.fenetreManu();
 		fen.fenetreStats();
 		fen.fenetreVisu();

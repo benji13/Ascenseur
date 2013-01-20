@@ -6,14 +6,14 @@ package ascenseur;
 import java.awt.*;
 import java.awt.event.*;
  
-public class SplashInitial extends Frame implements ActionListener {
+public class SplashInitial extends Frame{
     static void renderSplashFrame(Graphics2D g, int frame) {
-        final String[] comps = {"foo", "bar", "baz"};
+        final String[] comps = {"Chargement" , "Patientez", "M²B²T"};
         g.setComposite(AlphaComposite.Clear);
         g.fillRect(120,140,200,40);
         g.setPaintMode();
         g.setColor(Color.BLACK);
-        g.drawString("Loading "+comps[(frame/5)%3]+"...", 120, 150);
+        g.drawString(comps[(frame/5)%3]+"...", 120, 150);
     }
     public SplashInitial() {
         final SplashScreen splash = SplashScreen.getSplashScreen();
@@ -36,18 +36,5 @@ public class SplashInitial extends Frame implements ActionListener {
             }
         }
         splash.close();
-        setVisible(true);
-        toFront();
-    }
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	private static WindowListener closeWindow = new WindowAdapter(){
-        public void windowClosing(WindowEvent e){
-            e.getWindow().dispose();
-        }
-	};
+    }	
 }
