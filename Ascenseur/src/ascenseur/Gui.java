@@ -887,8 +887,9 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		////////////////////////////
 		if(arg0.getSource() == buttonAuto){
 			ouvertureFichier();
-			ParseurDom p = new ParseurDom();
-			p.traitement(fichier);
+//			ParseurDom p = new ParseurDom();
+//			p.traitement(fichier);
+			new Batterie(xtemps, sec, fichier);
 			fenetreChoix.setVisible(true);
 		}
 
@@ -1097,7 +1098,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 				for (Appel appel : laBatterie.getTabAscenseur().get(i).tabAppelAtraiter) {
 					fileAppel[0] = appel.getSourceAppel();
 					fileAppel[1] = appel.getDestAppel();
-					fileAppel[2] = laBatterie.getTabAscenseur().get(i).getIdAscenseur();
+					fileAppel[2] = ascenseurString[laBatterie.getTabAscenseur().get(i).getIdAscenseur()];
 					fileAppel[3] = appel.getEtatAppel();
 					model.addRow(fileAppel);
 				}

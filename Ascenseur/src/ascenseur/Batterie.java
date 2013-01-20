@@ -280,6 +280,7 @@ public class Batterie extends Thread{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+    		this.creationLog();
 	    }
     	
     }
@@ -348,7 +349,7 @@ public class Batterie extends Thread{
     
     public void creationLog(){
 		try {
-			PrintWriter out  = new PrintWriter(new FileWriter("C:\\log.txt", true));
+			PrintWriter out  = new PrintWriter(new FileWriter("../Ascenseur//xml//log.txt", true));
 			for(Ascenseur asc : tabAscenseur){
 				for(Appel unAppel : asc.getTabAppelsTraites()){
 					System.out.println(asc.getIdAscenseur());
@@ -577,7 +578,7 @@ public class Batterie extends Thread{
     	this.tabAscenseur.add(ascenseur5);   	
    
     	Batterie.changement = false;
-    	this.tabTousLesAppels = ParseurDom.extraireAppels(ParseurDom.chargerDocument("../Ascenseur//xml//XMLFile1.simu"));
+    	this.tabTousLesAppels = ParseurDom.extraireAppels(ParseurDom.chargerDocument(file));
     	
     	
     	try

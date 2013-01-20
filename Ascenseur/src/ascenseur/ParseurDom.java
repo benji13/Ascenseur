@@ -135,34 +135,6 @@ public class ParseurDom {
 		return listeAppels;
 	}
 	
-	public void traitement(String fichier){
-		Seconde sec = new Seconde();
-		Document arbre = ParseurDom.chargerDocument(fichier);
-		ArrayList<Appel> liste = ParseurDom.extraireAppels(arbre);
-
-		for(Appel app : liste){
-		System.out.println("ID Appel :");
-		System.out.println(app.getIdAppel());
-
-		System.out.println("Heure Appel :");
-		System.out.println(app.getDateDebut());
-
-		System.out.println("Origine de l'Appel :");
-		System.out.println(app.getSourceAppel());
-
-		System.out.println("Destination de l'Appel :");
-		System.out.println(app.getDestAppel());
-		}
-		
-		Batterie laBatterie = new Batterie(1000, sec,fichier);
-		
-		for(int i=0;i<laBatterie.getTabTousLesAppels().size();i++){
-			System.out.println(laBatterie.getTabTousLesAppels().get(i).getDateDebut().getTime()+"---"+ laBatterie.getTabTousLesAppels().get(i).getDateDebut().getTime());
-		}
-
-		//GenerateurHTML.genererPage(liste, liste2, args[1]);
-	}
-
 
 	public static void main(String[] args) throws IOException {
 
