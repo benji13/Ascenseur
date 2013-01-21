@@ -103,17 +103,16 @@ public class Statistiques {
 		 int min = 0;
 		 int sec = 0;
 		 
-		 totalDuree = laBatterie.getCal().getChrono().getActuTime();
-		 
+		 totalDuree = laBatterie.getCal().getDateActuelle().getTimeInMillis()/1000 - laBatterie.getCal().getDateDebutSimu().getTimeInMillis()/1000;
+		 System.out.println("Total duree  "+totalDuree);
 		 jour = (int) Math.rint(totalDuree/86400);
 	        heure = (int) (totalDuree - (jour*86400));
 	        heure = (int) Math.rint(heure/3600);
 	        min = (int) (totalDuree - (jour*86400) - (heure*3600));
 	        min = (int) Math.rint(min/60);
 	        sec = (int) (totalDuree - (jour*86400) - (heure*3600) - (min*60));
-
 	        
-	        totalDureeString = jour+":"+heure+":"+min+":"+sec;
+	        totalDureeString = jour+"J | "+heure+"H | "+min+"M | "+sec+"Ss";
 	 }
 	 
 	 void calculTotalConso(ArrayList <Ascenseur> tabAscenseur){

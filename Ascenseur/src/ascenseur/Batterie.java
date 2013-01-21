@@ -27,10 +27,17 @@ public class Batterie extends Thread{
     private static Calendrier cal;
     private static boolean semaine; //true si en semaine, false si en week end 
     private static boolean changement; // nous indique s'il y a un changement de mode ou pas
+    private boolean mode; //true si on est en mode manuel et false si on est en mode autos
 	private Seconde sec;
 	
     public static boolean isSemaine() {
 		return semaine;
+	}
+    public boolean isMode() {
+		return mode;
+	}
+    public void setMode(boolean mode) {
+		this.mode = mode;
 	}
     
     public void setXTempx(int xtemps){
@@ -193,8 +200,10 @@ public class Batterie extends Thread{
 		int ecart = 400;
 		int temp,nbPersonne,zoneCritique;
         boolean affected = false;//boolean permettant de savoir si l'appel a été affecté
-        //Affecter un id à l'appel
-        unAppel.setIdAppel(this.tabTousLesAppels.size()+1);
+        if(this.isMode()){
+        	//Affecter un id à l'appel
+        	unAppel.setIdAppel(this.tabTousLesAppels.size()+1);
+        }
         unAppel.determineSens();
         while(!affected){	
         //ne pas oublier de changer le sens de direction quand affecte un appel        
@@ -264,10 +273,14 @@ public class Batterie extends Thread{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+    	
+//    	for(int j=0;j<this.getTabTousLesAppels().size();j++){
+//			System.out.println(this.getTabTousLesAppels().get(j).getIdAppel()+"///"+this.getTabTousLesAppels().get(j).getDateDebut().getTime()+"---"+ this.getTabTousLesAppels().get(j).getDateDebut().getTime());
+//		}
+    	
     	while(i<this.tabTousLesAppels.size()){
-//    		System.out.println("Simu "+this.tabTousLesAppels.get(i).getDateDebut().getTime()+"\\\\\\"+Batterie.cal.getDateActuelle().getTime());
-//    		System.out.println(Batterie.cal.getDateActuelle().getTime().compareTo(this.tabTousLesAppels.get(i).getDateDebut().getTime()));
-    		System.out.println(this.tabTousLesAppels.get(i).getDateDebut().getTime()+"///"+Batterie.cal.getDateActuelle().getTimeInMillis()/1000+"\\\\"+this.tabTousLesAppels.get(i).getDateDebut().getTimeInMillis()/1000);
+    		System.out.println(Batterie.cal.getDateActuelle().getTimeInMillis()/1000+"//"+this.tabTousLesAppels.get(i).getDateDebut().getTimeInMillis()/1000);
+    		System.out.println("Recuperation de l'iD  :  "+this.getTabTousLesAppels().get(i).getIdAppel());
     		ecart = Batterie.cal.getDateActuelle().getTimeInMillis()/1000 - this.tabTousLesAppels.get(i).getDateDebut().getTimeInMillis()/1000;
     		try {	
 				if(Batterie.cal.getDateActuelle().getTimeInMillis()/1000 == this.tabTousLesAppels.get(i).getDateDebut().getTimeInMillis()/1000 ||(ecart<2 && Batterie.cal.getDateActuelle().getTimeInMillis()/1000 > this.tabTousLesAppels.get(i).getDateDebut().getTimeInMillis()/1000)){
@@ -280,9 +293,14 @@ public class Batterie extends Thread{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-    		this.creationLog();
 	    }
-    	
+    	this.stopSimu();
+    	System.out.println("Debut creation log");
+		this.creationLog();
+		System.out.println("Fin creation log");
+		System.out.println("Debut creation statistiques");
+		this.creationStat();
+		System.out.println("Fin creation statistiques");
     }
   //Revoir la partie commentaire, je ne sais pas faire.....  
     /**
@@ -348,17 +366,23 @@ public class Batterie extends Thread{
     }//Fin calculPlusProche
     
     public void creationLog(){
+    	for(int j=0;j<6;j++){
+    		for(int i=0;i<this.tabAscenseur.get(j).getTabAppelsTraites().size();i++){
+    			System.out.println(j+"//"+this.tabAscenseur.get(j).getTabAppelsTraites().get(i).getIdAppel()+"//"+this.tabAscenseur.get(j).getTabAppelsTraites().get(i).getSourceAppel());
+    		}
+    	}
+
 		try {
-			PrintWriter out  = new PrintWriter(new FileWriter("../Ascenseur//xml//log.txt", true));
+			PrintWriter out  = new PrintWriter(new FileWriter("log.txt", false));
 			for(Ascenseur asc : tabAscenseur){
 				for(Appel unAppel : asc.getTabAppelsTraites()){
 					System.out.println(asc.getIdAscenseur());
 					out.println("Ascenseur N°" + asc.getIdAscenseur());
 					out.println("\n\tAppel N°" + unAppel.getIdAppel());
 					out.println("\n\t\tSource: " + unAppel.getSourceAppel());
-					out.println("\n\t\tFin: " + unAppel.getDestAppel());
-					out.println("\n\t\tDebut: " + unAppel.getDateDebut());
-					out.println("\n\t\tFin: " + unAppel.getDateFin() + "\n\n");
+					out.println("\n\t\tDestination: " + unAppel.getDestAppel());
+					out.println("\n\t\tDebut: " + unAppel.getDateDebut().getTime());
+					out.println("\n\t\tFin: " + unAppel.getDateFin().getTime() + "\n\n");
 				}
 			}
 			out.println("\n\n\n");
@@ -370,6 +394,51 @@ public class Batterie extends Thread{
 		} 
     }
     
+    public void creationStat(){
+        Statistiques stat = new Statistiques();
+        stat.calculStatistique(this);
+        try {
+            PrintWriter out  = new PrintWriter(new FileWriter("statistiques.txt", false));
+            out.println("######## STATISTIQUES ########");
+            out.println("Date simulation : " + Calendar.getInstance().getTime());
+            out.println("### Statistiques globales ###");
+            out.println("\t\tDurée simulation: " + stat.getTotalDuree());
+            out.println("\t\tConsommation Totale(W): " + stat.getConsoTotal());
+            out.println("\t\tConsommation Moyenne(W/Appel): " + stat.getConsoMoyenneTotale());
+            out.println("\t\tNombre d'appel total: " + stat.getNbAppelTotal());
+            out.println("\t\tAttente moyenne: " + stat.getAttenteMoyenne());
+            out.println("\n\n### Statistiques détaillées ###");
+            out.println("# Ascenseur A #");
+            out.println("\t\tNombre d'appel Total: " + stat.getTabnbAppel()[0]);
+            out.println("\t\tConsommation totale (W): " + stat.getTabConso()[0]);
+            out.println("\t\tConsommation moyenne (W/Appel): " + stat.getTabConsoMoyenne()[0]);
+            out.println("# Ascenseur B #");
+            out.println("\t\tNombre d'appel Total: " + stat.getTabnbAppel()[1]);
+            out.println("\t\tConsommation totale (W): " + stat.getTabConso()[1]);
+            out.println("\t\tConsommation moyenne (W/Appel): " + stat.getTabConsoMoyenne()[1]);
+            out.println("# Ascenseur C #");
+            out.println("\t\tNombre d'appel Total:" + stat.getTabnbAppel()[2]);
+            out.println("\t\tConsommation totale (W): " + stat.getTabConso()[2]);
+            out.println("\t\tConsommation moyenne (W/Appel): " + stat.getTabConsoMoyenne()[2]);
+            out.println("# Ascenseur D #");
+            out.println("\t\tNombre d'appel Total: " + stat.getTabnbAppel()[3]);
+            out.println("\t\tConsommation totale (W): " + stat.getTabConso()[3]);
+            out.println("\t\tConsommation moyenne (W/Appel): " + stat.getTabConsoMoyenne()[3]);
+            out.println("# Ascenseur E #");
+            out.println("\t\tNombre d'appel Total: " + stat.getTabnbAppel()[4]);
+            out.println("\t\tConsommation totale (W): " + stat.getTabConso()[4]);
+            out.println("\t\tConsommation moyenne (W/Appel): " + stat.getTabConsoMoyenne()[4]);
+            out.println("# Ascenseur F #");
+            out.println("\t\tNombre d'appel Total: " + stat.getTabnbAppel()[5]);
+            out.println("\t\tConsommation totale (W): " + stat.getTabConso()[5]);
+            out.println("\t\tConsommation moyenne (W/Appel): " + stat.getTabConsoMoyenne()[5]);
+            out.close();
+        } 
+        catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } 
+    }
     
     //Definition du constructeur de la classe
     public Batterie(int xtemps,Seconde sec) {
@@ -377,7 +446,8 @@ public class Batterie extends Thread{
         this.tabTousLesAppels = new ArrayList<Appel>();
         Batterie.tabResaPosition = new ArrayList<Boolean>();
         tabThread = new ArrayList<Thread>();
-       
+        this.setMode(true);
+        
         for(int i=0;i<6;i++){
         	//Initialise le tableau de reservation de position repos à faux. (Aucune position n'a été réservée)
         	Boolean bool = new Boolean(true);
@@ -488,7 +558,7 @@ public class Batterie extends Thread{
         this.tabTousLesAppels = new ArrayList<Appel>();
         Batterie.tabResaPosition = new ArrayList<Boolean>();
         tabThread = new ArrayList<Thread>();
-       
+        this.setMode(false);
         for(int i=0;i<6;i++){
         	//Initialise le tableau de reservation de position repos à faux. (Aucune position n'a été réservée)
         	Boolean bool = new Boolean(true);
@@ -583,10 +653,14 @@ public class Batterie extends Thread{
     	
     	try
         {
-        	Batterie.cal = new Calendrier(xtemps,sec);
-//        	Batterie.cal.setDateDebutSimu(this.tabTousLesAppels.get(0).getDateDebut());
-//        	Batterie.cal.setDateActuelle(this.tabTousLesAppels.get(0).getDateDebut());
-        	
+        	Batterie.cal = new Calendrier(xtemps,sec,1,0,1970,this.tabTousLesAppels.get(0).getDateDebut().getTime().getHours()-1);
+				
+        	Batterie.cal.getDateDebutSimu().set(Calendar.MINUTE, 50);
+        	Batterie.cal.getDateDebutSimu().set(Calendar.SECOND, 30);
+        	Batterie.cal.getDateActuelle().set(Calendar.MINUTE, 50);
+        	Batterie.cal.getDateActuelle().set(Calendar.SECOND, 30);
+    		System.out.println(Batterie.cal.getDateActuelle().getTime());
+
         	
         	Batterie.cal.start();
         	Batterie.cal.getChrono().start();
@@ -606,7 +680,8 @@ public class Batterie extends Thread{
         this.tabTousLesAppels = new ArrayList<Appel>();
         Batterie.tabResaPosition = new ArrayList<Boolean>();
         tabThread = new ArrayList<Thread>();
-       
+        this.setMode(true);
+        
         for(int i=0;i<6;i++){
         	//Initialise le tableau de reservation de position repos à faux. (Aucune position n'a été réservée)
         	Boolean bool = new Boolean(true);

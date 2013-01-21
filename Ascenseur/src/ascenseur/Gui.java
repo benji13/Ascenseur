@@ -155,6 +155,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 
 
 		fenetreChoix.pack();
+		fenetreChoix.setLocationRelativeTo(null);
 		fenetreChoix.setVisible(true);
 
 		this.sec =sec;
@@ -499,11 +500,11 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 		d = new JLabel("D",SwingConstants.CENTER);
 		e = new JLabel("E",SwingConstants.CENTER);
 		f = new JLabel("F",SwingConstants.CENTER);
-		labelConsoMoy = new JLabel("Consommation Moyenne (W/H)",SwingConstants.CENTER);
+		labelConsoMoy = new JLabel("Consommation Moyenne (W/Appel)",SwingConstants.CENTER);
 		labelConsoTot = new JLabel("Consommation Totale (W)",SwingConstants.CENTER);
 		labelAttMoy = new JLabel("Attente Moyenne (Sec)",SwingConstants.CENTER);
 		labelNbrAppTot = new JLabel("Nombre d'appels Total",SwingConstants.CENTER);
-		labelDureeSimu = new JLabel("Durée simulation (Sec)",SwingConstants.CENTER);
+		labelDureeSimu = new JLabel("Durée simulation ",SwingConstants.CENTER);
 		bouttonRefreshStat = new JButton("Rafraichir");
 		bouttonRefreshStat.addActionListener(this);
 
@@ -1099,7 +1100,7 @@ public class Gui  implements ActionListener, Observer, ChangeListener {
 					fileAppel[0] = appel.getSourceAppel();
 					fileAppel[1] = appel.getDestAppel();
 					fileAppel[2] = ascenseurString[laBatterie.getTabAscenseur().get(i).getIdAscenseur()];
-					fileAppel[3] = appel.getEtatAppel();
+					fileAppel[3] = "En traitement";
 					model.addRow(fileAppel);
 				}
 			}

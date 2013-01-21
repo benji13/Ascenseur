@@ -134,26 +134,4 @@ public class ParseurDom {
 		}
 		return listeAppels;
 	}
-	
-
-	public static void main(String[] args) throws IOException {
-
-		Document arbre = ParseurDom.chargerDocument("../Ascenseur//xml//test.simu");
-		ArrayList<Appel> liste = ParseurDom.extraireAppels(arbre);
-
-		System.out.println("ID Appel :");
-		System.out.println(liste.get(0).getIdAppel());
-
-		System.out.println("Heure Appel :");
-		System.out.println(liste.get(0).getDateDebut());
-
-		System.out.println("Origine de l'Appel :");
-		System.out.println(liste.get(0).getSourceAppel());
-
-		System.out.println("Destination de l'Appel :");
-		System.out.println(liste.get(0).getDestAppel());
-
-
-		//GenerateurHTML.genererPage(liste, liste2, args[1]);
-	}
 }

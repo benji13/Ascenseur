@@ -19,12 +19,15 @@ public class Init {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 		Seconde sec = new Seconde();
-		Calendrier cal = new Calendrier(1,sec);
 		
-//		cal.start();
-//		Thread.sleep(1000);
-//		cal.getChrono().start();
 //		
+//		try {
+//			CreatorXML.creatorXML(900, "Journee");
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
 		
 		new SplashInitial();
 		Gui fen = new Gui(sec);
